@@ -1,9 +1,9 @@
 import React from 'react';
 import {
     Section
-} from './HomeComponents.js';
+} from './LoginComponents.js';
 
-function Home() {
+function Login() {
 
     return (
         <Section>
@@ -12,4 +12,4 @@ function Home() {
     )
 }
 
-export default Home;
+export default Login;

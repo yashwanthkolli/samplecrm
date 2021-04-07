@@ -4,13 +4,13 @@ import {
     Route,
     Redirect
 } from 'react-router-dom';
-import Home from './Home';
+import Login from './Login';
 
 function Main(){
 
     return(
         <Switch>
-            <Route path="/" exact component={() => <Home />} />
+            <Route path="/" exact component={() => <Login />} />
             <Redirect to="/" />
         </Switch>
     )

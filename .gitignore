@@ -2,3 +2,4 @@ Notes
 node_modules
 
 client/node_modules
+client/.env

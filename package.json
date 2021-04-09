@@ -1,7 +1,7 @@
 {
-  "name": "mern-boilerplate",
+  "name": "ICE-Institute",
   "version": "1.0.0",
-  "description": "MERN Bolierplate - Devendra",
+  "description": "ICE - Institute CRM",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

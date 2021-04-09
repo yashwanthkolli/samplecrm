@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
 import {
     Section,
     Holder,
@@ -18,8 +19,13 @@ const signIn = require('../../images/signIn.svg').default;
 
 function Login() {
 
-    const handleSubmit = (e) => {
+    const { email, setEmail } = useState("");
+    const { password, setPassword } = useState("");
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        console.log(email, password);
     }
 
     return (
@@ -41,6 +47,8 @@ function Login() {
                                         label="Email"
                                         required
                                         autoComplete="off"
+                                        value={email}
+                                        onChange={e=>setEmail(e.target.value)}
                                     />
                                     <TextField
                                         fullWidth
@@ -49,6 +57,8 @@ function Login() {
                                         label="Password"
                                         required
                                         autoComplete="off"
+                                        value={password}
+                                        onChange={e=>setPassword(e.target.value)}
                                     />
                                     <Button color="primary" variant="contained" type="submit">
                                         Log In

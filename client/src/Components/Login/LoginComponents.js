@@ -13,6 +13,10 @@ export const Holder = styled.div`
     width: 50%;
     height: 425px;
     background-color: white;
+
+    @media screen and (max-width: 768px){
+        width: 85%;
+    }
 `
 
 export const Container = styled.div`
@@ -21,11 +25,21 @@ export const Container = styled.div`
     height: 100%;
     grid-template-columns: 0.9fr 1.1fr;
     grid-gap: 5px;
+
+    @media screen and (max-width: 768px){
+        grid-template-columns: unset;
+        grid-gap: unset;
+        place-items: center;
+    }
 `
 
 export const Left = styled.div`
     display: grid;
     place-items: center;
+
+    @media screen and (max-width: 768px){
+        display: none;
+    }
 `
 
 export const Logo = styled.img`
@@ -39,6 +53,12 @@ export const Right = styled.div`
     padding: 20px 0;
     align-items: center;
     justify-content: space-evenly;
+
+    @media screen and (max-width: 768px){
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+    }
 `
 
 export const Ice = styled.img`

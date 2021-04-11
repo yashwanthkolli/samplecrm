@@ -7,8 +7,8 @@ const cors = require('cors');
 
 const authRouter = require('./routes/auth.router');
 
-const connector = require('./config/db');
-connector();
+const { connection } = require('./config/db');
+connection();
 
 const app = express();
 

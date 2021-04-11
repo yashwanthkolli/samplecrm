@@ -13,13 +13,14 @@ function connection(){
         
         db_check = "Show database like 'ice'";
         connect.query(db_check, async function(err, result){
-            if(result == ''){
-                console.log("Go Ahead. Database already in place");
-            } else {
+            console.log(result);
+            if(typeof result === 'undefined'){
                 connect.query("Create database ice", function(err, result){
                     if(err) throw err;
                     console.log("Database Created!");
                 })
+            } else {
+                console.log("Go Ahead. Database already in place");
             }
         })
     })

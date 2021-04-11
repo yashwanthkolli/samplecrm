@@ -13,8 +13,7 @@ function connection(){
         
         db_check = "Show database like 'ice'";
         connect.query(db_check, async function(err, result){
-            console.log(result);
-            if(typeof result === 'undefined'){
+            if(result === 'undefined'){
                 connect.query("Create database ice", function(err, result){
                     if(err) throw err;
                     console.log("Database Created!");

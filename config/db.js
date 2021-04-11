@@ -11,10 +11,9 @@ function check_table(struct){
 
     struct.forEach((element) => {
         check_table_query = `Show table from ice like ${element[0]} `;
-        create_table_query = `Create table Employees (${element[1]})`;
+        create_table_query = `Create table ${element[0]} (${element[1]})`;
         connect.query(check_table_query, async function(err, result){
-            if(result === 'undefined'){
-                console.log("here");
+            if(!result){
                 connect.query(create_table_query, async function(err, result){
                     if(err) throw err;
                     console.log("table created");

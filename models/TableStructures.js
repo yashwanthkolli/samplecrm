@@ -9,12 +9,13 @@ module.exports = [
         +' DOB DATE NOT NULL,'
         +' Address VARCHAR(100),'
         +' City VARCHAR(30),'
-        +' Status CHAR(10) DEFAULT `Active` ,'
+        +' Status CHAR(10) DEFAULT \'Active\' ,'
         +' Type CHAR(30) NOT NULL,'
-        +' Reporting CHAR(40) NOT NULL'
+        +' Reporting CHAR(40) NOT NULL,'
+        +' Primary Key(id)'
     ],
     [
         'Leads',
-        'id int NOT NULL AUTO_INCREMENT'
+        'id int NOT NULL AUTO_INCREMENT, Primary Key(id)'
     ]
 ]

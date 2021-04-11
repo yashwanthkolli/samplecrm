@@ -10,16 +10,10 @@ const connect = mysql.createConnection({
 function check_table(struct){
 
     struct.forEach((element) => {
-        // check_table_query = `Show table from ice like ${element[0]} `;
         create_table_query = `Create table if not exists ice.${element[0]} (${element[1]})`;
-        // connect.query(check_table_query, async function(err, result){
-        //     if(!result){
-                connect.query(create_table_query, async function(err, result){
-                    if(err) throw err;
-                    console.log("table created");
-                })
-        //     }
-        // })
+        connect.query(create_table_query, async function(err, result){
+            if(err) throw err;
+        })
     })
 }
 
@@ -28,17 +22,11 @@ function connection(){
         if(err) throw err;
         console.log("Connected");
         
-        db_check = "Show databases like 'ice'";
+        db_check = "create database if not exists ice";
 
         connect.query(db_check, function(err, result){
-            if(!result){
-                connect.query("Create database ice", function(err, result){
-                    if(err) throw err;
-                })
-            } else {
-                console.log("Go Ahead. Database already in place");
-                check_table(tableStructures);
-            }
+            if(err) throw err;
+            check_table(tableStructures);
         })
     })
 }

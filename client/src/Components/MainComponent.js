@@ -10,7 +10,7 @@ function Main(){
 
     return(
         <Switch>
-            <Route path="/" exact component={() => <Login />} />
+            <Route path="/" exact component={(props) => <Login {...props}/>} />
             <Redirect to="/" />
         </Switch>
     )

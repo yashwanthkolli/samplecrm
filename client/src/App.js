@@ -3,12 +3,17 @@ import './App.css';
 import {
   BrowserRouter
 } from 'react-router-dom';
+import {
+  ChakraProvider
+} from '@chakra-ui/react';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Main />
-    </BrowserRouter>
+    <ChakraProvider>
+      <BrowserRouter>
+        <Main />
+      </BrowserRouter>
+    </ChakraProvider>
   );
 }
 

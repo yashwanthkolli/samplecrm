@@ -14,6 +14,7 @@ import {
     Ice,
     Form
 } from './LoginComponents.js';
+import { setLocalStorage } from '../../helpers/auth.helpers.js';
 
 const ice = require('../../images/001.png').default;
 const signIn = require('../../images/signIn.svg').default;
@@ -35,6 +36,9 @@ function Login({history}) {
             password: password
         })
         .then((res) => {
+            setLocalStorage('token', res.data.token);
+            setLocalStorage('user', res.data.payload);
+
             history.push('/crm');
         })
         .catch((err) => {

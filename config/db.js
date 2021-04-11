@@ -1,10 +1,20 @@
 const mysql = require('mysql');
+const tableStructures = require('../models/TableStructures');
 
 const connect = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'milansql'
 })
+
+function check_table(){
+    check_table_query = "Create table [if not exists] Leads()";
+    connect.query(create_table_query, async function(err, result){
+        if(result === 'undefined'){
+            connect.query("Create table Leads ")
+        }
+    })
+}
 
 function connection(){
     connect.connect(function(err){
@@ -22,6 +32,8 @@ function connection(){
                 console.log("Go Ahead. Database already in place");
             }
         })
+
+        check_table(tableStructures);
     })
 }
 

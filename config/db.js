@@ -10,6 +10,18 @@ function connection(){
     connect.connect(function(err){
         if(err) throw err;
         console.log("Connected");
+        
+        db_check = "Show database like 'ice'";
+        connect.query(db_check, async function(err, result){
+            if(result == ''){
+                console.log("Go Ahead. Database already in place");
+            } else {
+                connect.query("Create database ice", function(err, result){
+                    if(err) throw err;
+                    console.log("Database Created!");
+                })
+            }
+        })
     })
 }
 

@@ -13,23 +13,29 @@ export const removeLocalStorage = key => {
 }
 
 export const isAuth = () => {
-    const token = localStorage.getItem("token").substring(1, localStorage.getItem("token").length - 1);
-    let state = "";
+    if(localStorage.getItem("token")){
+        const token = localStorage.getItem("token").substring(1, localStorage.getItem("token").length - 1);
+        let state = "";
 
-    //modify the backend to reverse this process.
+        //modify the backend to reverse this process.
 
-    jwt.verify(token, process.env.REACT_APP_JWT, (err, decoded) => {
-        if(err){
-            removeLocalStorage("token");
-            state = false;
+        jwt.verify(token, process.env.REACT_APP_JWT, (err, decoded) => {
+            if(err){
+                removeLocalStorage("token");
+                state = false;
+            } else {
+                state = true;
+            }
+        })
+        if(state === true){
+            return true
         } else {
-            state = true;
+            return false
         }
-    })
-
-    if(state === true){
-        return true
-    } else {
-        return false
     }
+}
+
+export const signout = () => {
+    removeLocalStorage('token')
+    removeLocalStorage('user')
 }

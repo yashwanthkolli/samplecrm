@@ -1,10 +1,11 @@
 import React from 'react';
 import {ImProfile} from 'react-icons/im';
 import {BsFillChatSquareDotsFill} from 'react-icons/bs';
+import { FiLogOut } from 'react-icons/fi';
 import {BiCarousel} from 'react-icons/bi';
 import {MdEventNote, MdFeedback, MdUpdate} from 'react-icons/md';
 import {Link} from 'react-router-dom';
-import { isAuth } from '../../../helpers/auth.helpers';
+import { signout } from '../../../helpers/auth.helpers';
 import { FaUserEdit, FaUserFriends } from 'react-icons/fa';
 import {TiTick} from 'react-icons/ti';
 import clsx from 'clsx';
@@ -87,6 +88,12 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  navbarSpace: {
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  }
 }));
 
 function Holder({url, navigate}){
@@ -130,17 +137,17 @@ function Holder({url, navigate}){
     let navbarElements;
 
     switch(JSON.parse(localStorage.getItem('user')).Type){
-        case 'admin':
-          navbarElements = adminNav
-          break;
-        case 'nationalHead':
-          navbarElements = teamNav
-          break;
-        case 'ACCTS':
-          navbarElements = userNav
-          break;
-        default:
-          break;
+      case 'admin':
+        navbarElements = adminNav
+        break;
+      case 'nationalHead':
+        navbarElements = teamNav
+        break;
+      case 'ACCTS':
+        navbarElements = userNav
+        break;
+      default:
+        break;
     }
     return(
         <div className = {classes.root}>
@@ -153,19 +160,32 @@ function Holder({url, navigate}){
             >
                 <Toolbar>
                 <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerOpen}
-                    edge="start"
-                    className={clsx(classes.menuButton, {
-                    [classes.hide]: open,
-                    })}
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  edge="start"
+                  className={clsx(classes.menuButton, {
+                  [classes.hide]: open,
+                  })}
                 >
-                    <MenuIcon />
+                  <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" noWrap>
-                  ICE Institute CRM
-                </Typography>
+                <div className={classes.navbarSpace}>
+                  <Typography variant="h6" noWrap>
+                    ICE Institute CRM
+                  </Typography>
+                  <IconButton
+                    color="inherit"
+                    aria-label="Logout"
+                    onClick={signout}
+                    edge="end"
+                  >
+                    <Link to="/">
+                      <FiLogOut />
+                    </Link>
+                  </IconButton>
+                </div>
+              
                 </Toolbar>
             </AppBar>
             <Drawer

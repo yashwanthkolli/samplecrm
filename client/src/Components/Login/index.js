@@ -39,6 +39,13 @@ function Login({history}) {
             setLocalStorage('token', res.data.token);
             setLocalStorage('user', res.data.payload);
 
+            toast({
+                title: "Login Successful",
+                description: "Please wait while we redirect you!",
+                duration: 3000,
+                position: "top",
+            })
+
             history.push('/crm');
         })
         .catch((err) => {
@@ -46,7 +53,6 @@ function Login({history}) {
                 title: "Error Occured",
                 description: "Something Went Wrong",
                 duration: 3000,
-                isClosable: "true",
                 position: "top"
             })
         })

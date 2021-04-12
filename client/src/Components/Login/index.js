@@ -39,8 +39,6 @@ function Login({history}) {
             setLocalStorage('token', res.data.token);
             setLocalStorage('user', res.data.payload);
 
-            const role = res.data.payload.role;
-
             toast({
                 title: "Login Successful",
                 description: "Please wait while we redirect you!",
@@ -49,13 +47,7 @@ function Login({history}) {
                 status: "success"
             })
 
-            if(role === "admin"){
-                history.push('/admin/home');
-            } else if(role === "national_head"){
-                history.push('/nhead/home');
-            } else {
-                history.push('/employee/home');
-            }
+            history.push('/crm/home');
         })
         .catch((err) => {
             toast({

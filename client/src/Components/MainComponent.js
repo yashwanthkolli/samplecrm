@@ -4,15 +4,21 @@ import {
     Route,
     Redirect
 } from 'react-router-dom';
-import PrivateRoute from './PrivateRoute';
+import PrivateRoute from './ProtectedRoute/PrivateRoute';
 import Login from './Login';
 import Home from './CRM/Home';
+import Sidebar from './CRM/Sidebar';
 
 function CRM(){
+
     return(
-        <Switch>
-            <Route path="/crm/home" exact component={(props) => <Home {...props} /> } />
-        </Switch>
+        <>
+            <Sidebar />
+            <Switch>
+                <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} />} />
+                <Redirect to = '/crm/home' />
+            </Switch>
+        </>
     )
 }
 

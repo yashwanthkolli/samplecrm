@@ -32,9 +32,10 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    height: '100vh',
+    backgroundColor: '#E0E0F8'
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -64,9 +65,10 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
+    marginTop: '60px',
     padding: theme.spacing(3),
     backgroundColor: '#E0E0F8',
-    zIndex: '5'
+
   },
   navbarSpace: {
     display: 'flex',
@@ -88,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     alignItems: 'space-around',
     minHeight: '65%',
-    zIndex: '10'
   },
   list: {
     width: 225,
@@ -112,6 +113,10 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Nunito',
     fontSize: '16px',
     marginTop: '3px'
+  },
+  container:{
+    width: '100%',
+    height: '100%'
   }
 }));
 
@@ -130,7 +135,6 @@ function Holder({match, navigate}){
     }
     setState({ ...state, [anchor]: open });
   };
-
 
   const adminNav = [
     {id: 1 ,path: `${match.path}/profile`,  icon: ImProfile },
@@ -205,12 +209,7 @@ function Holder({match, navigate}){
   return(
     <div className = {classes.root}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-        [classes.appBarShift]: open,
-        })}
-      >
+      <AppBar className  = {classes.appBar}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -270,7 +269,7 @@ function Holder({match, navigate}){
         </React.Fragment>
       </div>
       <main className={classes.content}>
-        <div className={classes.toolbar}>
+        <div className={classes.container}>
           {navigate()}
         </div>
       </main>

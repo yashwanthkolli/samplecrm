@@ -6,7 +6,15 @@ import {
 } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import Login from './Login';
-import CRM from './CRM';
+import Home from './CRM/Home';
+
+function CRM(){
+    return(
+        <Switch>
+            <Route path="/crm/home" exact component={(props) => <Home {...props} /> } />
+        </Switch>
+    )
+}
 
 function Main(){
 

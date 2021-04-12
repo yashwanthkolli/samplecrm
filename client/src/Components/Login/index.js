@@ -42,12 +42,12 @@ function Login({history}) {
             toast({
                 title: "Login Successful",
                 description: "Please wait while we redirect you!",
-                duration: 3000,
+                duration: 1500,
                 position: "top",
                 status: "success"
             })
 
-            history.push('/crm');
+            history.push('/crm/home');
         })
         .catch((err) => {
             toast({

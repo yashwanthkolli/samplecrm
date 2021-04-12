@@ -1,10 +1,10 @@
 import React from 'react';
 
-function CRM(){
+function Home(){
 
-    return (
+    return(
         <></>
     )
 }
 
-export default CRM;
+export default Home;

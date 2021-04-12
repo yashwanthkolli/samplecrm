@@ -13,7 +13,6 @@ function CRM(){
 
     return(
         <>
-            <Sidebar />
             <Switch>
                 <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} />} />
                 <Redirect to = '/crm/home' />
@@ -27,7 +26,7 @@ function Main(){
     return(
         <Switch>
             <Route path="/" exact component={(props) => <Login {...props}/>} />
-            <PrivateRoute path="/crm" component={(props) => <CRM {...props} />} />
+            <PrivateRoute path="/crm" component={(props) => <Sidebar {...props} navigate = {CRM} />} />
             <Redirect to="/" />
         </Switch>
     )

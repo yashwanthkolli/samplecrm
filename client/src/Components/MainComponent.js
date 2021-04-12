@@ -2,7 +2,8 @@ import React from 'react';
 import {
     Switch,
     Route,
-    Redirect
+    Redirect,
+    useRouteMatch
 } from 'react-router-dom';
 import PrivateRoute from './ProtectedRoute/PrivateRoute';
 import Login from './Login';
@@ -12,11 +13,13 @@ import Profile from  './CRM/Profile';
 
 function CRM(){
 
+    let { path } = useRouteMatch();
+
     return(
         <>
             <Switch>
-                <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} />} />
-                <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} />} />
+                <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} path={path} />} />
+                <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} path={path}/>} />
                 <Redirect to = '/crm/home' />
             </Switch>
         </>
@@ -25,10 +28,12 @@ function CRM(){
 
 function Main(){
 
+    let { path } = useRouteMatch();
+
     return(
         <Switch>
             <Route path="/" exact component={(props) => <Login {...props}/>} />
-            <PrivateRoute path="/crm" component={(props) => <Holder {...props} navigate = {CRM} />} />
+            <PrivateRoute path="/crm" component={(props) => <Holder {...props} navigate = {CRM} path={path} />} />
             <Redirect to="/" />
         </Switch>
     )

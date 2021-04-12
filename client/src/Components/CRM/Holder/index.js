@@ -3,6 +3,7 @@ import {ImProfile} from 'react-icons/im';
 import {BsFillChatSquareDotsFill} from 'react-icons/bs';
 import { FiLogOut } from 'react-icons/fi';
 import {BiCarousel} from 'react-icons/bi';
+import { AiFillHome } from 'react-icons/ai';
 import {MdEventNote, MdFeedback, MdUpdate} from 'react-icons/md';
 import {Link} from 'react-router-dom';
 import { signout } from '../../../helpers/auth.helpers';
@@ -24,8 +25,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import { Icon } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Holder({url, navigate}){
+function Holder({match, navigate}){
 
     const classes = useStyles();
     const theme = useTheme();
@@ -111,27 +111,28 @@ function Holder({url, navigate}){
     };
 
     const adminNav = [
-        {id: 1 ,path: `${url}/profile`,  icon: ImProfile },
-        {id: 2 ,path: `${url}/userAdmin`,  icon: FaUserEdit },
-        {id: 4 ,path: `${url}/eventAdmin`,  icon: BiCarousel },
-        {id: 5 ,path: `${url}/updateAdmin`,  icon: MdUpdate },
-        {id: 6 ,path: `${url}/approval`,  icon: TiTick }
+      {id: 1 ,path: `${match.path}/profile`,  icon: ImProfile },
+      {id: 2 ,path: `${match.path}/userAdmin`,  icon: FaUserEdit },
+      {id: 4 ,path: `${match.path}/eventAdmin`,  icon: BiCarousel },
+      {id: 5 ,path: `${match.path}/updateAdmin`,  icon: MdUpdate },
+      {id: 6 ,path: `${match.path}/approval`,  icon: TiTick }
     ]
 
     const teamNav = [
-        {id: 1, path: `${url}/profile`,  icon: ImProfile },
-        {id: 2, path: `${url}/userTeam`,  icon: FaUserFriends },
-        {id: 3, path: `${url}/eventTeam`,  icon: MdEventNote },
-        {id: 4, path: `${url}/updateTeam`,  icon: MdUpdate },
-        {id: 5, path: `${url}/permission`, icon: TiTick }
+      {id: 1, path: `${match.path}/profile`,  icon: ImProfile },
+      {id: 2, path: `${match.path}/userTeam`,  icon: FaUserFriends },
+      {id: 3, path: `${match.path}/eventTeam`,  icon: MdEventNote },
+      {id: 4, path: `${match.path}/updateTeam`,  icon: MdUpdate },
+      {id: 5, path: `${match.path}/permission`, icon: TiTick }
     ]
 
     const userNav = [
-        {id: 1, path: `${url}/profile`,  icon: ImProfile },
-        {id: 2, path: `${url}/events`,  icon: BiCarousel },
-        {id: 3, path: `${url}/updates`,  icon: MdUpdate },
-        {id: 4, path: `${url}/contact`,  icon: BsFillChatSquareDotsFill },
-        {id: 5, path: `${url}/feedback`,  icon: MdFeedback }
+      {id: 6, path: `${match.path}/home`, icon: AiFillHome, text: 'Home'},
+      {id: 1, path: `${match.path}/profile`,  icon: ImProfile, text: 'Profile' },
+      {id: 2, path: `${match.path}/events`,  icon: BiCarousel, text: 'Profile' },
+      {id: 3, path: `${match.path}/updates`,  icon: MdUpdate, text: 'Profile' },
+      {id: 4, path: `${match.path}/contact`,  icon: BsFillChatSquareDotsFill, text: 'Profile' },
+      {id: 5, path: `${match.path}/feedback`,  icon: MdFeedback, text: 'Profile' }
     ]
 
     let navbarElements;
@@ -202,28 +203,24 @@ function Holder({url, navigate}){
               }}
             >
               <div className={classes.toolbar}>
-              <IconButton onClick={handleDrawerClose}>
-                  {theme.direction === 'rtl' ? <BsFillChatSquareDotsFill /> : <BsFillChatSquareDotsFill />}
-              </IconButton>
+                <IconButton onClick={handleDrawerClose}>
+                  {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                </IconButton>
               </div>
               <Divider />
               <List>
-              {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                  <ListItem button key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <BsFillChatSquareDotsFill /> : <BsFillChatSquareDotsFill />}</ListItemIcon>
-                  <ListItemText primary={text} />
+              {navbarElements.map((element) => (
+                <Link to={element.path} key={element.id}>
+                  <ListItem button>
+                  <ListItemIcon>
+                    <Icon component={element.icon} />
+                  </ListItemIcon>
+                  <ListItemText primary={element.text} />
                   </ListItem>
+                </Link>
               ))}
               </List>
               <Divider />
-              <List>
-              {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                  <ListItem button key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <BsFillChatSquareDotsFill /> : <BsFillChatSquareDotsFill />}</ListItemIcon>
-                  <ListItemText primary={text} />
-                  </ListItem>
-              ))}
-              </List>
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar}>

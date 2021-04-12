@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
+import { Avatar } from '@chakra-ui/react';
 import {
     Holder,
     ButtonContainer,
@@ -27,9 +27,10 @@ const useStyles = makeStyles((theme) => ({
         gridTemplateRows: '1fr 1fr',
         gridGap: '20px'
     },
-    avatar: {
-        width: '100%',
-        height: '100%',
+    imageHolder: {
+        display: 'grid',
+        placeItems: 'center',
+        padding: "25px"
     }
 }))
 
@@ -40,8 +41,12 @@ function Profile(){
     return (
         <div className={classes.root}>
             <Holder>
-                <Paper className={classes.container} elevation={3}>
-                    <Avatar className={classes.avatar} src={ice} alt={JSON.parse(localStorage.getItem('user')).Firstname}/>
+                <Paper className={classes.container} style={{padding: "20px"}} elevation={3}>
+                    <div className={classes.imageHolder} >
+                        <Avatar style={{width: "100%",height:"100%"}}>
+                            <ImageHolder src={ice} alt={JSON.parse(localStorage.getItem('user')).Firstname} />
+                        </Avatar>  
+                    </div>
                     <ButtonContainer>
                         <Button fullWidth color="primary" variant="contained" style={{marginBottom: "10px"}}>Upload Picture</Button>
                         <Button fullWidth color="primary" variant="contained">Update Password</Button>

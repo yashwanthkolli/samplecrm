@@ -7,13 +7,15 @@ export const Holder = styled.div`
     place-items: center;
     grid-template-columns: 3fr 7fr;
     grid-gap: 15px;
+
+    @media screen and (max-width: 768px){
+        
+    }
 `
 
 export const ImageHolder = styled.img`
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    border: 1px solid black;
 `
 
 export const ButtonContainer = styled.div`

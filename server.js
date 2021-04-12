@@ -6,6 +6,7 @@ const express = require('express');
 const cors = require('cors');
 
 const authRouter = require('./routes/auth.router');
+const userRouter = require('./routes/user.router');
 
 const { connection } = require('./config/db');
 connection();
@@ -18,6 +19,7 @@ app.use(cors({
 }))
 
 app.use('/auth', authRouter);
+app.use('/user', userRouter);
 
 app.listen(process.env.PORT, (req, res) => {
     console.log("Server Listening At Port 3001");

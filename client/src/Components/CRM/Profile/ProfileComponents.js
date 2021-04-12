@@ -28,3 +28,28 @@ export const ButtonContainer = styled.div`
     align-items: center;
     justify-content: center;
 `
+
+export const TextContainer = styled.div`
+    width: 100%;
+    height: 100%;
+`
+
+export const Heading = styled.div`
+    font-size: 28px;
+    font-family: Nunito, sans-serif;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+
+    @media screen and (max-width: 768px){
+        font-size: 22px;
+    }
+`
+
+export const Summary = styled.div`
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: apce-between;
+    align-items: center;
+`

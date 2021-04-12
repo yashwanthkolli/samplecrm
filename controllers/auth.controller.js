@@ -11,7 +11,7 @@ exports.loginController = (req, res) => {
                 message: "Error in process execution"
             })
         }
-        else if(result){
+        else if(result.length === 1){
             // use jwt to encode the data returned.
             const token = jwt.sign({
                 email: result[0].email,

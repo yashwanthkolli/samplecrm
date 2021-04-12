@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { Square } from '@chakra-ui/react';
+import { Square, useToast } from '@chakra-ui/react';
+import axios from 'axios';
 import {
     Holder,
     ButtonContainer,
-    ImageHolder
+    ImageHolder,
+    TextContainer,
+    Heading,
+    Summary
 } from './ProfileComponents';
 
 const ice = require('../../../images/001.png').default;
@@ -27,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
         gridTemplateRows: '1fr 1fr',
         gridGap: '20px'
     },
+    textcontainer: {
+        padding: theme.spacing(2),
+        minHeight: '80vh',
+        width: '100%'
+    },
     imageHolder: {
         display: 'grid',
         placeItems: 'center',
@@ -38,13 +47,32 @@ const useStyles = makeStyles((theme) => ({
 function Profile(){
 
     const classes = useStyles();
+    const toast = useToast();
+
+    const [profile, setProfile] = useState([]); 
+
+    useEffect(() => {
+        axios.post(`${process.env.REACT_APP_USER}/detailsUser`,{
+            email: JSON.parse(localStorage.getItem('user')).email
+        })
+        .then((res) => {
+            setProfile(res.data.details)
+        })
+        .catch((err) => {
+            toast({
+                description: "Error in fetching profile details",
+                duration: 3000,
+                position: "top"
+            })
+        })
+    })
 
     return (
         <div className={classes.root}>
             <Holder>
                 <Paper className={classes.container} style={{padding: "20px"}} elevation={3}>
                     <div className={classes.imageHolder} >
-                        <Square size="200px" style={{border: "1px solid black", overflow: 'hidden'}}>
+                        <Square size="200px" style={{border: "1px solid blue", overflow: 'hidden'}}>
                             <ImageHolder src={ice} alt={JSON.parse(localStorage.getItem('user')).Firstname} />
                         </Square>  
                     </div>
@@ -53,8 +81,17 @@ function Profile(){
                         <Button fullWidth color="primary" variant="contained">Update Password</Button>
                     </ButtonContainer>
                 </Paper>
-                <Paper className={classes.container} elevation={3}>
-
+                <Paper className={classes.textcontainer} elevation={3}>
+                    <TextContainer>
+                        <Heading>
+                            Basic Information - Profile
+                        </Heading>
+                        <Summary>
+                            {profile.forEach((element) => {
+                                
+                            })}
+                        </Summary>
+                    </TextContainer>                    
                 </Paper>
             </Holder>
         </div>

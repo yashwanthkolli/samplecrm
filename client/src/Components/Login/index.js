@@ -60,8 +60,6 @@ function Login({history}) {
         })
     }
 
-    // a check for redirecting the authenticated users back to the CRM home page
-
     return (
         <Section>
             { isAuth() ? <Redirect to="/crm/home" /> : null}

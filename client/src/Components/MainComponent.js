@@ -19,7 +19,7 @@ function CRM(){
         <>
             <Switch>
                 <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} path={path} />} />
-                <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} path={path}/>} />
+                <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} path={path} />} />
                 <Redirect to = '/crm/home' />
             </Switch>
         </>

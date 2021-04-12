@@ -151,83 +151,83 @@ function Holder({match, navigate}){
         break;
     }
     return(
-        <div className = {classes.root}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
-                [classes.appBarShift]: open,
-                })}
+      <div className = {classes.root}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+              })}
             >
-                <Toolbar>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={handleDrawerOpen}
-                  edge="start"
-                  className={clsx(classes.menuButton, {
-                  [classes.hide]: open,
-                  })}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <div className={classes.navbarSpace}>
-                  <Typography variant="h6" noWrap>
-                    ICE Institute CRM
-                  </Typography>
-                  <IconButton
-                    color="inherit"
-                    aria-label="Logout"
-                    onClick={signout}
-                    edge="end"
-                  >
-                    <Link to="/">
-                      <FiLogOut />
-                    </Link>
-                  </IconButton>
-                </div>
-              
-                </Toolbar>
-            </AppBar>
-            <Drawer
-              variant="permanent"
-              className={clsx(classes.drawer, {
+              <MenuIcon />
+            </IconButton>
+            <div className={classes.navbarSpace}>
+              <Typography variant="h6" noWrap>
+                ICE Institute CRM
+              </Typography>
+              <IconButton
+                color="inherit"
+                aria-label="Logout"
+                onClick={signout}
+                edge="end"
+              >
+                <Link to="/">
+                  <FiLogOut />
+                </Link>
+              </IconButton>
+            </div>
+            
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+          })}
+          classes={{
+          paper: clsx({
               [classes.drawerOpen]: open,
               [classes.drawerClose]: !open,
-              })}
-              classes={{
-              paper: clsx({
-                  [classes.drawerOpen]: open,
-                  [classes.drawerClose]: !open,
-              }),
-              }}
-            >
-              <div className={classes.toolbar}>
-                <IconButton onClick={handleDrawerClose}>
-                  {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                </IconButton>
-              </div>
-              <Divider />
-              <List>
-              {navbarElements.map((element) => (
-                <Link to={element.path} key={element.id}>
-                  <ListItem button>
-                  <ListItemIcon>
-                    <Icon component={element.icon} />
-                  </ListItemIcon>
-                  <ListItemText primary={element.text} />
-                  </ListItem>
-                </Link>
-              ))}
-              </List>
-              <Divider />
-            </Drawer>
-            <main className={classes.content}>
-                <div className={classes.toolbar}>
-                  {navigate()}
-                </div>
-            </main>
-        </div>
+          }),
+          }}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+          {navbarElements.map((element) => (
+            <Link to={element.path} key={element.id}>
+              <ListItem button>
+              <ListItemIcon>
+                <Icon component={element.icon} />
+              </ListItemIcon>
+              <ListItemText primary={element.text} />
+              </ListItem>
+            </Link>
+          ))}
+          </List>
+          <Divider />
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.toolbar}>
+            {navigate()}
+          </div>
+        </main>
+      </div>
     )
 }
 

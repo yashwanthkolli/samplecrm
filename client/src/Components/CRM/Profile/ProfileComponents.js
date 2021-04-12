@@ -9,7 +9,9 @@ export const Holder = styled.div`
     grid-gap: 15px;
 
     @media screen and (max-width: 768px){
-        
+        grid-template-columns: unset;
+        display: flex;
+        flex-direction: column;
     }
 `
 

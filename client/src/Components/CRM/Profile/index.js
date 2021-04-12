@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { Avatar } from '@chakra-ui/react';
+import { Square } from '@chakra-ui/react';
 import {
     Holder,
     ButtonContainer,
@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme) => ({
     imageHolder: {
         display: 'grid',
         placeItems: 'center',
-        padding: "25px"
+        width: '100%',
+        height: '100%'
     }
 }))
 
@@ -43,9 +44,9 @@ function Profile(){
             <Holder>
                 <Paper className={classes.container} style={{padding: "20px"}} elevation={3}>
                     <div className={classes.imageHolder} >
-                        <Avatar style={{width: "100%",height:"100%"}}>
+                        <Square size="200px" style={{border: "1px solid black", overflow: 'hidden'}}>
                             <ImageHolder src={ice} alt={JSON.parse(localStorage.getItem('user')).Firstname} />
-                        </Avatar>  
+                        </Square>  
                     </div>
                     <ButtonContainer>
                         <Button fullWidth color="primary" variant="contained" style={{marginBottom: "10px"}}>Upload Picture</Button>

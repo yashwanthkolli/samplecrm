@@ -44,6 +44,7 @@ function Login({history}) {
                 description: "Please wait while we redirect you!",
                 duration: 3000,
                 position: "top",
+                status: "success"
             })
 
             history.push('/crm');
@@ -57,6 +58,8 @@ function Login({history}) {
             })
         })
     }
+
+    // a check for redirecting the authenticated users back to the CRM home page
 
     return (
         <Section>

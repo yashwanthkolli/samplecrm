@@ -88,7 +88,11 @@ function Profile(){
                         </Heading>
                         <Summary>
                             {profile.forEach((element) => {
-                                
+                                return(
+                                    <>
+                                        <h6>`${element[0]}`</h6>
+                                    </>
+                                )
                             })}
                         </Summary>
                     </TextContainer>                    

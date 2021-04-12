@@ -1,5 +1,6 @@
-
 import React, { useState } from 'react';
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
 import {ImProfile} from 'react-icons/im';
 import {BsFillChatSquareDotsFill} from 'react-icons/bs';
 import { FiLogOut } from 'react-icons/fi';
@@ -11,8 +12,6 @@ import {Link} from 'react-router-dom';
 import { signout } from '../../../helpers/auth.helpers';
 import { FaUserEdit, FaUserFriends } from 'react-icons/fa';
 import {TiTick} from 'react-icons/ti';
-import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -22,12 +21,11 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Icon } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon';
+import Avatar from '@material-ui/core/Avatar';
 
 const drawerWidth = 240;
 
@@ -55,29 +53,6 @@ const useStyles = makeStyles((theme) => ({
   },
   hide: {
     display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-  },
-  drawerOpen: {
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
   },
   toolbar: {
     display: 'flex',
@@ -111,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
+    alignItems: 'space-around',
     minHeight: '65%',
     zIndex: '10'
   },
@@ -119,13 +95,30 @@ const useStyles = makeStyles((theme) => ({
   },
   fullList: {
     width: 'auto',
+  },
+  profile: {
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing(2),
+    flexDirection: 'column'
+  },
+  large: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+  },
+  profileDetails: {
+    fontFamily: 'Nunito',
+    fontSize: '16px',
+    marginTop: '3px'
   }
 }));
 
 function Holder({match, navigate}){
 
   const classes = useStyles();
-  const theme = useTheme();
+
   const open = false;
   const [state, setState] = useState({
     left: false
@@ -157,7 +150,7 @@ function Holder({match, navigate}){
 
   const userNav = [
     {id: 6, path: `${match.path}/home`, icon: AiFillHome, text: 'Home'},
-    {id: 1, path: `${match.path}/profile`,  icon: ImProfile, text: 'Profile' },
+    {id: 1, path: `${match.path}/profile`,  icon: ImProfile, text: 'Your Profile' },
     {id: 2, path: `${match.path}/events`,  icon: BiCarousel, text: 'Profile' },
     {id: 3, path: `${match.path}/updates`,  icon: MdUpdate, text: 'Profile' },
     {id: 4, path: `${match.path}/contact`,  icon: BsFillChatSquareDotsFill, text: 'Profile' },
@@ -191,10 +184,16 @@ function Holder({match, navigate}){
       {navbarElements.map((element) => (
         <Link to={element.path} key={element.id}>
           <ListItem button >
-          <ListItemIcon className={classes.iconCenter}>
-            <Icon component={element.icon} />
-          </ListItemIcon>
-          <ListItemText primary={element.text} style={{fontFamily: 'Nunito !important', fontSize: '16px !important'}}/>
+            <ListItemIcon className={classes.iconCenter}>
+              <Icon component={element.icon} />
+            </ListItemIcon>
+            <ListItemText primary={element.text} style={{
+              fontFamily: 'Nunito !important',
+              fontSize: '16px !important',
+              display: 'flex',
+              alignItems:'center',
+              justifyContent: 'center'
+            }}/>
           </ListItem>
         </Link>
       ))}
@@ -253,6 +252,16 @@ function Holder({match, navigate}){
               <Icon component={SiGoogleanalytics} />
               <Typography variant="h6" noWrap className={classes.title}>
                 Dashboard
+              </Typography>
+            </div>
+            <Divider />
+            <div className={classes.profile}>
+              <Avatar className={classes.large} />
+              <Typography noWrap className={classes.profileDetails}>
+                {JSON.parse(localStorage.getItem('user')).Firstname + " " + JSON.parse(localStorage.getItem('user')).Surname}
+              </Typography>
+              <Typography noWrap className={classes.profileDetails}>
+                {JSON.parse(localStorage.getItem('user')).Email}
               </Typography>
             </div>
             <Divider />

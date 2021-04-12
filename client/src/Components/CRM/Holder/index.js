@@ -104,43 +104,43 @@ function Holder({url, navigate}){
     };
 
     const adminNav = [
-        {id: 1 ,path: `${url}/profileAdmin`,  icon: ImProfile, toolTip: 'Profile'},
-        {id: 2 ,path: `${url}/userAdmin`,  icon: FaUserEdit, toolTip: 'User List'},
-        {id: 4 ,path: `${url}/eventAdmin`,  icon: BiCarousel, toolTip: 'Events'},
-        {id: 5 ,path: `${url}/updateAdmin`,  icon: MdUpdate, toolTip: 'Updates'},
-        {id: 6 ,path: `${url}/approval`,  icon: TiTick, toolTip: 'Approvals'}
+        {id: 1 ,path: `${url}/profile`,  icon: ImProfile },
+        {id: 2 ,path: `${url}/userAdmin`,  icon: FaUserEdit },
+        {id: 4 ,path: `${url}/eventAdmin`,  icon: BiCarousel },
+        {id: 5 ,path: `${url}/updateAdmin`,  icon: MdUpdate },
+        {id: 6 ,path: `${url}/approval`,  icon: TiTick }
     ]
 
     const teamNav = [
-        {id: 1, path: `${url}/profileTeam`,  icon: ImProfile, toolTip: 'Profile'},
-        {id: 2, path: `${url}/userTeam`,  icon: FaUserFriends, toolTip: 'User List'},
-        {id: 3, path: `${url}/eventTeam`,  icon: MdEventNote, toolTip: 'Events'},
-        {id: 4, path: `${url}/updateTeam`,  icon: MdUpdate, toolTip: 'Updates'},
-        {id: 5, path: `${url}/permission`, icon: TiTick, toolTip: 'Permissions'}
+        {id: 1, path: `${url}/profile`,  icon: ImProfile },
+        {id: 2, path: `${url}/userTeam`,  icon: FaUserFriends },
+        {id: 3, path: `${url}/eventTeam`,  icon: MdEventNote },
+        {id: 4, path: `${url}/updateTeam`,  icon: MdUpdate },
+        {id: 5, path: `${url}/permission`, icon: TiTick }
     ]
 
     const userNav = [
-        {id: 1, path: `${url}/profile`,  icon: ImProfile, toolTip: 'Profile'},
-        {id: 2, path: `${url}/events`,  icon: BiCarousel, toolTip: 'Events'},
-        {id: 3, path: `${url}/updates`,  icon: MdUpdate, toolTip: 'Updates'},
-        {id: 4, path: `${url}/contact`,  icon: BsFillChatSquareDotsFill, toolTip: 'Contact'},
-        {id: 5, path: `${url}/feedback`,  icon: MdFeedback, toolTip: 'Feedback'}
+        {id: 1, path: `${url}/profile`,  icon: ImProfile },
+        {id: 2, path: `${url}/events`,  icon: BiCarousel },
+        {id: 3, path: `${url}/updates`,  icon: MdUpdate },
+        {id: 4, path: `${url}/contact`,  icon: BsFillChatSquareDotsFill },
+        {id: 5, path: `${url}/feedback`,  icon: MdFeedback }
     ]
 
     let navbarElements;
 
-    switch(JSON.parse(localStorage.getItem('user')).role){
+    switch(JSON.parse(localStorage.getItem('user')).Type){
         case 'admin':
-            navbarElements = adminNav
-            break;
-        case 'teamUIC':
-            navbarElements = teamNav
-            break;
-        case 'user':
-            navbarElements = userNav
-            break;
+          navbarElements = adminNav
+          break;
+        case 'nationalHead':
+          navbarElements = teamNav
+          break;
+        case 'ACCTS':
+          navbarElements = userNav
+          break;
         default:
-            break;
+          break;
     }
     return(
         <div className = {classes.root}>
@@ -164,50 +164,50 @@ function Holder({url, navigate}){
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" noWrap>
-                    Mini variant drawer
+                  ICE Institute CRM
                 </Typography>
                 </Toolbar>
             </AppBar>
             <Drawer
-                variant="permanent"
-                className={clsx(classes.drawer, {
-                [classes.drawerOpen]: open,
-                [classes.drawerClose]: !open,
-                })}
-                classes={{
-                paper: clsx({
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                }),
-                }}
+              variant="permanent"
+              className={clsx(classes.drawer, {
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+              })}
+              classes={{
+              paper: clsx({
+                  [classes.drawerOpen]: open,
+                  [classes.drawerClose]: !open,
+              }),
+              }}
             >
-                <div className={classes.toolbar}>
-                <IconButton onClick={handleDrawerClose}>
-                    {theme.direction === 'rtl' ? <BsFillChatSquareDotsFill /> : <BsFillChatSquareDotsFill />}
-                </IconButton>
-                </div>
-                <Divider />
-                <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                    <ListItemIcon>{index % 2 === 0 ? <BsFillChatSquareDotsFill /> : <BsFillChatSquareDotsFill />}</ListItemIcon>
-                    <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-                </List>
-                <Divider />
-                <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem button key={text}>
-                    <ListItemIcon>{index % 2 === 0 ? <BsFillChatSquareDotsFill /> : <BsFillChatSquareDotsFill />}</ListItemIcon>
-                    <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-                </List>
+              <div className={classes.toolbar}>
+              <IconButton onClick={handleDrawerClose}>
+                  {theme.direction === 'rtl' ? <BsFillChatSquareDotsFill /> : <BsFillChatSquareDotsFill />}
+              </IconButton>
+              </div>
+              <Divider />
+              <List>
+              {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                  <ListItem button key={text}>
+                  <ListItemIcon>{index % 2 === 0 ? <BsFillChatSquareDotsFill /> : <BsFillChatSquareDotsFill />}</ListItemIcon>
+                  <ListItemText primary={text} />
+                  </ListItem>
+              ))}
+              </List>
+              <Divider />
+              <List>
+              {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                  <ListItem button key={text}>
+                  <ListItemIcon>{index % 2 === 0 ? <BsFillChatSquareDotsFill /> : <BsFillChatSquareDotsFill />}</ListItemIcon>
+                  <ListItemText primary={text} />
+                  </ListItem>
+              ))}
+              </List>
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar}>
-                    {navigate()}
+                  {navigate()}
                 </div>
             </main>
         </div>

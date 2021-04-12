@@ -8,6 +8,7 @@ import PrivateRoute from './ProtectedRoute/PrivateRoute';
 import Login from './Login';
 import Home from './CRM/Home';
 import Holder from './CRM/Holder';
+import Profile from  './CRM/Profile';
 
 function CRM(){
 
@@ -15,6 +16,7 @@ function CRM(){
         <>
             <Switch>
                 <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} />} />
+                <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} />} />
                 <Redirect to = '/crm/home' />
             </Switch>
         </>

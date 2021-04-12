@@ -14,7 +14,8 @@ import {
     Ice,
     Form
 } from './LoginComponents.js';
-import { setLocalStorage } from '../../helpers/auth.helpers.js';
+import { setLocalStorage, isAuth } from '../../helpers/auth.helpers.js';
+import { Redirect } from 'react-router-dom';
 
 const ice = require('../../images/001.png').default;
 const signIn = require('../../images/signIn.svg').default;
@@ -63,6 +64,7 @@ function Login({history}) {
 
     return (
         <Section>
+            { isAuth() ? <Redirect to="/crm/home" /> : null}
             <Holder>
                 <Paper elevation={5} variant="elevation" style={{width: "100%", height: "100%"}}>
                     <Container>

@@ -26,6 +26,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
+import Footer from '../Footer';
 
 const drawerWidth = 240;
 
@@ -115,6 +116,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '3px'
   },
   container:{
+    position: 'relative',
     width: '100%',
     height: '100%'
   }
@@ -209,7 +211,7 @@ function Holder({match, navigate}){
   return(
     <div className = {classes.root}>
       <CssBaseline />
-      <AppBar className  = {classes.appBar} style={{backgroundColor: "#202950"}}>
+      <AppBar className = {classes.appBar} style={{backgroundColor: "#202950"}}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -272,7 +274,9 @@ function Holder({match, navigate}){
         <div className={classes.container}>
           {navigate()}
         </div>
+        <Footer />
       </main>
+
     </div>
   )
 }

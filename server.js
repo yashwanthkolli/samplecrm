@@ -4,6 +4,7 @@ require('dotenv').config({
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const authRouter = require('./routes/auth.router');
 const userRouter = require('./routes/user.router');
@@ -14,6 +15,7 @@ connection();
 const app = express();
 
 app.use(express.json())
+app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(cors({
     origin: "http://localhost:3000"
 }))

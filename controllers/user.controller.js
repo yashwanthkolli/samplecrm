@@ -1,5 +1,6 @@
 const { connect } = require('../config/db');
 const upload = require('../helpers/upload');
+const fs = require('fs');
 
 exports.detailsController = (req, res) => {
     const { email } = req.body;
@@ -64,7 +65,22 @@ exports.uploadDisplayController = (req, res) => {
                 })
             }
         }else{
-            setprofilepic_name = 'Update ice.Employees set picture = \''+ req.file.filename +'';
+            checkpicture_name = 'Select picture from ice.Employees where Email = \''+ req.body.email + '\'';
+            setprofilepic_name = 'Update ice.Employees set picture = \''+ req.file.filename +'\' where Email = \'' + req.body.email + '\' ';
+            connect.query(checkpicture_name, function(err, result){
+                console.log(result);
+                // if(err){
+                //     return res.status(500).json({
+                //         message: "Error In File Upload"
+                //     })
+                // } else if(result.length === 1){
+                //     console.log(result)
+                // } else {
+                //     return res.status(500).json({
+                //         message: "Error In F"
+                //     })
+                // }
+            })
         }
     })
 }

@@ -14,7 +14,7 @@ exports.detailsController = (req, res) => {
                 details: [
                     ["Address", result[0].Address],
                     ["City", result[0].City],
-                    ["DOB", new Date(result[0].DOB).toDateString()]
+                    ["Date Of Birth", new Date(result[0].DOB).toDateString()]
                 ]
             })
         } else {
@@ -47,5 +47,5 @@ exports.changePasswordController = (req, res) => {
 }
 
 exports.uploadDisplayController = (req, res) => {
-    
+
 }

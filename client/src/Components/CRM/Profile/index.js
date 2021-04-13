@@ -10,6 +10,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
+import Alert from '@material-ui/core/Alert';
 import axios from 'axios';
 import {
     Holder,
@@ -83,6 +84,10 @@ function Profile(){
     const [cPassword, setCPassword] = useState("");
     const [nPassword, setNPassword] = useState("");
     const [rPassword, setRPassword] = useState("");
+    const [error, setError] = useState({
+        found: false,
+        message: ""
+    })
 
     const fullName = JSON.parse(localStorage.getItem('user')).Firstname.trim() + " " + JSON.parse(localStorage.getItem('user')).Surname.trim();
 
@@ -140,7 +145,7 @@ function Profile(){
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_USER}/uploadPicture`,{
-            
+
         })
     }
 
@@ -247,6 +252,7 @@ function Profile(){
             </DialogContent>
         </Dialog>
         <Dialog open={open2} fullWidth TransitionComponent={Transition} onClose={handleClose2} aria-labelledby="form-dialog-title">
+            {error.found && <Alert severity="error">{error.message}</Alert>}
             <DialogTitle id="form-dialog-title">Upload Password</DialogTitle>
             <DialogContent>
             <DialogContentText>

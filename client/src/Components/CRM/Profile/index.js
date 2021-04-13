@@ -139,7 +139,9 @@ function Profile(){
     const handleUpload = (e) => {
         e.preventDefault();
 
-        
+        axios.post(`${process.env.REACT_APP_USER}/uploadPicture`,{
+            
+        })
     }
 
     useEffect(() => {

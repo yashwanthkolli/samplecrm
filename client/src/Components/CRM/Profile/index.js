@@ -77,31 +77,45 @@ function Profile(){
     const handleUpdatePassword = (e) => {
         e.preventDefault();
 
-        setCPassword("");
-        setNPassword("");
-        setRPassword("");
-
-        axios.post(`${process.env.REACT_APP_USER}/changePassword`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
-            current: cPassword,
-            new: nPassword,
-            reset: rPassword
-        })
-        .then((res) => {
-            handleClose();
+        if(nPassword.length > 8){
+            if(nPassword === rPassword){
+                axios.post(`${process.env.REACT_APP_USER}/changePassword`, {
+                    email: JSON.parse(localStorage.getItem('user')).Email,
+                    current: cPassword,
+                    newP: nPassword
+                })
+                .then((res) => {
+                    setCPassword("");
+                    setNPassword("");
+                    setRPassword("");
+                    handleClose();
+                    toast({
+                        description: "Password Updated Successfully!",
+                        duration: 2000,
+                        position: "top"
+                    })
+                })
+                .catch((err) => {
+                    toast({
+                        description: "Password Update Failed!",
+                        duration: 2000,
+                        position: "top"
+                    })
+                })
+            } else {
+                toast({
+                    description: "New and current password don't match",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
+        } else {
             toast({
-                description: "Password Updated Successfully!",
-                duration: 2000,
-                position: "top"
+                description: "Password should be of more than 8 characters",
+                position: "top",
+                duration: 2000
             })
-        })
-        .catch((err) => {
-            toast({
-                description: "Password Update Failed!",
-                duration: 2000,
-                position: "top"
-            })
-        })
+        }
     }
 
     useEffect(() => {
@@ -201,7 +215,7 @@ function Profile(){
                     required
                 />
                 <DialogActions>
-                    <Button type="reset" style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
+                    <Button onClick={handleClose} style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
                         Cancel
                     </Button>
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white'}} variant="contained">

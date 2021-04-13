@@ -24,3 +24,24 @@ exports.detailsController = (req, res) => {
         }
     })
 }
+
+exports.changePasswordController = (req, res) => {
+    const { email, current, newP} = req.body;
+
+    change_password_query = 'Update ice.Employees set password = \'' + newP + '\' where Email = \'' + email + '\' and Password = \'' + current + '\'';
+    connect.query(change_password_query, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error Occured"
+            })
+        } else if(result.affectedRows === 1){
+            return res.status(200).json({
+                message: "Password Updated Successfully!"
+            })
+        } else {
+            return res.status(500).json({
+                message: "Error Occured"
+            })
+        }
+    })
+}

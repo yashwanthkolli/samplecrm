@@ -58,10 +58,12 @@ function Profile(){
     const classes = useStyles();
     const toast = useToast();
 
+    const pid = "pass-toast";
+    const qid = "length-toast";
+
     const handleClickOpen = () => {
         setOpen(true);
     };
-
     const handleClose = () => {
         setOpen(false);
     };
@@ -103,18 +105,24 @@ function Profile(){
                     })
                 })
             } else {
-                toast({
-                    description: "New and current password don't match",
-                    duration: 2000,
-                    position: "top"
-                })
+                if(!toast.isActive(pid)){
+                    toast({
+                        id: pid,
+                        description: "New and current password don't match",
+                        duration: 2000,
+                        position: "top"
+                    })
+                }
             }
         } else {
-            toast({
-                description: "Password should be of more than 8 characters",
-                position: "top",
-                duration: 2000
-            })
+            if(!toast.isActive(qid)){
+                toast({
+                    id: qid,
+                    description: "Password should be of more than 8 characters",
+                    position: "top",
+                    duration: 2000
+                })
+            }
         }
     }
 

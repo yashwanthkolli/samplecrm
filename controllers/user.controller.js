@@ -1,4 +1,5 @@
 const { connect } = require('../config/db');
+const upload = require('../helpers/upload');
 
 exports.detailsController = (req, res) => {
     const { email } = req.body;
@@ -47,5 +48,22 @@ exports.changePasswordController = (req, res) => {
 }
 
 exports.uploadDisplayController = (req, res) => {
-
+    upload(req, res, (err) =>{
+        if(err){
+            if(typeof err === 'string'){
+                return res.status(500).json({
+                    err: err
+                })
+            } else if(typeof err === 'object'){
+                return res.status(500).json({
+                    err: err.message
+                })
+            } else {
+                return res.status(500).json({
+                    err:'Something went wrong'
+                })
+            }
+        }else{
+        }
+    })
 }

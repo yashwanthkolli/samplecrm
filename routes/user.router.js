@@ -7,11 +7,12 @@ const { detailsController,
     userListController,
     addUserController
 } = require('../controllers/user.controller');
+const { verifyHigherLevel } = require('../validations/higherlevel');
 
 router.post('/detailsUser', detailsController);
 router.post('/changePassword', changePasswordController);
 router.post('/uploadPicture', uploadDisplayController);
-router.post('/usersList', userListController);
+router.post('/usersList', verifyHigherLevel, userListController);
 router.post('/addUser', addUserController);
 
 module.exports = router;

@@ -204,7 +204,7 @@ function Profile(){
                 />
                 <TextField
                     margin="dense"
-                    id="current_password"
+                    id="new_password"
                     label="New Password"
                     type="password"
                     fullWidth
@@ -214,7 +214,7 @@ function Profile(){
                 />
                 <TextField
                     margin="dense"
-                    id="current_password"
+                    id="reset_password"
                     label="Reset Password"
                     type="password"
                     fullWidth

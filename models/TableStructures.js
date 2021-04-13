@@ -11,6 +11,7 @@ module.exports = [
         +' Status CHAR(10) DEFAULT \'Active\' ,'
         +' Type CHAR(30) NOT NULL,'
         +' Reporting CHAR(40) NOT NULL,'
+        +' Picture VARCHAR(255),'
         +' Primary Key(Email)'
     ],
     [

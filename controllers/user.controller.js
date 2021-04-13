@@ -66,6 +66,7 @@ exports.uploadDisplayController = (req, res) => {
             }
         }else{
             checkpicture_name = 'Select picture from ice.Employees where Email = \''+ req.body.email + '\'';
+            updatepicture_name = 'Select Firstname, Surname, Email, Mobile, Type, Status, Picture from ice.Employees where Email = \''+ req.body.email + '\'';
             setprofilepic_name = 'Update ice.Employees set picture = \''+ req.file.filename +'\' where Email = \'' + req.body.email + '\' ';
             connect.query(checkpicture_name, function(err, result){
                 if(result.length === 1){
@@ -74,11 +75,18 @@ exports.uploadDisplayController = (req, res) => {
                     }
 
                     connect.query(setprofilepic_name, function(err, r){
-                        console.log(r);
-                        if(r.length === 1){
-                            return res.status(200).json({
-                                message: "File Upload Successful",
-                                payload: result[0]
+                        if(r.affectedRows === 1){
+                            connect.query(updatepicture_name, function(err, re){
+                                if(re.length === 1){
+                                    return res.status(200).json({
+                                        message: "File Upload Successful",
+                                        payload: re[0]
+                                    })
+                                } else {
+                                    return res.status(500).json({
+                                        message: "Error In File Upload"
+                                    })
+                                }
                             })
                         } else {
                             fs.unlinkSync(`uploads/userPics/${req.file.filename}`)

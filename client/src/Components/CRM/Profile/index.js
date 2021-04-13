@@ -166,7 +166,6 @@ function Profile(){
                 setProgressPercent(0);
                 handleClose2();
             }, 1000)
-            console.log(res);
             setLocalStorage('user', res.data.payload);
             toast({
                 description: "Upload Successful",

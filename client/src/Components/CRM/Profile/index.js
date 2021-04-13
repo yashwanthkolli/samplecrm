@@ -10,7 +10,10 @@ import {
     ImageHolder,
     TextContainer,
     Heading,
-    Summary
+    Summary, 
+    TextWrapper,
+    Title,
+    Value
 } from './ProfileComponents';
 
 const ice = require('../../../images/001.png').default;
@@ -51,9 +54,11 @@ function Profile(){
 
     const [profile, setProfile] = useState([]); 
 
+    const fullName = JSON.parse(localStorage.getItem('user')).Firstname.trim() + " " + JSON.parse(localStorage.getItem('user')).Surname.trim()
+
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_USER}/detailsUser`,{
-            email: JSON.parse(localStorage.getItem('user')).email
+            email: JSON.parse(localStorage.getItem('user')).Email
         })
         .then((res) => {
             setProfile(res.data.details)
@@ -65,7 +70,7 @@ function Profile(){
                 position: "top"
             })
         })
-    })
+    },[profile, toast])
 
     return (
         <div className={classes.root}>
@@ -87,11 +92,24 @@ function Profile(){
                             Basic Information - Profile
                         </Heading>
                         <Summary>
-                            {profile.forEach((element) => {
+                            <TextWrapper>
+                                <Title>Full Name</Title>
+                                <Value>{fullName}</Value>
+                            </TextWrapper>
+                            <TextWrapper>
+                                <Title>Email</Title>
+                                <Value>{JSON.parse(localStorage.getItem('user')).Email}</Value>
+                            </TextWrapper>
+                            <TextWrapper>
+                                <Title>Mobile</Title>
+                                <Value>{JSON.parse(localStorage.getItem('user')).Mobile}</Value>
+                            </TextWrapper>
+                            {profile.map((element) => {
                                 return(
-                                    <>
-                                        <h6>`${element[0]}`</h6>
-                                    </>
+                                    <TextWrapper key={`${element[0]}`}>
+                                        <Title>{`${element[0]}`}</Title>
+                                        <Value>{`${element[1]}`}</Value>
+                                    </TextWrapper>
                                 )
                             })}
                         </Summary>

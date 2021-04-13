@@ -50,6 +50,18 @@ export const Summary = styled.div`
     display: flex;
     width: 100%;
     height: 100%;
-    justify-content: apce-between;
-    align-items: center;
+    justify-content: space-between;
+    align-items: start;
+    flex-direction: column;
 `
+
+export const TextWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    min-height: 60px;
+`
+
+export const Title = styled.div``
+
+export const Value = styled.div``

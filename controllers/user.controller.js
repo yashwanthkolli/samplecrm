@@ -2,10 +2,9 @@ const { connect } = require('../config/db');
 
 exports.detailsController = (req, res) => {
     const { email } = req.body;
-
+    
     details_query = 'Select * from ice.Employees Where Email = \'' + email + '\'';
     connect.query(details_query, function(err, result){
-        console.log(result);
         if(err){
             return res.status(500).json({
                 message: "Error Occured"

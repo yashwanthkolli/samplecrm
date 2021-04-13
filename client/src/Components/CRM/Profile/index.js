@@ -36,9 +36,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         padding: theme.spacing(2),
         minHeight: '80vh',
-        width: '100%',
-        // backgroundColor: '#3E5788',
-        // color: 'white'
+        width: '100%'
     },
     textcontainer: {
         padding: theme.spacing(2),
@@ -78,6 +76,32 @@ function Profile(){
 
     const handleUpdatePassword = (e) => {
         e.preventDefault();
+
+        setCPassword("");
+        setNPassword("");
+        setRPassword("");
+
+        axios.post(`${process.env.REACT_APP_USER}/changePassword`, {
+            email: JSON.parse(localStorage.getItem('user')).Email,
+            current: cPassword,
+            new: nPassword,
+            reset: rPassword
+        })
+        .then((res) => {
+            handleClose();
+            toast({
+                description: "Password Updated Successfully!",
+                duration: 2000,
+                position: "top"
+            })
+        })
+        .catch((err) => {
+            toast({
+                description: "Password Update Failed!",
+                duration: 2000,
+                position: "top"
+            })
+        })
     }
 
     useEffect(() => {
@@ -176,16 +200,16 @@ function Profile(){
                     onChange={e => setRPassword(e.target.value)}
                     required
                 />
+                <DialogActions>
+                    <Button type="reset" style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
+                        Cancel
+                    </Button>
+                    <Button type="submit" style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
+                        Update
+                    </Button>
+                </DialogActions>
             </form>
             </DialogContent>
-            <DialogActions>
-            <Button onClick={handleClose} color="primary">
-                Cancel
-            </Button>
-            <Button onClick={handleClose} color="primary">
-                Subscribe
-            </Button>
-            </DialogActions>
         </Dialog>
         </>
     )

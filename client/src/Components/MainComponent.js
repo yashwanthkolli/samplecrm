@@ -11,6 +11,7 @@ import Home from './CRM/Home';
 import Holder from './CRM/Holder';
 import Profile from  './CRM/Profile';
 import AddLeads from './CRM/AddLeads';
+import AddUsers from './CRM/AddUsers';
 
 function CRM(){
 
@@ -22,6 +23,7 @@ function CRM(){
                 <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} path={path} />} />
                 <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} path={path} />} />
                 <PrivateRoute path="/crm/addLeads" exact component={(props) => <AddLeads {...props} />} />
+                <PrivateRoute path="/crm/addUsers" exact component={(props) => <AddUsers {...props} />} />
                 <Redirect to = '/crm/home' />
             </Switch>
         </>

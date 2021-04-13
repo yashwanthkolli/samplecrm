@@ -3,6 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { Circle, useToast } from '@chakra-ui/react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import {
     Holder,
@@ -23,12 +30,15 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '100%'
+        height: '100%',
+
     },
     container: {
         padding: theme.spacing(2),
         minHeight: '80vh',
-        width: '100%'
+        width: '100%',
+        // backgroundColor: '#3E5788',
+        // color: 'white'
     },
     textcontainer: {
         padding: theme.spacing(2),
@@ -41,14 +51,34 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 function Profile(){
 
     const classes = useStyles();
     const toast = useToast();
 
-    const [profile, setProfile] = useState([]); 
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
 
-    const fullName = JSON.parse(localStorage.getItem('user')).Firstname.trim() + " " + JSON.parse(localStorage.getItem('user')).Surname.trim()
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const [profile, setProfile] = useState([]); 
+    const [open, setOpen] = useState(false);
+    const [cPassword, setCPassword] = useState("");
+    const [nPassword, setNPassword] = useState("");
+    const [rPassword, setRPassword] = useState("");
+
+    const fullName = JSON.parse(localStorage.getItem('user')).Firstname.trim() + " " + JSON.parse(localStorage.getItem('user')).Surname.trim();
+
+    const handleUpdatePassword = (e) => {
+        e.preventDefault();
+    }
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_USER}/detailsUser`,{
@@ -67,6 +97,7 @@ function Profile(){
     },[profile, toast])
 
     return (
+        <>
         <div className={classes.root}>
             <Paper className={classes.container} elevation={3}>
                 <Heading>
@@ -102,11 +133,61 @@ function Profile(){
                     </TextContainer>     
                 </Holder> 
                 <ButtonContainer>
-                    <Button color="primary" variant="contained" style={{ backgroundColor: '#202950'}}>Upload Picture</Button>
-                    <Button color="primary" variant="contained" style={{marginRight: "auto", marginLeft: "10px", backgroundColor: '#202950'}}>Update Password</Button>
+                    <Button color="primary" variant="contained" style={{ backgroundColor: '#202950'}} >Upload Picture</Button>
+                    <Button color="primary" variant="contained" style={{marginRight: "auto", marginLeft: "10px", backgroundColor: '#202950'}} onClick={handleClickOpen}>Update Password</Button>
                 </ButtonContainer>              
             </Paper>
         </div>
+        <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Update Password</DialogTitle>
+            <DialogContent>
+            <DialogContentText>
+                Enter the current password of your account and then set the new password.
+            </DialogContentText>
+            <form onSubmit={handleUpdatePassword}>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="current_password"
+                    label="Current Password"
+                    type="password"
+                    fullWidth
+                    value={cPassword}
+                    onChange={e => setCPassword(e.target.value)}
+                    required
+                />
+                <TextField
+                    margin="dense"
+                    id="current_password"
+                    label="New Password"
+                    type="password"
+                    fullWidth
+                    value={nPassword}
+                    onChange={e => setNPassword(e.target.value)}
+                    required
+                />
+                <TextField
+                    margin="dense"
+                    id="current_password"
+                    label="Reset Password"
+                    type="password"
+                    fullWidth
+                    value={rPassword}
+                    onChange={e => setRPassword(e.target.value)}
+                    required
+                />
+            </form>
+            </DialogContent>
+            <DialogActions>
+            <Button onClick={handleClose} color="primary">
+                Cancel
+            </Button>
+            <Button onClick={handleClose} color="primary">
+                Subscribe
+            </Button>
+            </DialogActions>
+        </Dialog>
+        </>
     )
 }
 

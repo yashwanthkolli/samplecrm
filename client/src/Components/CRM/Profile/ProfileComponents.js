@@ -30,6 +30,10 @@ export const ButtonContainer = styled.div`
     align-items: flex-start;
     justify-content: center;
     margin-top: 15px;
+
+    @media screen and (maxx-width: 768px){
+        flex-direction: row;
+    }
 `
 
 export const TextContainer = styled.div`
@@ -39,6 +43,10 @@ export const TextContainer = styled.div`
     flex-direction: column;
     align-items: flex-end;
     justify-content: center;
+
+    @media screen and (max-width: 768px){
+        align-items: center;
+    }
 `
 
 export const Heading = styled.div`
@@ -61,7 +69,7 @@ export const TextWrapper = styled.div`
     align-items: center;
     justify-content: center;
 
-    @media screen and(max-width: 768px){
+    @media screen and (max-width: 768px){
         width: 100%;
     }
 `
@@ -71,10 +79,18 @@ export const Title = styled.div`
     font-size: 20px;
     font-family: Nunito;
     font-weight: 600;
+
+    @media screen and (max-width: 768px){
+        font-size: 16px;
+    }
 `
 
 export const Value = styled.div`
     font-size: 20px;
     font-family: Nunito;
     width: 60%;
+
+    @media screen and (max-width: 768px){
+        font-size: 16px;
+    }
 `

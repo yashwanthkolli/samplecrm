@@ -104,3 +104,7 @@ exports.uploadDisplayController = (req, res) => {
         }
     })
 }
+
+exports.userListController = (req, res) => {}
+
+exports.addUserController = (req, res) => {}

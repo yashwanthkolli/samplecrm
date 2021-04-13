@@ -157,7 +157,7 @@ function Holder({match, navigate}){
   const userNav = [
     {id: 6, path: `${match.path}/home`, icon: AiFillHome, text: 'Home'},
     {id: 1, path: `${match.path}/profile`,  icon: ImProfile, text: 'Your Profile' },
-    {id: 2, path: `${match.path}/events`,  icon: BiCarousel, text: 'Profile' },
+    {id: 2, path: `${match.path}/addLeads`,  icon: BiCarousel, text: 'Add Leads' },
     {id: 3, path: `${match.path}/updates`,  icon: MdUpdate, text: 'Profile' },
     {id: 4, path: `${match.path}/contact`,  icon: BsFillChatSquareDotsFill, text: 'Profile' },
     {id: 5, path: `${match.path}/feedback`,  icon: MdFeedback, text: 'Profile' }

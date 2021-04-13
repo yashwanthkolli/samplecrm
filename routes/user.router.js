@@ -13,6 +13,6 @@ router.post('/detailsUser', detailsController);
 router.post('/changePassword', changePasswordController);
 router.post('/uploadPicture', uploadDisplayController);
 router.post('/usersList', verifyHigherLevel, userListController);
-router.post('/addUser', addUserController);
+router.post('/addUser', verifyHigherLevel, addUserController);
 
 module.exports = router;

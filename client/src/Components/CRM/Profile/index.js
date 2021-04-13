@@ -64,12 +64,22 @@ function Profile(){
     const handleClickOpen = () => {
         setOpen(true);
     };
+    const handleClickOpen2 = () => {
+        setOpen2(true);
+    }
     const handleClose = () => {
+        setCPassword("");
+        setNPassword("");
+        setRPassword("");
         setOpen(false);
     };
+    const handleClose2 = () => {
+        setOpen2(false);
+    }
 
     const [profile, setProfile] = useState([]); 
     const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
     const [cPassword, setCPassword] = useState("");
     const [nPassword, setNPassword] = useState("");
     const [rPassword, setRPassword] = useState("");
@@ -126,6 +136,12 @@ function Profile(){
         }
     }
 
+    const handleUpload = (e) => {
+        e.preventDefault();
+
+        
+    }
+
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_USER}/detailsUser`,{
             email: JSON.parse(localStorage.getItem('user')).Email
@@ -134,11 +150,6 @@ function Profile(){
             setProfile(res.data.details)
         })
         .catch((err) => {
-            toast({
-                description: "Error in fetching profile details",
-                duration: 3000,
-                position: "top"
-            })
         })
     },[profile, toast])
 
@@ -179,7 +190,7 @@ function Profile(){
                     </TextContainer>     
                 </Holder> 
                 <ButtonContainer>
-                    <Button color="primary" variant="contained" style={{ backgroundColor: '#202950'}} >Upload Picture</Button>
+                    <Button color="primary" variant="contained" style={{ backgroundColor: '#202950'}} onClick={handleClickOpen2}>Upload Picture</Button>
                     <Button color="primary" variant="contained" style={{marginRight: "auto", marginLeft: "10px", backgroundColor: '#202950'}} onClick={handleClickOpen}>Update Password</Button>
                 </ButtonContainer>              
             </Paper>
@@ -228,6 +239,33 @@ function Profile(){
                     </Button>
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
                         Update
+                    </Button>
+                </DialogActions>
+            </form>
+            </DialogContent>
+        </Dialog>
+        <Dialog open={open2} fullWidth TransitionComponent={Transition} onClose={handleClose2} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Upload Password</DialogTitle>
+            <DialogContent>
+            <DialogContentText>
+                Select a file that must be of jpg/png format and must not be more than 2MB.
+            </DialogContentText>
+            <form onSubmit={handleUpload}>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="display"
+                    label="Select A Photo"
+                    type="file"
+                    fullWidth
+                    required
+                />
+                <DialogActions>
+                    <Button onClick={handleClose2} style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
+                        Cancel
+                    </Button>
+                    <Button type="submit" style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
+                        Upload
                     </Button>
                 </DialogActions>
             </form>

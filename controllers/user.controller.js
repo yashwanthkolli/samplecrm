@@ -12,7 +12,7 @@ exports.detailsController = (req, res) => {
         } else if(result.length === 1){
             return res.status(200).json({
                 details: [
-                    ["Adress", result[0].Address],
+                    ["Address", result[0].Address],
                     ["City", result[0].City],
                     ["DOB", result[0].DOB]
                 ]

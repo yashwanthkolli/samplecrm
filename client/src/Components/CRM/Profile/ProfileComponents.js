@@ -4,9 +4,8 @@ export const Holder = styled.div`
     display: grid;
     width: 100%;
     height: 100%;
-    place-items: center;
     grid-template-columns: 3fr 7fr;
-    grid-gap: 15px;
+    grid-gap: 18px;
 
     @media screen and (max-width: 768px){
         grid-template-columns: unset;
@@ -18,27 +17,35 @@ export const Holder = styled.div`
 export const ImageHolder = styled.img`
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
 export const ButtonContainer = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
     height: 100%;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    margin-top: 15px;
 `
 
 export const TextContainer = styled.div`
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
 `
 
 export const Heading = styled.div`
-    font-size: 28px;
+    font-size: 30px;
     font-family: Nunito, sans-serif;
     width: 100%;
-    text-align: center;
+    font-weight: 600;
     margin-bottom: 15px;
 
     @media screen and (max-width: 768px){
@@ -46,22 +53,28 @@ export const Heading = styled.div`
     }
 `
 
-export const Summary = styled.div`
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: space-between;
-    align-items: start;
-    flex-direction: column;
-`
-
 export const TextWrapper = styled.div`
     display: flex;
     flex-direction: row;
-    width: 50%;
-    min-height: 60px;
+    width: 85%;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+
+    @media screen and(max-width: 768px){
+        width: 100%;
+    }
 `
 
-export const Title = styled.div``
+export const Title = styled.div`
+    width: 40%;
+    font-size: 20px;
+    font-family: Nunito;
+    font-weight: 600;
+`
 
-export const Value = styled.div``
+export const Value = styled.div`
+    font-size: 20px;
+    font-family: Nunito;
+    width: 60%;
+`

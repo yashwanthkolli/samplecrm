@@ -209,7 +209,7 @@ function Holder({match, navigate}){
   return(
     <div className = {classes.root}>
       <CssBaseline />
-      <AppBar className  = {classes.appBar}>
+      <AppBar className  = {classes.appBar} style={{backgroundColor: "#202950"}}>
         <Toolbar>
           <IconButton
             color="inherit"

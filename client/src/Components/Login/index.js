@@ -37,18 +37,26 @@ function Login({history}) {
             password: password
         })
         .then((res) => {
-            setLocalStorage('token', res.data.token);
-            setLocalStorage('user', res.data.payload);
+            if(res.data.response === 1){
+                setLocalStorage('token', res.data.token);
+                setLocalStorage('user', res.data.payload);
 
-            toast({
-                title: "Login Successful",
-                description: "Please wait while we redirect you!",
-                duration: 1500,
-                position: "top",
-                status: "success"
-            })
+                toast({
+                    title: "Login Successful",
+                    description: "Please wait while we redirect you!",
+                    duration: 1500,
+                    position: "top",
+                    status: "success"
+                })
 
-            history.push('/crm/home');
+                history.push('/crm/home');
+            } else {
+                toast({
+                    description: "Incorrect Credentials",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
         })
         .catch((err) => {
             toast({

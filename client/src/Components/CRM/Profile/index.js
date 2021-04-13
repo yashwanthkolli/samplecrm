@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { Circle, useToast } from '@chakra-ui/react';
+import { Circle, useToast, Progress } from '@chakra-ui/react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -10,7 +10,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
-import Alert from '@material-ui/core/Alert';
+import Alert from '@material-ui/lab/Alert';
 import axios from 'axios';
 import {
     Holder,
@@ -22,6 +22,7 @@ import {
     Title,
     Value
 } from './ProfileComponents';
+import { setLocalStorage } from '../../../helpers/auth.helpers';
 
 const ice = require('../../../images/ak.jpg').default;
 
@@ -88,6 +89,15 @@ function Profile(){
         found: false,
         message: ""
     })
+    const [formData, setFormData] = useState('')
+    const [progressPercent, setProgressPercent] = useState(0)
+
+    const upload = ({target: {files}}) => {
+        let data = new FormData()
+        data.append('profilePic', files[0])
+        data.append('email', JSON.parse(localStorage.getItem('user')).Email)
+        setFormData(data)
+    }
 
     const fullName = JSON.parse(localStorage.getItem('user')).Firstname.trim() + " " + JSON.parse(localStorage.getItem('user')).Surname.trim();
 
@@ -143,9 +153,40 @@ function Profile(){
 
     const handleUpload = (e) => {
         e.preventDefault();
+        setProgressPercent(0)
+        const options = {
+            onUploadProgress: (progressEvent) => {
+                const {loaded, total} = progressEvent
+                let percent = Math.floor((loaded * 100)/total)
+                setProgressPercent(percent)
+            }
+        }
 
-        axios.post(`${process.env.REACT_APP_USER}/uploadPicture`,{
-
+        axios.post(`${process.env.REACT_APP_USER}/uploadPicture`, formData, options)
+        .then((res) => {
+            setTimeout(() => {
+                setProgressPercent(0);
+                handleClose2();
+            }, 1000)
+            setLocalStorage('user', res.data.user);
+            toast({
+                description: "Upload Successful",
+                duration: 2000,
+                position: "top"
+            })
+        })
+        .catch((err) => {
+            setError({
+                found: true,
+                message:err.response.data.err
+            })
+            setTimeout(() => {
+                setError({
+                    found: false,
+                    message:''
+                })
+                setProgressPercent(0);
+            }, 3000)
         })
     }
 
@@ -258,6 +299,7 @@ function Profile(){
             <DialogContentText>
                 Select a file that must be of jpg/png format and must not be more than 2MB.
             </DialogContentText>
+            <Progress value={progressPercent} colorScheme="purple">{progressPercent}</Progress>
             <form onSubmit={handleUpload}>
                 <TextField
                     autoFocus
@@ -267,6 +309,7 @@ function Profile(){
                     type="file"
                     fullWidth
                     required
+                    onChange={upload}
                 />
                 <DialogActions>
                     <Button onClick={handleClose2} style={{backgroundColor: '#202950', color: 'white'}} variant="contained">

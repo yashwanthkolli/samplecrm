@@ -19,7 +19,7 @@ exports.detailsController = (req, res) => {
                 ]
             })
         } else {
-            return res.status(500).json({
+            return res.status(200).json({
                 message: "Error in fetching details"
             })
         }
@@ -64,6 +64,7 @@ exports.uploadDisplayController = (req, res) => {
                 })
             }
         }else{
+            setprofilepic_name = 'Update ice.Employees set picture = \''+ req.file.filename +'';
         }
     })
 }

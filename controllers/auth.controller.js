@@ -23,10 +23,13 @@ exports.loginController = (req, res) => {
             return res.status(200).json({
                 message: "Login Successful",
                 token: token,
-                payload: result[0]
+                payload: result[0],
+                response: 1
             })
         } else {
-            return res.status(500).json({})
+            return res.status(200).json({
+                response: 0
+            })
         }
     })
 }

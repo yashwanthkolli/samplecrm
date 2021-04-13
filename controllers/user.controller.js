@@ -68,18 +68,30 @@ exports.uploadDisplayController = (req, res) => {
             checkpicture_name = 'Select picture from ice.Employees where Email = \''+ req.body.email + '\'';
             setprofilepic_name = 'Update ice.Employees set picture = \''+ req.file.filename +'\' where Email = \'' + req.body.email + '\' ';
             connect.query(checkpicture_name, function(err, result){
-                console.log(result);
-                // if(err){
-                //     return res.status(500).json({
-                //         message: "Error In File Upload"
-                //     })
-                // } else if(result.length === 1){
-                //     console.log(result)
-                // } else {
-                //     return res.status(500).json({
-                //         message: "Error In F"
-                //     })
-                // }
+                if(result.length === 1){
+                    if(result[0].picture){
+                        fs.unlinkSync(`uploads/userPics/${result[0].picture}`)
+                    }
+
+                    connect.query(setprofilepic_name, function(err, r){
+                        console.log(r);
+                        if(r.length === 1){
+                            return res.status(200).json({
+                                message: "File Upload Successful",
+                                payload: result[0]
+                            })
+                        } else {
+                            fs.unlinkSync(`uploads/userPics/${req.file.filename}`)
+                            return res.status(500).json({
+                                message: "Error In File Upload"
+                            })
+                        }
+                    })
+                } else{
+                    return res.status(500).json({
+                        err: "File Upload Failed"
+                    })
+                }  
             })
         }
     })

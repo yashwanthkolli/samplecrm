@@ -39,3 +39,16 @@ export const signout = () => {
     removeLocalStorage('token')
     removeLocalStorage('user')
 }
+
+export const updateLocalStorage = (k, value) => {
+    var localStore = localStorage.getItem('user')
+    for(var key in localStore){
+        if(localStore.hasOwnProperty(key)){
+            if(key === k){
+                localStore[k] = value;
+            }
+        }
+    }
+    console.log(localStore);
+    setLocalStorage('user', localStore);
+}

@@ -22,9 +22,7 @@ import {
     Title,
     Value
 } from './ProfileComponents';
-import { setLocalStorage } from '../../../helpers/auth.helpers';
-
-const ice = require('../../../images/ak.jpg').default;
+import {setLocalStorage} from '../../../helpers/auth.helpers';
 
 const useStyles = makeStyles((theme) => ({
     root:{
@@ -168,7 +166,8 @@ function Profile(){
                 setProgressPercent(0);
                 handleClose2();
             }, 1000)
-            setLocalStorage('user', res.data.user);
+            console.log(res);
+            setLocalStorage('user', res.data.payload);
             toast({
                 description: "Upload Successful",
                 duration: 2000,
@@ -211,7 +210,7 @@ function Profile(){
                 <Holder>
                     <div className={classes.imageHolder} >
                         <Circle size="250px" style={{border: "1px solid blue", overflow: 'hidden'}}>
-                            <ImageHolder src={ice} alt={JSON.parse(localStorage.getItem('user')).Firstname} />
+                            <ImageHolder src={JSON.parse(localStorage.getItem('user')).Picture !== null  ? `${process.env.REACT_APP_PICS}/${JSON.parse(localStorage.getItem('user')).Picture}` : `${process.env.REACT_APP_PICS}/001.png`} alt={JSON.parse(localStorage.getItem('user')).Firstname} />
                         </Circle>  
                     </div>
                     <TextContainer>

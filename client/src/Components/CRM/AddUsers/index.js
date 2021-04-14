@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import Select from '@material-ui/core/Select';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
@@ -15,6 +15,7 @@ import axios from 'axios';
 import {
     Section
 } from './addUserComponents';
+import { Select } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     useTable: {
@@ -28,6 +29,11 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    name: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginBottom: '10px'
     }
 }));
 
@@ -44,9 +50,16 @@ function AddUsers(){
         setOpen(true);
     };
     const handleClose = () => {
-        // setCPassword("");
-        // setNPassword("");
-        // setRPassword("");
+        setFirstName("");
+        setSurName("");
+        setEmail("");
+        setPassword("");
+        setMobile("");
+        setAddress("");
+        setCity("");
+        setRole("");
+        setReporting("");
+
         setOpen(false);
     };
 
@@ -58,6 +71,7 @@ function AddUsers(){
     const [firstname, setFirstName] = useState("");
     const [surname, setSurName] = useState("");
     const [email_new, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [mobile, setMobile] = useState("");
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
@@ -135,17 +149,15 @@ function AddUsers(){
             </div>
         </Paper>
         <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Add New User</DialogTitle>
+            <DialogTitle id="form-dialog-title">Add New CRM User</DialogTitle>
             <DialogContent>
-            <DialogContentText>
-                Enter all the details mentioned below to create a new CRM user
-            </DialogContentText>
                 <form onSubmit={adduser}>
                     <div className={classes.name}>
                         <TextField 
                             required
                             autoComplete="off"
                             label="First Name"
+                            type="text"
                             name="firstname"
                             value={firstname}
                             onChange={e=>setFirstName(e.target.value)}
@@ -153,6 +165,7 @@ function AddUsers(){
                         <TextField
                             required
                             autoComplete="off"
+                            type="text"
                             label="Sur Name"
                             name="surname"
                             value={surname}
@@ -161,11 +174,48 @@ function AddUsers(){
                     </div>
                     <TextField 
                         required
+                        fullWidth
                         autoComplete="off"
                         label="Email"
+                        type="email"
                         name="email"
                         value={email_new}
+                        style={{marginBottom: '10px'}}
                         onChange={e=>setEmail(e.target.value)}
+                    />
+                    <TextField 
+                        required
+                        fullWidth
+                        autoComplete="off"
+                        label="Password"
+                        name="Password"
+                        value={password}
+                        type="password"
+                        style={{marginBottom: '10px'}}
+                        onChange={e=>setPassword(e.target.value)}
+                    />
+                    <div className={classes.name}>
+                        <TextField 
+                            required
+                            autoComplete="off"
+                            type="text"
+                            name="address"
+                            label="Address"
+                            value={address}
+                            onChange={e=>setAddress(e.target.value)}
+                        />
+                        <TextField 
+                            required
+                            autoComplete="off"
+                            type="text"
+                            name="city"
+                            label="City"
+                            value={city}
+                            onChange={e=>setCity(e.target.value)}
+                        />
+                    </div>
+                    <Select
+                        
                     />
                     <DialogActions>
                         <Button onClick={handleClose} style={{backgroundColor: '#202950', color: 'white'}} variant="contained">

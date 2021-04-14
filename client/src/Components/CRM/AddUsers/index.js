@@ -234,26 +234,28 @@ function AddUsers(){
                         onChange={e=>setPassword(e.target.value)}
                     />
                     <div className={classes.name}>
-                    <TextField 
-                        required
-                        value={mobile}
-                        type="tel"
-                        name="mobile"
-                        autoComplete="off"
-                        label="Mobile Number"
-                        style={{marginBottom: '5px'}}
-                        onChange={e=>setMobile(e.target.value)}
-                    />
-                    <TextField 
-                        required
-                        value={dob}
-                        type="date"
-                        name="dob"
-                        autoComplete="off"
-                        label="Date Of Birth"
-                        style={{marginBottom: '5px'}}
-                        onChange={e=>setDob(e.target.value)}
-                    />
+                        <TextField 
+                            required
+                            value={mobile}
+                            type="tel"
+                            name="mobile"
+                            autoComplete="off"
+                            label="Mobile Number"
+                            style={{marginBottom: '5px'}}
+                            onChange={e=>setMobile(e.target.value)}
+                        />
+                        <div>
+                            <InputLabel>Date of birth</InputLabel>
+                            <TextField 
+                                required
+                                value={dob}
+                                type="date"
+                                name="dob"
+                                autoComplete="off"
+                                style={{marginBottom: '5px'}}
+                                onChange={e=>setDob(e.target.value)}
+                            />
+                        </div>
                     </div>
                     <div className={classes.name}>
                         <TextField 

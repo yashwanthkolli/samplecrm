@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import MaterialTable from 'material-table';
+import axios from 'axios';
+import {
+    Section
+} from './addUserComponents';
 
 function AddUsers(){
 
@@ -14,7 +18,6 @@ function AddUsers(){
             email: JSON.parse(localStorage.getItem('user')).Email
         })
         .then((res) => {
-
         })
         .catch((err) => {
             
@@ -26,13 +29,50 @@ function AddUsers(){
             email: JSON.parse(localStorage.getItem('user')).Email
         })
         .then((res) => {
+            let data = [];
+
+            res.data.details.forEach((element) => {
+                data.push({
+                    "Name" : element.Firstname.trim() + " " + element.Surname.trim(),
+                    "Email": element.Email,
+                    "Mobile": element.Mobile,
+                    "City": element.City,
+                    "Type": element.Type,
+                    "Reporting": element.Reporting
+                })
+            })
+            setTableData(data);
         })
-        .catch((err) => {})
+        .catch((err) => {
+            toast({
+                description: "Error in fetching users list",
+                duration: 2000,
+                position: "top"
+            })
+        })
     })
 
     return (
         <>
-
+            {
+                tableData.length > 0 ?
+                    <MaterialTable
+                        columns={[
+                            {title: 'Name', field: 'Name'},
+                            {title: 'Email', field: 'Email'},
+                            {title: 'Mobile', field: 'Mobile'},
+                            {title: 'City', field: 'City'},
+                            {title: 'Role', field: 'Type'},
+                            {title: 'Reporting To', field: 'Reporting'}
+                        ]}
+                        data={tableData}
+                        title="CRM User List"
+                    />
+                :
+                    <Section>
+                        No users in the database.
+                    </Section>
+            }
         </>
     )
 }

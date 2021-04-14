@@ -107,7 +107,7 @@ exports.uploadDisplayController = (req, res) => {
 
 exports.userListController = (req, res) => {
     
-    getlist_query = 'Select Firstname, Surname, Email, Mobile, City, Type, Status from ice.Employees';
+    getlist_query = 'Select Firstname, Surname, Email, Mobile, City, Type, Status, Reporting from ice.Employees';
     connect.query(getlist_query, function(err, result){
         if(err){
             return res.status(500).json({

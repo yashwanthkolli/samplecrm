@@ -11,11 +11,11 @@ import Select from '@material-ui/core/Select';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/Inputlabel';
 import axios from 'axios';
 import {
     Section
 } from './addUserComponents';
-import { Select } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     useTable: {
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     name: {
         display: 'flex',
         justifyContent: 'space-between',
-        marginBottom: '10px'
+        marginBottom: '5px'
     }
 }));
 
@@ -45,6 +45,7 @@ function AddUsers(){
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const [upate, setUpdate] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -63,11 +64,20 @@ function AddUsers(){
         setOpen(false);
     };
 
+    const handleChangeRole = (e) => {
+        setRole(e.target.value);
+    }
+    const handleChangeReporting = (e) => {
+        setReporting(e.target.value);
+    }
+
     const toast = useToast();
     const [tableData, setTableData] = useState([]);
 
     const lid = "list-toast";
+    const uid = "uid-toast";
 
+    const [rawData, setRawData] = useState([]);
     const [firstname, setFirstName] = useState("");
     const [surname, setSurName] = useState("");
     const [email_new, setEmail] = useState("");
@@ -82,12 +92,38 @@ function AddUsers(){
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_USER}/addUser`,{
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(localStorage.getItem('user')).Email,
+            first: firstname,
+            sur: surname,
+            new_email: email_new,
+            pswd: password,
+            mobile: mobile,
+            address: address,
+            city: city,
+            role: role,
+            reporting: reporting
         })
         .then((res) => {
+            setUpdate(!update);
+            handleClose();
+            if(!toast.isActive(uid)){
+                toast({
+                    id: uid,
+                    description: "Added User Successfully",
+                    duration: 3000,
+                    position: "top"
+                })
+            }
         })
         .catch((err) => {
-            
+            if(!toast.isActive(uid)){
+                toast({
+                    id: uid,
+                    description: "Failed To Add User",
+                    duration: 3000,
+                    position: "top"
+                })
+            }
         })
     }
 
@@ -96,6 +132,7 @@ function AddUsers(){
             email: JSON.parse(localStorage.getItem('user')).Email
         })
         .then((res) => {
+            setRawData(res.data.details);
             let data = [];
 
             res.data.details.forEach((element) => {
@@ -120,7 +157,7 @@ function AddUsers(){
                 })
             }
         })
-    }, [toast])
+    }, [toast, update])
 
     return (
         <>
@@ -180,7 +217,7 @@ function AddUsers(){
                         type="email"
                         name="email"
                         value={email_new}
-                        style={{marginBottom: '10px'}}
+                        style={{marginBottom: '5px'}}
                         onChange={e=>setEmail(e.target.value)}
                     />
                     <TextField 
@@ -191,8 +228,19 @@ function AddUsers(){
                         name="Password"
                         value={password}
                         type="password"
-                        style={{marginBottom: '10px'}}
+                        style={{marginBottom: '5px'}}
                         onChange={e=>setPassword(e.target.value)}
+                    />
+                    <TextField 
+                        required
+                        fullWidth
+                        value={mobile}
+                        type="tel"
+                        name="mobile"
+                        autoComplete="off"
+                        label="Mobile Number"
+                        style={{marginBottom: '5px'}}
+                        onChange={e=>setMobile(e.target.value)}
                     />
                     <div className={classes.name}>
                         <TextField 
@@ -214,9 +262,42 @@ function AddUsers(){
                             onChange={e=>setCity(e.target.value)}
                         />
                     </div>
-                    <Select
-                        
-                    />
+                    <div className={classes.select}>
+                        <InputLabel>Role</InputLabel>
+                        <Select
+                            required
+                            fullWidth
+                            label="Role of user"
+                            style={{marginBottom: '5px'}}
+                            value={role}
+                            onChange={handleChangeRole}
+                        >
+                            <option value="Admin">Admin</option>
+                            <option value="national_head">National Head</option>
+                            <option value="IT Administator">IT Administator</option>
+                            <option value="Manager">Manager</option>
+                            <option value="TeleCaller">TeleCaller</option>
+                            <option value="Convertor">Convertor</option>
+                        </Select>
+                    </div>
+                    <div className={classes.select}>
+                        <InputLabel>Reporting To</InputLabel>
+                        <Select 
+                            required
+                            fullWidth
+                            style={{marginBottom: '5px'}}
+                            value={reporting}
+                            onChange={handleChangeReporting}
+                        >
+                            {rawData.map((element) => {
+                                return (
+                                    <option key={element.Firstname} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                        {element.Firstname.trim() + " " + element.Surname.trim()}
+                                    </option>
+                                )
+                            })}
+                        </Select>
+                    </div>
                     <DialogActions>
                         <Button onClick={handleClose} style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
                             Cancel

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import MaterialTable from 'material-table';
+import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import {
     Section
@@ -10,6 +11,8 @@ function AddUsers(){
 
     const toast = useToast();
     const [tableData, setTableData] = useState([]);
+
+    const lid = "list-toast";
 
     const adduser = (e) => {
         e.preventDefault();
@@ -44,16 +47,19 @@ function AddUsers(){
             setTableData(data);
         })
         .catch((err) => {
-            toast({
-                description: "Error in fetching users list",
-                duration: 2000,
-                position: "top"
-            })
+            if(!toast.isActive(lid)){
+                toast({
+                    id: lid,
+                    description: "Error in fetching users list",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
         })
-    })
+    }, [toast])
 
     return (
-        <>
+        <Paper elevation={3} style={{width: "100%", height: "98%"}}>
             {
                 tableData.length > 0 ?
                     <MaterialTable
@@ -73,7 +79,7 @@ function AddUsers(){
                         No users in the database.
                     </Section>
             }
-        </>
+        </Paper>
     )
 }
 

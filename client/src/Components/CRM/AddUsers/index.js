@@ -4,6 +4,13 @@ import { useToast } from '@chakra-ui/react';
 import MaterialTable from 'material-table';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import {
     Section
@@ -24,14 +31,38 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 function AddUsers(){
 
     const classes = useStyles();
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        // setCPassword("");
+        // setNPassword("");
+        // setRPassword("");
+        setOpen(false);
+    };
 
     const toast = useToast();
     const [tableData, setTableData] = useState([]);
 
     const lid = "list-toast";
+
+    const [firstname, setFirstName] = useState("");
+    const [surname, setSurName] = useState("");
+    const [email_new, setEmail] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [address, setAddress] = useState("");
+    const [city, setCity] = useState("");
+    const [role, setRole] = useState("");
+    const [reporting, setReporting] = useState("");
 
     const adduser = (e) => {
         e.preventDefault();
@@ -60,7 +91,7 @@ function AddUsers(){
                     "Mobile": element.Mobile,
                     "City": element.City,
                     "Type": element.Type,
-                    "Reporting": element.Reporting
+                    "Reporting": element.Reporting === 'none' ? "None" : element.Reporting
                 })
             })
             setTableData(data);
@@ -78,7 +109,8 @@ function AddUsers(){
     }, [toast])
 
     return (
-        <Paper elevation={3} style={{width: "100%", height: "95%"}} className={classes.userTable}>
+        <>
+        <Paper elevation={3} style={{width: "100%", height: "max-content"}} className={classes.userTable}>
             {
                 tableData.length > 0 ?
                     <MaterialTable
@@ -99,9 +131,54 @@ function AddUsers(){
                     </Section>
             }
             <div className={classes.userButton}>
-                <Button style={{backgroundColor: "#202950", color: 'white', padding: '7px 10px'}}>Add New User</Button>
+                <Button style={{backgroundColor: "#202950", color: 'white', padding: '7px 10px'}} onClick={handleClickOpen}>Add New User</Button>
             </div>
         </Paper>
+        <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Add New User</DialogTitle>
+            <DialogContent>
+            <DialogContentText>
+                Enter all the details mentioned below to create a new CRM user
+            </DialogContentText>
+                <form onSubmit={adduser}>
+                    <div className={classes.name}>
+                        <TextField 
+                            required
+                            autoComplete="off"
+                            label="First Name"
+                            name="firstname"
+                            value={firstname}
+                            onChange={e=>setFirstName(e.target.value)}
+                        />
+                        <TextField
+                            required
+                            autoComplete="off"
+                            label="Sur Name"
+                            name="surname"
+                            value={surname}
+                            onChange={e=>setSurName(e.target.value)}
+                        />
+                    </div>
+                    <TextField 
+                        required
+                        autoComplete="off"
+                        label="Email"
+                        name="email"
+                        value={email_new}
+                        onChange={e=>setEmail(e.target.value)}
+                    />
+                    <DialogActions>
+                        <Button onClick={handleClose} style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
+                            Cancel
+                        </Button>
+                        <Button type="submit" style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
+                            Add User
+                        </Button>
+                    </DialogActions>
+                </form>
+            </DialogContent>
+        </Dialog>
+        </>
     )
 }
 

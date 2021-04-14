@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '60px',
     padding: theme.spacing(3),
     backgroundColor: '#E0E0F8',
-
+    height: 'fit-content'
   },
   navbarSpace: {
     display: 'flex',

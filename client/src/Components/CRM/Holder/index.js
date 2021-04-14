@@ -172,7 +172,7 @@ function Holder({match, navigate}){
     case 'nationalHead':
       navbarElements = teamNav
       break;
-    case 'ACCTS':
+    case 'national_head':
       navbarElements = userNav
       break;
     default:

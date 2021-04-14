@@ -1,13 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import { makeStyles }  from '@material-ui/core/styles';
 import { useToast } from '@chakra-ui/react';
 import MaterialTable from 'material-table';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import {
     Section
 } from './addUserComponents';
 
+const useStyles = makeStyles((theme) => ({
+    useTable: {
+        padding: theme.spacing(0)
+    },
+    userButton: {
+        margin: theme.spacing(1),
+        padding: theme.spacing(2),
+        color: 'white',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+}));
+
 function AddUsers(){
+
+    const classes = useStyles();
 
     const toast = useToast();
     const [tableData, setTableData] = useState([]);
@@ -59,7 +78,7 @@ function AddUsers(){
     }, [toast])
 
     return (
-        <Paper elevation={3} style={{width: "100%", height: "98%"}}>
+        <Paper elevation={3} style={{width: "100%", height: "95%"}} className={classes.userTable}>
             {
                 tableData.length > 0 ?
                     <MaterialTable
@@ -79,6 +98,9 @@ function AddUsers(){
                         No users in the database.
                     </Section>
             }
+            <div className={classes.userButton}>
+                <Button style={{backgroundColor: "#202950", color: 'white', padding: '7px 10px'}}>Add New User</Button>
+            </div>
         </Paper>
     )
 }

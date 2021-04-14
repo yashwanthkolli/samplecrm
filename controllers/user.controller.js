@@ -122,4 +122,46 @@ exports.userListController = (req, res) => {
     })
 }
 
-exports.addUserController = (req, res) => {}
+exports.addUserController = (req, res) => {
+    const {
+        first,
+        sur,
+        new_email,
+        pswd,
+        mobile,
+        address,
+        dob,
+        city,
+        role,
+        reporting
+    } = req.body;
+    const e_id = new Date().getTime()%100000000;
+
+    adduser_details = 
+    'insert into ice.Employees (Employee_ID, Firstname, Surname, Email, Mobile, Password, DOB, Address, City, Type, Reporting) values ('
+    + '\'' + e_id + '\','
+    + '\'' + first + '\','
+    + '\'' + sur + '\','
+    + '\'' + new_email + '\','
+    + '\'' + mobile + '\','
+    + '\'' + pswd + '\','
+    + '\'' + dob + '\','
+    + '\'' + address + '\','
+    + '\'' + city + '\','
+    + '\'' + role + '\','
+    + '\'' + reporting + '\''
+    +')';
+
+    connect.query(adduser_details, function(err){
+        console.log(err);
+        if(err){
+            return res.status(400).json({
+                message: "Error Occured"
+            })
+        } else {
+            return res.status(200).json({
+                message: "Added User Successfully"
+            })
+        }
+    })
+}

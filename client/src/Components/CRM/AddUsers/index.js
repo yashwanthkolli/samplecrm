@@ -45,7 +45,7 @@ function AddUsers(){
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [upate, setUpdate] = useState(false);
+    const [update, setUpdate] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -83,6 +83,7 @@ function AddUsers(){
     const [email_new, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [mobile, setMobile] = useState("");
+    const [dob, setDob] = useState("");
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
     const [role, setRole] = useState("");
@@ -98,6 +99,7 @@ function AddUsers(){
             new_email: email_new,
             pswd: password,
             mobile: mobile,
+            dob: dob,
             address: address,
             city: city,
             role: role,
@@ -231,9 +233,9 @@ function AddUsers(){
                         style={{marginBottom: '5px'}}
                         onChange={e=>setPassword(e.target.value)}
                     />
+                    <div className={classes.name}>
                     <TextField 
                         required
-                        fullWidth
                         value={mobile}
                         type="tel"
                         name="mobile"
@@ -242,6 +244,17 @@ function AddUsers(){
                         style={{marginBottom: '5px'}}
                         onChange={e=>setMobile(e.target.value)}
                     />
+                    <TextField 
+                        required
+                        value={dob}
+                        type="date"
+                        name="dob"
+                        autoComplete="off"
+                        label="Date Of Birth"
+                        style={{marginBottom: '5px'}}
+                        onChange={e=>setDob(e.target.value)}
+                    />
+                    </div>
                     <div className={classes.name}>
                         <TextField 
                             required

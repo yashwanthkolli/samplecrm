@@ -122,15 +122,51 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function SwipeDrawer(){
+
+  const classes = useStyles();
+  const [state, setState] = useState(false);
+  const toggleDrawer = () => setState(!state);
+
+  return(
+    <div>
+    <SwipeableDrawer
+      anchor="left"
+      open={state}
+      onClose={toggleDrawer}
+      onOpen={toggleDrawer}
+    >
+      <div className={classes.toolbar}>
+        <Icon component={SiGoogleanalytics} />
+        <Typography variant="h6" noWrap className={classes.title}>
+          Dashboard
+        </Typography>
+      </div>
+      <Divider />
+      <div className={classes.profile}>
+        <Avatar className={classes.large} />
+        <Typography noWrap className={classes.profileDetails}>
+          {JSON.parse(localStorage.getItem('user')).Firstname + " " + JSON.parse(localStorage.getItem('user')).Surname}
+        </Typography>
+        <Typography noWrap className={classes.profileDetails}>
+          {JSON.parse(localStorage.getItem('user')).Email}
+        </Typography>
+      </div>
+      <Divider />
+      {list("left")}
+    </SwipeableDrawer>
+  </div>
+  )
+}
 function Holder({match, navigate}){
 
   const classes = useStyles();
 
-  const [state, setState] = useState(false);
+  // const [state, setState] = useState(false);
 
-  const toggleDrawer = useCallback(() => 
-    setState(!state),
-  [state]);
+  // const toggleDrawer = useCallback(() => 
+  //   setState(!state),
+  // [state]);
 
   const adminNav = [
     {id: 1 ,path: `${match.path}/profile`,  icon: ImProfile },
@@ -232,33 +268,7 @@ function Holder({match, navigate}){
           </div>
         </Toolbar>
       </AppBar>
-      <div>
-        <SwipeableDrawer
-          anchor="left"
-          open={state}
-          onClose={toggleDrawer}
-          onOpen={toggleDrawer}
-        >
-          <div className={classes.toolbar}>
-            <Icon component={SiGoogleanalytics} />
-            <Typography variant="h6" noWrap className={classes.title}>
-              Dashboard
-            </Typography>
-          </div>
-          <Divider />
-          <div className={classes.profile}>
-            <Avatar className={classes.large} />
-            <Typography noWrap className={classes.profileDetails}>
-              {JSON.parse(localStorage.getItem('user')).Firstname + " " + JSON.parse(localStorage.getItem('user')).Surname}
-            </Typography>
-            <Typography noWrap className={classes.profileDetails}>
-              {JSON.parse(localStorage.getItem('user')).Email}
-            </Typography>
-          </div>
-          <Divider />
-          {list("left")}
-        </SwipeableDrawer>
-      </div>
+      {SwipeDrawer()}
       <main className={classes.content}>
         <div className={classes.container}>
           {navigate()}

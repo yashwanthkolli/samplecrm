@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import {ImProfile} from 'react-icons/im';
@@ -126,17 +126,11 @@ function Holder({match, navigate}){
 
   const classes = useStyles();
 
-  const open = false;
-  const [state, setState] = useState({
-    left: false
-  });
+  const [state, setState] = useState(false);
 
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setState({ ...state, [anchor]: open });
-  };
+  const toggleDrawer = useCallback(() => 
+    setState(!state),
+  [state]);
 
   const adminNav = [
     {id: 1 ,path: `${match.path}/profile`,  icon: ImProfile },
@@ -179,12 +173,12 @@ function Holder({match, navigate}){
       break;
   }
 
-  const list = (anchor) => (
+  const list = () => (
     <div
       className={clsx(classes.list)}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      onClick={toggleDrawer}
+      onKeyDown={toggleDrawer}
     >
       <List className={classes.listStyle}>
       {navbarElements.map((element) => (
@@ -216,11 +210,8 @@ function Holder({match, navigate}){
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={toggleDrawer("left", true)}
+            onClick={toggleDrawer}
             edge="start"
-            className={clsx(classes.menuButton, {
-            [classes.hide]: open,
-            })}
           >
             <MenuIcon />
           </IconButton>
@@ -242,33 +233,31 @@ function Holder({match, navigate}){
         </Toolbar>
       </AppBar>
       <div>
-        <React.Fragment key={"left"}>
-          <SwipeableDrawer
-            anchor={"left"}
-            open={state["left"]}
-            onClose={toggleDrawer("left", false)}
-            onOpen={toggleDrawer("left", true)}
-          >
-            <div className={classes.toolbar}>
-              <Icon component={SiGoogleanalytics} />
-              <Typography variant="h6" noWrap className={classes.title}>
-                Dashboard
-              </Typography>
-            </div>
-            <Divider />
-            <div className={classes.profile}>
-              <Avatar className={classes.large} />
-              <Typography noWrap className={classes.profileDetails}>
-                {JSON.parse(localStorage.getItem('user')).Firstname + " " + JSON.parse(localStorage.getItem('user')).Surname}
-              </Typography>
-              <Typography noWrap className={classes.profileDetails}>
-                {JSON.parse(localStorage.getItem('user')).Email}
-              </Typography>
-            </div>
-            <Divider />
-            {list("left")}
-          </SwipeableDrawer>
-        </React.Fragment>
+        <SwipeableDrawer
+          anchor="left"
+          open={state}
+          onClose={toggleDrawer}
+          onOpen={toggleDrawer}
+        >
+          <div className={classes.toolbar}>
+            <Icon component={SiGoogleanalytics} />
+            <Typography variant="h6" noWrap className={classes.title}>
+              Dashboard
+            </Typography>
+          </div>
+          <Divider />
+          <div className={classes.profile}>
+            <Avatar className={classes.large} />
+            <Typography noWrap className={classes.profileDetails}>
+              {JSON.parse(localStorage.getItem('user')).Firstname + " " + JSON.parse(localStorage.getItem('user')).Surname}
+            </Typography>
+            <Typography noWrap className={classes.profileDetails}>
+              {JSON.parse(localStorage.getItem('user')).Email}
+            </Typography>
+          </div>
+          <Divider />
+          {list("left")}
+        </SwipeableDrawer>
       </div>
       <main className={classes.content}>
         <div className={classes.container}>

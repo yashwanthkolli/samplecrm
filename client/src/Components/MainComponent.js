@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     Switch,
     Route,
-    Redirect,
-    useRouteMatch
+    Redirect
 } from 'react-router-dom';
 import PrivateRoute from './ProtectedRoute/PrivateRoute';
 import Login from './Login';

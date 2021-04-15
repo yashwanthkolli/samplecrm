@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(0)
     },
     userButton: {
-        margin: theme.spacing(1),
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
         padding: theme.spacing(2),
         color: 'white',
         width: '100%',
@@ -163,8 +164,8 @@ function AddUsers(){
 
     return (
         <>
-        <Paper elevation={3} style={{width: "100%"}} className={classes.userTable}>
-            {
+            <Paper elevation={3} style={{width: "100%", height: 'max-content', padding: '10px 10px 0px 10px'}} className={classes.userTable}>
+               {
                 tableData.length > 0 ?
                     <MaterialTable
                         columns={[
@@ -185,14 +186,15 @@ function AddUsers(){
             }
             <div className={classes.userButton}>
                 <Button style={{backgroundColor: "#202950", color: 'white', padding: '7px 10px'}} onClick={handleClickOpen}>Add New User</Button>
-            </div>
-        </Paper>
-        <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={handleClose} aria-labelledby="form-dialog-title">
+             </div>
+            </Paper>
+
+         <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Add New CRM User</DialogTitle>
-            <DialogContent>
-                <form onSubmit={adduser}>
-                    <div className={classes.name}>
-                        <TextField 
+             <DialogContent>
+                 <form onSubmit={adduser}>
+                     <div className={classes.name}>
+                         <TextField 
                             required
                             autoComplete="off"
                             label="First Name"

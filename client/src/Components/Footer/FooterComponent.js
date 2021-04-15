@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const Section = styled.div`
-    height: 5vh;
     font-family: Nunito;
     font-size: 15px;
     display: flex;

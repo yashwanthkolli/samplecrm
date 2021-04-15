@@ -41,5 +41,13 @@ module.exports = [
         'name VARCHAR(255) NOT NULL,'
         +' type VARCHAR(100) NOT NULL,'
         +' Cost varchar(100) NOT NULL'
+    ],
+    [
+        'status',
+        'name Varchar(255) Not null'
+    ],
+    [
+        'sources',
+        'name Varchar(255) Not null'
     ]
 ]

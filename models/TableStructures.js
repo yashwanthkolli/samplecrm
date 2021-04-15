@@ -35,5 +35,11 @@ module.exports = [
         +' UpdationDt Date,'
         +' Updateuserid varchar(10),'
         +' Comment Varchar(255)'
+    ],
+    [
+        'courses',
+        'name VARCHAR(255) NOT NULL,'
+        +' type VARCHAR(100) NOT NULL,'
+        +' Cost varchar(100) NOT NULL'
     ]
 ]

@@ -14,10 +14,12 @@ const useStyles = makeStyles((theme) => ({
     containerLead: {
         display: 'flex',
         width: '100%',
-        alignSelf: 'center',
-        justifySelf: 'center',
+        height: '95%',
+        alignItems: 'center',
+        justifyContent: 'center',
         margin: theme.spacing(1),
-        padding: theme.spacing(1)
+        padding: theme.spacing(1),
+        flexDirection:'column'
     },
     btnNewLead:{
         width: '100%',
@@ -28,6 +30,16 @@ const useStyles = makeStyles((theme) => ({
     dialogTitle:{
         fontFamily: 'Nunito',
         fontSize: '18px'
+    },
+    tableHolder:{
+        display: 'grid',
+        placeItems: 'center',
+        width:'100%',
+        height: '95%'
+    },
+    noData:{
+        fontFamily: 'Nunito',
+        fontSize: '25px'
     }
 }));
 
@@ -98,7 +110,7 @@ function AddLeads(){
         .then((res) => {
             let data_latest = [];
 
-            res.data.latest.map((element) => {
+            res.data.latest.forEach((element) => {
                 data_latest.push({
                     "name": element.name
                 })
@@ -119,6 +131,7 @@ function AddLeads(){
                     Add New Lead
                 </Button>
             </div>
+            <div className={classes.tableHolder}>
             {
                 tableData.length > 0 ?
                 <MaterialTable
@@ -129,6 +142,7 @@ function AddLeads(){
                     No leads to show
                 </div>
             }
+            </div>
         </Paper>
         <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={() => handleClose(1)} aria-labelledby="add-new-lead">
             <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Add New Lead</DialogTitle>

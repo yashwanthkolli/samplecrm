@@ -22,6 +22,7 @@ app.use(cors({
 
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
+app.use('/lead', leadRouter)
 
 app.listen(process.env.PORT, (req, res) => {
     console.log("Server Listening At Port 3001");

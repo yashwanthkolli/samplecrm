@@ -153,7 +153,6 @@ exports.addUserController = (req, res) => {
     +')';
 
     connect.query(adduser_details, function(err){
-        console.log(err);
         if(err){
             return res.status(400).json({
                 message: "Error Occured"

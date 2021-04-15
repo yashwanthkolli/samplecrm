@@ -16,6 +16,24 @@ module.exports = [
     ],
     [
         'Leads',
-        'id int NOT NULL AUTO_INCREMENT, Primary Key(id)'
+        'Lead_id int NOT NULL AUTO_INCREMENT, Primary Key(Lead_id),'
+        +' Name VARCHAR(255) NOT NULL,'
+        +' Email VARCHAR(255) NOT NULL Unique,'
+        +' Mobile Varchar(20),'
+        +' Qualif Varchar(255),'
+        +' Source Varchar(255) NOT NULL,'
+        +' Ad_Name Varchar(255) Default \'None\','
+        +' Type Varchar(255) NOT NULL,'
+        +' City Varchar(255) NOT NULL,'
+        +' AssignedTo Varchar(255) NOT NULL,'
+        +' Status Varchar(255) NOT NULL,'
+        +' Createdt Date,'
+        +' Lstfudt Date,'
+        +' Venue Varchar(100),'
+        +' AssignDt Date,'
+        +' CallingDt Date,'
+        +' UpdationDt Date,'
+        +' Updateuserid varchar(10),'
+        +' Comment Varchar(255)'
     ]
 ]

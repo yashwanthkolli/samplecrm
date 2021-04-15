@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Section = styled.div`
-    height: 25px;
+    height: 5vh;
     font-family: Nunito;
     font-size: 15px;
     display: flex;
@@ -10,4 +10,5 @@ export const Section = styled.div`
     justify-content: center;
     width: 100%;
     margin-top: 10px;
+    background-color: #E0E0F8;
 `

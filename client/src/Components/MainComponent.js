@@ -8,22 +8,22 @@ import {
 import PrivateRoute from './ProtectedRoute/PrivateRoute';
 import Login from './Login';
 import Home from './CRM/Home';
-import Holders from './CRM/Holder';
+// import Holders from './CRM/Holder';
 import Profile from  './CRM/Profile';
 import AddLeads from './CRM/AddLeads';
 import AddUsers from './CRM/AddUsers';
 import Footer from './Footer';
 import HeaderBar from './HeaderBar';
 
-function Holder(){
+function Holder({match}){
 
     return(
         <>
-            <HeaderBar />
+            <HeaderBar match={match}/>
             {/* <Holder> */}
                 <Switch>
-                    <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} path={path} />} />
-                    <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} path={path} />} />
+                    <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} />} />
+                    <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} />} />
                     <PrivateRoute path="/crm/addLeads" exact component={(props) => <AddLeads {...props} />} />
                     <PrivateRoute path="/crm/addUsers" exact component={(props) => <AddUsers {...props} />} />
                     <Redirect to = '/crm/home' />

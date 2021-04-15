@@ -26,7 +26,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
-import Footer from '../Footer';
+import Footer from '../../Footer';
 
 const drawerWidth = 240;
 
@@ -125,6 +125,7 @@ const useStyles = makeStyles((theme) => ({
 function SwipeDrawer({match, opened, toggleDrawer}){
 
   const classes = useStyles();
+  const [state, setState] = useState(false);
 
   const adminNav = [
     {id: 1 ,path: `${match.path}/profile`,  icon: ImProfile },
@@ -200,7 +201,6 @@ function SwipeDrawer({match, opened, toggleDrawer}){
     <div>
       <SwipeableDrawer
         anchor="left"
-        open={opened}
         onClose={toggleDrawer}
         onOpen={toggleDrawer}
       >

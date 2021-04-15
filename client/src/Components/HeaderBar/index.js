@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,6 +12,20 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
+import {ImProfile} from 'react-icons/im';
+import {BsFillChatSquareDotsFill} from 'react-icons/bs';
+import { FiLogOut } from 'react-icons/fi';
+import {BiCarousel} from 'react-icons/bi';
+import { AiFillHome } from 'react-icons/ai';
+import {MdEventNote, MdFeedback, MdUpdate} from 'react-icons/md';
+import { SiGoogleanalytics } from 'react-icons/si';
+import {Link} from 'react-router-dom';
+import { signout } from '../../helpers/auth.helpers';
+import { FaUserEdit, FaUserFriends } from 'react-icons/fa';
+import {TiTick} from 'react-icons/ti';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import List from '@material-ui/core/List';
+import Toolbar from '@material-ui/core/Toolbar';
 
 const drawerWidth = 240;
 
@@ -39,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function HeaderBar(){
+function HeaderBar({match}){
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
@@ -150,7 +165,7 @@ function HeaderBar(){
         <div>
       <SwipeableDrawer
         anchor="left"
-        open={opened}
+        open={open}
         onClose={toggleDrawer}
         onOpen={toggleDrawer}
       >

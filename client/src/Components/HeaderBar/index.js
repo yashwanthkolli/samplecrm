@@ -52,6 +52,73 @@ const useStyles = makeStyles((theme) => ({
     menuButton: {
         marginRight: 36,
     },
+  hide: {
+    display: 'none',
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'space-around',
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    marginTop: '60px',
+    padding: theme.spacing(3),
+    backgroundColor: '#E0E0F8',
+    height: 'fit-content'
+  },
+  navbarSpace: {
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  title: {
+    fontFamily: 'Nunito',
+    fontSize: '20px'
+  },
+  iconCenter: {
+    display: 'flex',
+    paddingLeft: theme.spacing(1)
+  },
+  listStyle: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'space-around',
+    minHeight: '65%',
+  },
+  list: {
+    width: 225,
+  },
+  fullList: {
+    width: 'auto',
+  },
+  profile: {
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing(2),
+    flexDirection: 'column'
+  },
+  large: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+  },
+  profileDetails: {
+    fontFamily: 'Nunito',
+    fontSize: '16px',
+    marginTop: '3px'
+  },
+  container:{
+    position: 'relative',
+    width: '100%',
+    height: '100%'
+  }
 }))
 
 function HeaderBar({match}){

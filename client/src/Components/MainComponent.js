@@ -8,7 +8,6 @@ import {
 import PrivateRoute from './ProtectedRoute/PrivateRoute';
 import Login from './Login';
 import Home from './CRM/Home';
-// import Holders from './CRM/Holder';
 import Profile from  './CRM/Profile';
 import AddLeads from './CRM/AddLeads';
 import AddUsers from './CRM/AddUsers';

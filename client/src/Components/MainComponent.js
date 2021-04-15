@@ -13,13 +13,16 @@ import AddLeads from './CRM/AddLeads';
 import AddUsers from './CRM/AddUsers';
 import Footer from './Footer';
 import HeaderBar from './HeaderBar';
+import {
+    Section
+} from './MainComponents';
 
 function Holder({match}){
 
     return(
         <>
             <HeaderBar match={match}/>
-            {/* <Holder> */}
+            <Section>
                 <Switch>
                     <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} />} />
                     <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} />} />
@@ -27,7 +30,7 @@ function Holder({match}){
                     <PrivateRoute path="/crm/addUsers" exact component={(props) => <AddUsers {...props} />} />
                     <Redirect to = '/crm/home' />
                 </Switch>
-            {/* </Holder> */}
+            </Section>
             <Footer />
         </>
     )

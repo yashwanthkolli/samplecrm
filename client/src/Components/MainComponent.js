@@ -36,23 +36,6 @@ function Holder({match}){
     )
 }
 
-function CRM(){
-
-    let { path } = useRouteMatch();
-
-    return(
-        <>
-            <Switch>
-                <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} path={path} />} />
-                <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} path={path} />} />
-                <PrivateRoute path="/crm/addLeads" exact component={(props) => <AddLeads {...props} />} />
-                <PrivateRoute path="/crm/addUsers" exact component={(props) => <AddUsers {...props} />} />
-                <Redirect to = '/crm/home' />
-            </Switch>
-        </>
-    )
-}
-
 function Main(){
 
     let { path } = useRouteMatch();
@@ -60,7 +43,7 @@ function Main(){
     return(
         <Switch>
             <Route path="/" exact component={(props) => <Login {...props}/>} />
-            <PrivateRoute path="/crm" component={(props) => <Holder {...props} navigate = {CRM} path={path} />} />
+            <PrivateRoute path="/crm" component={(props) => <Holder {...props} />} />
             <Redirect to="/" />
         </Switch>
     )

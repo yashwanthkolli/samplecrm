@@ -163,7 +163,7 @@ function AddUsers(){
 
     return (
         <>
-        <Paper elevation={3} style={{width: "100%", height: "max-content"}} className={classes.userTable}>
+        <Paper elevation={3} style={{width: "100%"}} className={classes.userTable}>
             {
                 tableData.length > 0 ?
                     <MaterialTable

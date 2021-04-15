@@ -12,13 +12,15 @@ import Holders from './CRM/Holder';
 import Profile from  './CRM/Profile';
 import AddLeads from './CRM/AddLeads';
 import AddUsers from './CRM/AddUsers';
+import Footer from './Footer';
+import HeaderBar from './HeaderBar';
 
 function Holder(){
 
     return(
         <>
             <HeaderBar />
-            <Holder>
+            {/* <Holder> */}
                 <Switch>
                     <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} path={path} />} />
                     <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} path={path} />} />
@@ -26,7 +28,7 @@ function Holder(){
                     <PrivateRoute path="/crm/addUsers" exact component={(props) => <AddUsers {...props} />} />
                     <Redirect to = '/crm/home' />
                 </Switch>
-            </Holder>
+            {/* </Holder> */}
             <Footer />
         </>
     )
@@ -56,7 +58,7 @@ function Main(){
     return(
         <Switch>
             <Route path="/" exact component={(props) => <Login {...props}/>} />
-            <PrivateRoute path="/crm" component={(props) => <Holders {...props} navigate = {CRM} path={path} />} />
+            <PrivateRoute path="/crm" component={(props) => <Holder {...props} navigate = {CRM} path={path} />} />
             <Redirect to="/" />
         </Switch>
     )

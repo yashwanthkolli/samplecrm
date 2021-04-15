@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles'; 
 import { useToast } from '@chakra-ui/react'; 
 import axios from 'axios';
@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Slide from '@material-ui/core/Slide';
+import MaterialTable from 'material-table';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -90,6 +91,23 @@ function AddLeads(){
         })
     }
 
+    useEffect(() => {
+        axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`,{
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
+        .then((res) => {
+            let data_latest = [];
+
+            res.data.latest.map((element) => {
+                data_latest.push({
+                    "name": element.name
+                })
+            })
+            setTableData(data_latest);
+        })
+        .catch((err) =>{})
+    }, [])
+
     return(
         <>
         <Paper elevation={3} className={classes.containerLead}>
@@ -101,6 +119,16 @@ function AddLeads(){
                     Add New Lead
                 </Button>
             </div>
+            {
+                tableData.length > 0 ?
+                <MaterialTable
+
+                />
+                :
+                <div className={classes.noData}>
+                    No leads to show
+                </div>
+            }
         </Paper>
         <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={() => handleClose(1)} aria-labelledby="add-new-lead">
             <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Add New Lead</DialogTitle>
@@ -108,7 +136,8 @@ function AddLeads(){
         </Dialog>
         <Dialog open={open2} fullWidth TransitionComponent={Transition} onClose={() => handleClose(2)} aria-labelledby="add-new-lead">
             <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads</DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogContent>
+            </DialogContent>
         </Dialog>
         </>
     )

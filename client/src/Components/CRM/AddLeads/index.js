@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Slide from '@material-ui/core/Slide';
+import TextField from '@material-ui/core/TextField';
 import MaterialTable from 'material-table';
 
 const useStyles = makeStyles((theme) => ({
@@ -55,6 +56,12 @@ function AddLeads(){
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const [tableData, setTableData] = useState([]);
+    const [update, setUpdate] = useState(false);
+
+    const [name, setName] = useState("");
+    const [email_lead, setEmailLead] = useState("");
+    const [school, setCollege] = useState("");
+    const [qualif, setQualif] = useState("");
 
     const handleOpen = (id) => {
         switch (id) {
@@ -103,6 +110,15 @@ function AddLeads(){
         })
     }
 
+    const handleNewLead = (e) => {
+        e.preventDefault();
+
+        axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
+            email: JSON.parse(localStorage.getItem('user')).Email,
+
+        })
+    }
+
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`,{
             email: JSON.parse(localStorage.getItem('user')).Email
@@ -118,6 +134,12 @@ function AddLeads(){
             setTableData(data_latest);
         })
         .catch((err) =>{})
+    }, [update])
+
+    useEffect(() => {
+        axios.post(`${process.env.REACT_APP_LEADS}/getConfigurations`, {
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
     }, [])
 
     return(
@@ -145,8 +167,46 @@ function AddLeads(){
             </div>
         </Paper>
         <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={() => handleClose(1)} aria-labelledby="add-new-lead">
-            <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Add New Lead</DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Fill all the required details to create a new lead</DialogTitle>
+            <DialogContent>
+                <form onSubmit={handleNewLead}>
+                    <TextField 
+                        required
+                        fullWidth
+                        autoComplete="off"
+                        name="name"
+                        type="text"
+                        value={name}
+                        onChange={e=>setName(e.target.value)}
+                        label="Name"
+                        placeholder="Enter Lead's Name"
+                        style={{marginBottom: '7px'}}
+                    />
+                    <TextField 
+                        required
+                        fullWidth
+                        autoComplete="off"
+                        name="email"
+                        type="email"
+                        label="Email"
+                        placeholder="Enter Lead's Email"
+                        value={email_lead}
+                        onChange={e=>setEmailLead(e.target.value)}
+                    />
+                    <TextField 
+                        autoComplete="off"
+                        name="school"
+                        type="text"
+                        label="School/College"
+                        placeholder="Enter School/College"
+                        value={school}
+                        onChange={e=>setCollege(e.target.value)}
+                    />
+                    <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px'}} variant="contained">
+                        Add New Lead
+                    </Button>
+                </form>
+            </DialogContent>
         </Dialog>
         <Dialog open={open2} fullWidth TransitionComponent={Transition} onClose={() => handleClose(2)} aria-labelledby="add-new-lead">
             <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads</DialogTitle>

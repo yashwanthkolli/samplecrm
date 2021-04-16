@@ -20,6 +20,7 @@ module.exports = [
         +' Name VARCHAR(255) NOT NULL,'
         +' Email VARCHAR(255) NOT NULL Unique,'
         +' Mobile Varchar(20),'
+        +' School Varchar(255),'
         +' Qualif Varchar(255),'
         +' Source Varchar(255) NOT NULL,'
         +' Ad_Name Varchar(255) Default \'None\','

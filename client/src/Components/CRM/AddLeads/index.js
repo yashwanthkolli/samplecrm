@@ -65,11 +65,17 @@ function AddLeads(){
 
     const classes = useStyles();
     const toast = useToast();
+    const toast_course = "toast_course"; 
 
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [update, setUpdate] = useState(false);
+
+    const [coursesFetched, setCoursesFetched] = useState([]);
+    const [statusFetched, setStatusFetched] = useState([]);
+    const [commentsFetched, setCommentsFetched] = useState([]);
+    const [employeeFetched, setEmployeeFetched] = useState([]);
 
     const [name, setName] = useState("");
     const [email_lead, setEmailLead] = useState("");
@@ -179,9 +185,20 @@ function AddLeads(){
     }, [update])
 
     useEffect(() => {
-        axios.post(`${process.env.REACT_APP_LEADS}/getConfigurations`, {
+        axios.post(`${process.env.REACT_APP_LEADS}/getCourses`, {
             email: JSON.parse(localStorage.getItem('user')).Email
         })
+        .then((res) => {
+            setCoursesFetched(res.data.courses);
+        })
+        .catch(err => {
+            toast({
+                description: "Fetching courses failed",
+                duration: 2000,
+                position: "top"
+            })
+        })
+
     }, [])
 
     return(

@@ -77,6 +77,10 @@ function AddLeads(){
     const [mobile, setMobile] = useState("");
     const [city, setCity] = useState("");
     const [qualif, setQualif] = useState("");
+    const [source, setSource] = useState("");
+    const [course, setCourse] = useState("");
+    const [assignTo, setAssignTo] = useState("");
+    const [status, setStatus] = useState("");
 
     const handleOpen = (id) => {
         switch (id) {
@@ -103,7 +107,16 @@ function AddLeads(){
         }
     }
 
-    const handleChange = (e) => {
+    const handleChange = (e, type) => {
+        switch (type) {
+            case 1:
+                setQualif(e.target.value)
+                break;
+            case 2:
+                setSource(e.target.value)
+            default:
+                break;
+        }
         setQualif(e.target.value)
     }
 
@@ -262,9 +275,39 @@ function AddLeads(){
                                 required
                                 fullWidth
                                 value={qualif}
+                                onChange={(e) => handleChange(e, 1)}
+                            >
+                                <MenuItem value={"not_available"}>Not Available</MenuItem>
+                                <MenuItem value={"10"}>10th</MenuItem>
+                                <MenuItem value={"12"}>12th</MenuItem>
+                                <MenuItem value={"grad"}>Graduation</MenuItem>
+                                <MenuItem value={"postGrad"}>Post-graduation</MenuItem>
+                                <MenuItem value={"MBA"}>MBA</MenuItem>
+                                <MenuItem value={"iti_others"}>ITI/Others</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <div className={classes.fieldHolder}>
+                        <FormControl className={classes.selectField}>
+                            <InputLabel>Sources</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                value={source}
                                 onChange={handleChange}
                             >
-                                <MenuItem>Hi</MenuItem>
+                                <MenuItem value={"not_available"}>Not Available</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl className={classes.selectField}>
+                            <InputLabel>Qualification</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                value={qualif}
+                                onChange={handleChange}
+                            >
+                                <MenuItem value={"not_available"}>Not Available</MenuItem>
                             </Select>
                         </FormControl>
                     </div>

@@ -50,5 +50,9 @@ module.exports = [
     [
         'sources',
         'name Varchar(255) Not null'
+    ],
+    [
+        'comments',
+        'comment Varchar(255) Not null'
     ]
 ]

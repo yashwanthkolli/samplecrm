@@ -187,7 +187,7 @@ function AddLeads(){
     }, [update])
 
     useEffect(() => {
-        axios.post(`${process.env.REACT_APP_LEADS}/getCourses`, {
+        axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, {
             email: JSON.parse(localStorage.getItem('user')).Email
         })
         .then((res) => {
@@ -203,7 +203,7 @@ function AddLeads(){
                 })
             }
         })
-        axios.post(`${process.env.REACT_APP_LEADS}/getStatus`, {
+        axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, {
             email: JSON.parse(localStorage.getItem('user')).Email
         })
         .then((res) => {
@@ -235,7 +235,7 @@ function AddLeads(){
                 })
             }
         })
-        axios.post(`${process.env.REACT_APP_LEADS}/getComments`, {
+        axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, {
             email: JSON.parse(localStorage.getItem('user')).Email
         })
         .then((res) => {

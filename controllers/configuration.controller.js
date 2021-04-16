@@ -17,14 +17,34 @@ exports.courseFetchController = (req, res) => {
 }
 
 exports.statusFetchController = (req, res) => {
-    return res.status(200).json({
-        message: "Fetched Status"
+
+    status_fetch = 'select * from ice.status';
+    connect.query(status_fetch, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching status"
+            })
+        }
+        return res.status(200).json({
+            message: "Fetched Status",
+            status: result
+        })
     })
 }
 
 exports.commentFetchController = (req, res) => {
-    return res.status(200).json({
-        message: "Fetched Comments"
+
+    comment_fetch = 'select * from ice.comments';
+    connect.query(comment_fetch, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching comments"
+            })
+        }
+        return res.status(200).json({
+            message: "Fetched Comments",
+            comments: result
+        })
     })
 }
 

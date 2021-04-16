@@ -7,10 +7,13 @@ const {
     sourceFetchController,
     commentFetchController,
 } = require('../controllers/configuration.controller');
+const {
+    verifyHigherLevel
+} = require('../validations/higherlevel')
 
-router.post('/getCourses', courseFetchController);
-router.post('/getStatus', statusFetchController);
-router.post('/getSource', sourceFetchController);
-router.post('/getComments', commentFetchController);
+router.post('/getCourses', verifyHigherLevel, courseFetchController);
+router.post('/getStatus', verifyHigherLevel, statusFetchController);
+router.post('/getSource', verifyHigherLevel, sourceFetchController);
+router.post('/getComments', verifyHigherLevel, commentFetchController);
 
 module.exports = router;

@@ -75,7 +75,8 @@ function AddLeads(){
     const [coursesFetched, setCoursesFetched] = useState([]);
     const [statusFetched, setStatusFetched] = useState([]);
     const [commentsFetched, setCommentsFetched] = useState([]);
-    const [employeeFetched, setEmployeeFetched] = useState([]);
+    const [employeeFetched, setEmployeesFetched] = useState([]);
+    const [sourceFetched, setSourcesFetched] = useState([]);
 
     const [name, setName] = useState("");
     const [email_lead, setEmailLead] = useState("");
@@ -120,6 +121,7 @@ function AddLeads(){
                 break;
             case 2:
                 setSource(e.target.value)
+                break;
             default:
                 break;
         }
@@ -192,14 +194,65 @@ function AddLeads(){
             setCoursesFetched(res.data.courses);
         })
         .catch(err => {
-            toast({
-                description: "Fetching courses failed",
-                duration: 2000,
-                position: "top"
-            })
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Fetching courses failed",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
+        })
+        axios.post(`${process.env.REACT_APP_LEADS}/getStatus`, {
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
+        .then((res) => {
+            setStatusFetched(res.data.status);
+        })
+        .catch(err => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Fetching status failed",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
+        })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getSource`, {
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
+        .then((res) => {
+            setSourcesFetched(res.data.sources);
+        })
+        .catch(err => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Fetching source failed",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
+        })
+        axios.post(`${process.env.REACT_APP_LEADS}/getComments`, {
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
+        .then((res) => {
+            setCommentsFetched(res.data.comments);
+        })
+        .catch(err => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Fetching comments failed",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
         })
 
-    }, [])
+    }, [toast])
 
     return(
         <>
@@ -313,7 +366,13 @@ function AddLeads(){
                                 value={source}
                                 onChange={handleChange}
                             >
-                                <MenuItem value={"not_available"}>Not Available</MenuItem>
+                            {
+                                sourceFetched.map((element, index) => {
+                                    return (
+                                        <MenuItem key={index} value={element.name}>{element.name}</MenuItem>
+                                    )
+                                })
+                            }
                             </Select>
                         </FormControl>
                         <FormControl className={classes.selectField}>

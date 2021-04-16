@@ -10,6 +10,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import MaterialTable from 'material-table';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -29,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'flex-end'
     },
     dialogTitle:{
-        fontFamily: 'Nunito',
+        fontFamily: 'Nunito !important',
         fontSize: '18px'
     },
     tableHolder:{
@@ -41,6 +45,15 @@ const useStyles = makeStyles((theme) => ({
     noData:{
         fontFamily: 'Nunito',
         fontSize: '25px'
+    },
+    fieldHolder:{
+        display: 'flex',
+        justifyContent:'space-between',
+        width: '100%',
+        margin: '7px 0px 7px 0px'
+    },
+    selectField:{
+        width: '45%'
     }
 }));
 
@@ -61,6 +74,8 @@ function AddLeads(){
     const [name, setName] = useState("");
     const [email_lead, setEmailLead] = useState("");
     const [school, setCollege] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [city, setCity] = useState("");
     const [qualif, setQualif] = useState("");
 
     const handleOpen = (id) => {
@@ -86,6 +101,10 @@ function AddLeads(){
             default:
                 break;
         }
+    }
+
+    const handleChange = (e) => {
+        setQualif(e.target.value)
     }
 
     const turnToPage = (pageId) => {
@@ -117,6 +136,16 @@ function AddLeads(){
             email: JSON.parse(localStorage.getItem('user')).Email,
 
         })
+    }
+
+    const handleCancel = () => {
+        handleClose(1);
+        setEmailLead("");
+        setName("");
+        setCity("");
+        setMobile("");
+        setCollege("");
+        setQualif("");
     }
 
     useEffect(() => {
@@ -167,7 +196,7 @@ function AddLeads(){
             </div>
         </Paper>
         <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={() => handleClose(1)} aria-labelledby="add-new-lead">
-            <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Fill all the required details to create a new lead</DialogTitle>
+            <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>New Lead Details</DialogTitle>
             <DialogContent>
                 <form onSubmit={handleNewLead}>
                     <TextField 
@@ -192,18 +221,58 @@ function AddLeads(){
                         placeholder="Enter Lead's Email"
                         value={email_lead}
                         onChange={e=>setEmailLead(e.target.value)}
+                        style={{marginBottom: '7px'}}
                     />
-                    <TextField 
-                        autoComplete="off"
-                        name="school"
-                        type="text"
-                        label="School/College"
-                        placeholder="Enter School/College"
-                        value={school}
-                        onChange={e=>setCollege(e.target.value)}
-                    />
-                    <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px'}} variant="contained">
+                    <div className={classes.fieldHolder}>
+                        <TextField 
+                            autoComplete="off"
+                            name="school"
+                            type="text"
+                            label="School/College"
+                            placeholder="Enter School/College"
+                            value={school}
+                            onChange={e=>setCollege(e.target.value)}
+                            style={{width: '45%'}}
+                        />
+                        <TextField 
+                            required
+                            autoComplete="off"
+                            type="tel"
+                            label="Mobile Number"
+                            placeholder="Enter Mobile Number"
+                            value={mobile}
+                            onChange={e=>setMobile(e.target.value)}
+                            style={{width: '45%'}}
+                        />
+                    </div>
+                    <div className={classes.fieldHolder}>
+                        <TextField 
+                            required
+                            autoComplete="off"
+                            type="text"
+                            label="City"
+                            placeholder="Enter City Name"
+                            value={city}
+                            onChange={e=>setCity(e.target.value)}
+                            style={{width: '45%'}}
+                        />
+                        <FormControl className={classes.selectField}>
+                            <InputLabel>Qualification</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                value={qualif}
+                                onChange={handleChange}
+                            >
+                                <MenuItem>Hi</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
                         Add New Lead
+                    </Button>
+                    <Button style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained" onClick={handleCancel}>
+                        Reset
                     </Button>
                 </form>
             </DialogContent>

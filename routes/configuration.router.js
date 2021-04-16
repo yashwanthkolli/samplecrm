@@ -4,6 +4,7 @@ const router = express.Router();
 const {
     courseFetchController,
     statusFetchController,
+    sourceFetchController,
     commentFetchController,
 } = require('../controllers/configuration.controller');
 

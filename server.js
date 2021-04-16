@@ -8,6 +8,7 @@ const path = require('path');
 
 const authRouter = require('./routes/auth.router');
 const userRouter = require('./routes/user.router');
+const leadRouter = require('./routes/lead.router');
 
 const { connection } = require('./config/db');
 connection();

@@ -122,10 +122,12 @@ function AddLeads(){
             case 2:
                 setSource(e.target.value)
                 break;
+            case 3:
+                setCourse(e.target.value)
+                break;
             default:
                 break;
         }
-        setQualif(e.target.value)
     }
 
     const turnToPage = (pageId) => {
@@ -364,7 +366,7 @@ function AddLeads(){
                                 required
                                 fullWidth
                                 value={source}
-                                onChange={handleChange}
+                                onChange={(e)=>handleChange(e, 2)}
                             >
                             {
                                 sourceFetched.map((element, index) => {
@@ -376,12 +378,12 @@ function AddLeads(){
                             </Select>
                         </FormControl>
                         <FormControl className={classes.selectField}>
-                            <InputLabel>Qualification</InputLabel>
+                            <InputLabel>Source</InputLabel>
                             <Select
                                 required
                                 fullWidth
-                                value={qualif}
-                                onChange={handleChange}
+                                value={course}
+                                onChange={(e) => handleChange(e, 3)}
                             >
                                 <MenuItem value={"not_available"}>Not Available</MenuItem>
                             </Select>

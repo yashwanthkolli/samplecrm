@@ -12,7 +12,7 @@ module.exports = [
         +' Type CHAR(30) NOT NULL,'
         +' Reporting CHAR(40) NOT NULL,'
         +' Picture VARCHAR(255),'
-        +' Primary Key(Email)'
+        +' Primary Key(Employee_ID)'
     ],
     [
         'Leads',

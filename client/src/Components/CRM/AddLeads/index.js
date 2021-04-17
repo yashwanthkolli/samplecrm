@@ -405,7 +405,6 @@ function AddLeads(){
                             </Select>
                         </FormControl>
                     </div>
-                    <FormControl className={classes.selectField}>
                         <InputLabel>Assigned To</InputLabel>
                         <Select
                             required
@@ -421,7 +420,6 @@ function AddLeads(){
                             })
                         }
                         </Select>
-                    </FormControl>
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
                         Add New Lead
                     </Button>

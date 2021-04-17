@@ -48,6 +48,33 @@ exports.addNewLeadsController = (req, res) => {
         email_lead,
         mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name
     } = req.body;
-    
-    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, '
+    const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0]
+
+    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment) values ('
+        + ' \''+ name +'\' ,'
+        + ' \''+ email_lead +'\' ,'
+        + ' \''+ mobile +'\' ,'
+        + ' \''+ qualif +'\' ,'
+        + ' \''+ source +'\' ,'
+        + ' \''+ ad_name +'\' ,'
+        + ' \''+ course +'\' ,'
+        + ' \''+ city +'\' ,'
+        + ' \''+ assignTo +'\' ,'
+        + '\''+ status +'\','
+        + ' \''+ email +'\' ,'
+        + ' \''+ now +'\' ,'
+        + ' \''+ now +'\' ,'
+        + ' \''+ comment + '\')';
+    connect.query(addnewlead_query, function(err){
+        console.log(err);
+        if(err){
+            return res.status(500).json({
+                err: err 
+            })
+        } else {
+            return res.status(200).json({
+                message: "Created Leads Successfully"
+            })
+        }
+    })
 }

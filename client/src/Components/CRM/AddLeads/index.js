@@ -178,7 +178,7 @@ function AddLeads(){
         })
         .catch((err) => {
             toast({
-                description: err.data.response.err,
+                description: "Error in creating new lead",
                 position: "top",
                 duration: 3000
             })

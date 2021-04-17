@@ -40,3 +40,12 @@ exports.latestLeadController = (req, res) => {
         }
     })
 }
+
+exports.addNewLeadsController = (req, res) => {
+    
+    const {
+        name,
+        email_lead,
+    } = req.body;
+    
+}

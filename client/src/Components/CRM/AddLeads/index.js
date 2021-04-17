@@ -166,7 +166,17 @@ function AddLeads(){
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
-
+            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment
+        })
+        .then((res) => {
+            setUpdate(!update);
+        })
+        .catch((err) => {
+            toast({
+                description: err.data.response.err,
+                position: "top",
+                duration: 3000
+            })
         })
     }
 
@@ -177,6 +187,11 @@ function AddLeads(){
         setCity("");
         setMobile("");
         setQualif("");
+        setComment("");
+        setStatus("");
+        setSource("");
+        setAssignTo("");
+        setCourse("");
     }
 
     useEffect(() => {

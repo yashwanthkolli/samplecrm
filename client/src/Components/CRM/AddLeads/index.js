@@ -87,6 +87,7 @@ function AddLeads(){
     const [course, setCourse] = useState("");
     const [assignTo, setAssignTo] = useState("");
     const [status, setStatus] = useState("");
+    const [comment, setComment] = useState("");
 
     const handleOpen = (id) => {
         switch (id) {
@@ -126,6 +127,12 @@ function AddLeads(){
                 break;
             case 4:
                 setStatus(e.target.value)
+                break;
+            case 5:
+                setAssignTo(e.target.value)
+                break;
+            case 6:
+                setComment(e.target.value);
                 break;
             default:
                 break;
@@ -254,6 +261,22 @@ function AddLeads(){
                 })
             }
         })
+        axios.post(`${process.env.REACT_APP_USER}/getEmployeeList`,{
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
+        .then((res) => {
+            setEmployeesFetched(res.data.employees);
+        })
+        .catch((err) => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Fetching Employee List failed",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
+        })
 
     }, [toast])
 
@@ -282,7 +305,6 @@ function AddLeads(){
             </div>
         </Paper>
         <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={() => handleClose(1)} aria-labelledby="add-new-lead">
-            <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>New Lead Details</DialogTitle>
             <DialogContent>
                 <form onSubmit={handleNewLead}>
                     <TextField 
@@ -405,21 +427,47 @@ function AddLeads(){
                             </Select>
                         </FormControl>
                     </div>
-                        <InputLabel>Assigned To</InputLabel>
-                        <Select
-                            required
-                            fullWidth
-                            value={status}
-                            onChange={(e)=>handleChange(e, 4)}
-                        >
-                        {
-                            statusFetched.map((element, index) => {
-                                return (
-                                    <MenuItem key={index} value={element.name}>{element.name}</MenuItem>
-                                )
-                            })
-                        }
-                        </Select>
+                    <InputLabel style={{marginTop: '3px'}}>Assigned To</InputLabel>
+                    <Select
+                        required
+                        fullWidth
+                        value={assignTo}
+                        onChange={(e)=>handleChange(e, 5)}
+                    >
+                    {
+                        employeeFetched.map((element, index) => {
+                            return (
+                            <MenuItem key={index} value={element.Employee_ID}>{element.Firstname}{" "}{element.Surname}</MenuItem>
+                            )
+                        })
+                    }
+                    </Select>
+                    <InputLabel style={{marginTop: '3px'}}>Comments</InputLabel>
+                    <Select
+                        required
+                        fullWidth
+                        value={comment}
+                        onChange={(e)=>handleChange(e, 6)}
+                    >
+                    {
+                        commentsFetched.map((element, index) => {
+                            return (
+                            <MenuItem key={index} value={element.comment}>{element.comment}</MenuItem>
+                            )
+                        })
+                    }
+                        <MenuItem value="others" > Others </MenuItem>
+                    </Select>
+                    <TextField 
+                        fullWidth
+                        autoComplete="off"
+                        value={comment}
+                        onChange={(e)=>handleChange(e, 6)}
+                        style={{marginTop: '7px'}}
+                        label="Comment"
+                        placeholder="Additional Comment"
+                        disabled={comment === "others" ? false : true}
+                    />
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
                         Add New Lead
                     </Button>

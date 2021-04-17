@@ -46,6 +46,8 @@ exports.addNewLeadsController = (req, res) => {
     const {
         name,
         email_lead,
+        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name
     } = req.body;
     
+    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, '
 }

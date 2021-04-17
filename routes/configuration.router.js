@@ -1,4 +1,5 @@
 const express = require('express');
+const { verify } = require('jsonwebtoken');
 const router = express.Router();
 
 const {
@@ -6,6 +7,7 @@ const {
     statusFetchController,
     sourceFetchController,
     commentFetchController,
+    adsFetchController
 } = require('../controllers/configuration.controller');
 const {
     verifyHigherLevel
@@ -15,5 +17,6 @@ router.post('/getCourses', verifyHigherLevel, courseFetchController);
 router.post('/getStatus', verifyHigherLevel, statusFetchController);
 router.post('/getSource', verifyHigherLevel, sourceFetchController);
 router.post('/getComments', verifyHigherLevel, commentFetchController);
+router.post('/getAdName', verifyHigherLevel, adsFetchController);
 
 module.exports = router;

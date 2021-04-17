@@ -77,6 +77,7 @@ function AddLeads(){
     const [commentsFetched, setCommentsFetched] = useState([]);
     const [employeeFetched, setEmployeesFetched] = useState([]);
     const [sourceFetched, setSourcesFetched] = useState([]);
+    const [adNameFetched, setAdNameFetched] = useState([]);
 
     const [name, setName] = useState("");
     const [email_lead, setEmailLead] = useState("");
@@ -88,6 +89,7 @@ function AddLeads(){
     const [assignTo, setAssignTo] = useState("");
     const [status, setStatus] = useState("");
     const [comment, setComment] = useState("");
+    const [ad_name, setAdName] = useState("");
 
     const handleOpen = (id) => {
         switch (id) {
@@ -134,6 +136,9 @@ function AddLeads(){
             case 6:
                 setComment(e.target.value);
                 break;
+            case 7:
+                setAdName(e.target.value);
+                break;
             default:
                 break;
         }
@@ -166,7 +171,7 @@ function AddLeads(){
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
-            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment
+            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name
         })
         .then((res) => {
             setUpdate(!update);
@@ -255,6 +260,22 @@ function AddLeads(){
                 toast({
                     id: toast_course,
                     description: "Fetching source failed",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
+        })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getAdName`,{
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
+        .then((res) => {
+            setAdNameFetched(res.data.adnames);
+        })
+        .catch((err) => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Fetching Ads failed",
                     duration: 2000,
                     position: "top"
                 })
@@ -457,22 +478,43 @@ function AddLeads(){
                         })
                     }
                     </Select>
-                    <InputLabel style={{marginTop: '3px'}}>Comments</InputLabel>
-                    <Select
-                        required
-                        fullWidth
-                        value={comment}
-                        onChange={(e)=>handleChange(e, 6)}
-                    >
-                    {
-                        commentsFetched.map((element, index) => {
-                            return (
-                            <MenuItem key={index} value={element.comment}>{element.comment}</MenuItem>
-                            )
-                        })
-                    }
-                        <MenuItem value="others" > Others </MenuItem>
-                    </Select>
+                    <div className={classes.fieldHolder}>
+                        <FormControl className={classes.selectField}>
+                            <InputLabel>Ads Name</InputLabel>
+                            <Select
+                                required
+                                value={ad_name}
+                                fullWidth
+                                onChange={(e) => handleChange(e, 7)}
+                            >
+                            {
+                                adNameFetched.map((element) => {
+                                    return (
+                                        <MenuItem key={element.id} value={element.ad_name}>{element.ad_name}</MenuItem>
+                                    )
+                                })
+                            }
+                            </Select>
+                        </FormControl>
+                        <FormControl className={classes.selectField}>
+                            <InputLabel style={{marginTop: '3px'}}>Comments</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                value={comment}
+                                onChange={(e)=>handleChange(e, 6)}
+                            >
+                            {
+                                commentsFetched.map((element, index) => {
+                                    return (
+                                    <MenuItem key={index} value={element.comment}>{element.comment}</MenuItem>
+                                    )
+                                })
+                            }
+                                <MenuItem value="others" > Others </MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
                     <TextField 
                         fullWidth
                         autoComplete="off"

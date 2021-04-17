@@ -20,14 +20,14 @@ module.exports = [
         +' Name VARCHAR(255) NOT NULL,'
         +' Email VARCHAR(255) NOT NULL Unique,'
         +' Mobile Varchar(20),'
-        +' School Varchar(255),'
         +' Qualif Varchar(255),'
         +' Source Varchar(255) NOT NULL,'
         +' Ad_Name Varchar(255) Default \'None\','
-        +' Type Varchar(255) NOT NULL,'
+        +' Course Varchar(255) NOT NULL,'
         +' City Varchar(255) NOT NULL,'
         +' AssignedTo Varchar(255) NOT NULL,'
         +' Status Varchar(255) NOT NULL,'
+        +' CreatedBy Varchar(255) NOT NUll,'
         +' Createdt Date,'
         +' Lstfudt Date,'
         +' Venue Varchar(100),'
@@ -58,5 +58,10 @@ module.exports = [
         'comments',
         'id int auto_increment primary key,'
         + 'comment Varchar(255) Not null'
+    ],
+    [
+        'ads',
+        'id int auto_increment primary key,'
+        +' ad_name Varchar(255) Not null'
     ]
 ]

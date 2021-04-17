@@ -405,7 +405,23 @@ function AddLeads(){
                             </Select>
                         </FormControl>
                     </div>
-
+                    <FormControl className={classes.selectField}>
+                        <InputLabel>Assigned To</InputLabel>
+                        <Select
+                            required
+                            fullWidth
+                            value={status}
+                            onChange={(e)=>handleChange(e, 4)}
+                        >
+                        {
+                            statusFetched.map((element, index) => {
+                                return (
+                                    <MenuItem key={index} value={element.name}>{element.name}</MenuItem>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
                         Add New Lead
                     </Button>

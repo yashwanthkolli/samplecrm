@@ -80,7 +80,6 @@ function AddLeads(){
 
     const [name, setName] = useState("");
     const [email_lead, setEmailLead] = useState("");
-    const [school, setCollege] = useState("");
     const [mobile, setMobile] = useState("");
     const [city, setCity] = useState("");
     const [qualif, setQualif] = useState("");
@@ -125,6 +124,9 @@ function AddLeads(){
             case 3:
                 setCourse(e.target.value)
                 break;
+            case 4:
+                setStatus(e.target.value)
+                break;
             default:
                 break;
         }
@@ -167,7 +169,6 @@ function AddLeads(){
         setName("");
         setCity("");
         setMobile("");
-        setCollege("");
         setQualif("");
     }
 
@@ -310,13 +311,13 @@ function AddLeads(){
                     />
                     <div className={classes.fieldHolder}>
                         <TextField 
+                            required
                             autoComplete="off"
-                            name="school"
                             type="text"
-                            label="School/College"
-                            placeholder="Enter School/College"
-                            value={school}
-                            onChange={e=>setCollege(e.target.value)}
+                            label="City"
+                            placeholder="Enter City Name"
+                            value={city}
+                            onChange={e=>setCity(e.target.value)}
                             style={{width: '45%'}}
                         />
                         <TextField 
@@ -329,35 +330,6 @@ function AddLeads(){
                             onChange={e=>setMobile(e.target.value)}
                             style={{width: '45%'}}
                         />
-                    </div>
-                    <div className={classes.fieldHolder}>
-                        <TextField 
-                            required
-                            autoComplete="off"
-                            type="text"
-                            label="City"
-                            placeholder="Enter City Name"
-                            value={city}
-                            onChange={e=>setCity(e.target.value)}
-                            style={{width: '45%'}}
-                        />
-                        <FormControl className={classes.selectField}>
-                            <InputLabel>Qualification</InputLabel>
-                            <Select
-                                required
-                                fullWidth
-                                value={qualif}
-                                onChange={(e) => handleChange(e, 1)}
-                            >
-                                <MenuItem value={"not_available"}>Not Available</MenuItem>
-                                <MenuItem value={"10"}>10th</MenuItem>
-                                <MenuItem value={"12"}>12th</MenuItem>
-                                <MenuItem value={"grad"}>Graduation</MenuItem>
-                                <MenuItem value={"postGrad"}>Post-graduation</MenuItem>
-                                <MenuItem value={"MBA"}>MBA</MenuItem>
-                                <MenuItem value={"iti_others"}>ITI/Others</MenuItem>
-                            </Select>
-                        </FormControl>
                     </div>
                     <div className={classes.fieldHolder}>
                         <FormControl className={classes.selectField}>
@@ -378,17 +350,62 @@ function AddLeads(){
                             </Select>
                         </FormControl>
                         <FormControl className={classes.selectField}>
-                            <InputLabel>Source</InputLabel>
+                            <InputLabel>Qualification</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                value={qualif}
+                                onChange={(e) => handleChange(e, 1)}
+                            >
+                                <MenuItem value={"not_available"}>Not Available</MenuItem>
+                                <MenuItem value={"10"}>10th</MenuItem>
+                                <MenuItem value={"12"}>12th</MenuItem>
+                                <MenuItem value={"grad"}>Graduation</MenuItem>
+                                <MenuItem value={"postGrad"}>Post-graduation</MenuItem>
+                                <MenuItem value={"MBA"}>MBA</MenuItem>
+                                <MenuItem value={"iti_others"}>ITI/Others</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <div className={classes.fieldHolder}>
+                        <FormControl className={classes.selectField}>
+                            <InputLabel>Status</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                value={status}
+                                onChange={(e)=>handleChange(e, 4)}
+                            >
+                            {
+                                statusFetched.map((element, index) => {
+                                    return (
+                                        <MenuItem key={index} value={element.name}>{element.name}</MenuItem>
+                                    )
+                                })
+                            }
+                            </Select>
+                        </FormControl>
+                        <FormControl className={classes.selectField}>
+                            <InputLabel>Courses Offered</InputLabel>
                             <Select
                                 required
                                 fullWidth
                                 value={course}
                                 onChange={(e) => handleChange(e, 3)}
                             >
-                                <MenuItem value={"not_available"}>Not Available</MenuItem>
+                            {
+                                coursesFetched.map((element) => {
+                                    return(
+                                        <MenuItem key={element.id} value={element.id}>
+                                            {element.name}{" "}{element.type}{" Rs. "}{element.Cost}  
+                                        </MenuItem>
+                                    )
+                                })
+                            }
                             </Select>
                         </FormControl>
                     </div>
+
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
                         Add New Lead
                     </Button>

@@ -10,7 +10,7 @@ exports.latestLeadController = (req, res) => {
             })
         }
 
-        if(result[0] <= 20){
+        if(result[0].count <= 20){
             leads_query = 'select * from ice.leads';
             connect.query(leads_query, function(err, r){
                 if(err){

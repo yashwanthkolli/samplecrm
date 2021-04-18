@@ -146,7 +146,7 @@ function AddLeads(){
 
     const turnToPage = (pageId) => {
 
-        axios.post(`${process.env.REACT_APP_LEADS}/getLeads`, {
+        axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`, {
             email: JSON.parse(localStorage.getItem('user')).Email
         },{
             params: {

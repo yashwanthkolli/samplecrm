@@ -62,6 +62,8 @@ module.exports = [
     [
         'ads',
         'id int auto_increment primary key,'
-        +'ad_name Varchar(255) Not null'
+        +'ad_name Varchar(255) Not null,'
+        +'medium Varchar(255) not null,'
+        +'place varchar(255) not null'
     ]
 ]

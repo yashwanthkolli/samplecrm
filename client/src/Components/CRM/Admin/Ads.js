@@ -158,7 +158,7 @@ function Ads() {
             </Button>
             </Paper>
             <Dialog open={open} fullWidth onClose={() => setOpen(false)} aria-labelledby="add-new-lead">
-                <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Add Course</DialogTitle>
+                <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Create a new Ad</DialogTitle>
                 <DialogContent>
                     <form onSubmit={ (e) => onAddAd(e) }>
                         <TextField 
@@ -198,7 +198,7 @@ function Ads() {
                             style={{marginBottom: '7px'}}
                         />
                         <Button type="submit" style={{backgroundColor: '#202950', color: 'white', margin: '20px 5px'}} variant="contained">
-                            New Ad
+                            Create
                         </Button>
                     </form>
                 </DialogContent>

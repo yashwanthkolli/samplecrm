@@ -42,9 +42,9 @@ function Ads() {
     const [ads, setAds] = useState([])
     const [open, setOpen] = useState(false)
     const [popup, setPopup] = useState(false)
-    const [form_id, setForm_id] = useState('')
-    const [name, setName] = useState('')
-    const [source, setSource] = useState('')
+    const [ad_name, setAdName] = useState('');
+    const [medium, setMedium] = useState('');
+    const [place, setPlace] = useState('');
     const [deleteAdId, setDeleteAdId] = useState()
 
     const [update, setUpdate] = useState(false);
@@ -91,9 +91,7 @@ function Ads() {
 
         axios.post(`${process.env.REACT_APP_CONFIG}/addAds`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
-            form_id,
-            name,
-            source
+            ad_name, medium, place
         })
         .then(res => {
             setUpdate(!update)
@@ -167,23 +165,11 @@ function Ads() {
                             required
                             fullWidth
                             autoComplete="off"
-                            name="form_id"
+                            name="ad_name"
                             type="text"
-                            value={form_id}
-                            onChange={e=>setForm_id(e.target.value)}
-                            label="Form Id"
-                            placeholder="Enter Form Id"
-                            style={{marginBottom: '7px'}}
-                        />
-                        <TextField 
-                            required
-                            fullWidth
-                            autoComplete="off"
-                            name="name"
-                            type="text"
-                            value={name}
-                            onChange={e=>setName(e.target.value)}
-                            label="Name"
+                            value={ad_name}
+                            onChange={e=>setAdName(e.target.value)}
+                            label="Ad Name"
                             placeholder="Enter Ad Name"
                             style={{marginBottom: '7px'}}
                         />
@@ -191,12 +177,24 @@ function Ads() {
                             required
                             fullWidth
                             autoComplete="off"
-                            name="source"
+                            name="medium"
                             type="text"
-                            value={source}
-                            onChange={e=>setSource(e.target.value)}
-                            label="Medium"
+                            value={medium}
+                            onChange={e=>setMedium(e.target.value)}
+                            label="Ad Medium"
                             placeholder="Enter Ad Medium"
+                            style={{marginBottom: '7px'}}
+                        />
+                        <TextField 
+                            required
+                            fullWidth
+                            autoComplete="off"
+                            name="place"
+                            type="text"
+                            value={place}
+                            onChange={e=>setPlace(e.target.value)}
+                            label="Place"
+                            placeholder="Enter place of activity"
                             style={{marginBottom: '7px'}}
                         />
                         <Button type="submit" style={{backgroundColor: '#202950', color: 'white', margin: '20px 5px'}} variant="contained">

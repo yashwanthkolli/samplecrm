@@ -27,8 +27,6 @@ function Login({history}) {
 
     const toast = useToast();
 
-    console.log(process.env)
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setEmail("");

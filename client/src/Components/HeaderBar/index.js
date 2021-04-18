@@ -15,7 +15,7 @@ import Avatar from '@material-ui/core/Avatar';
 import {ImProfile} from 'react-icons/im';
 import {BsFillChatSquareDotsFill} from 'react-icons/bs';
 import { FiLogOut } from 'react-icons/fi';
-import {BiCarousel} from 'react-icons/bi';
+import {BiCarousel, BiChalkboard, BiCommentDetail} from 'react-icons/bi';
 import { AiFillHome } from 'react-icons/ai';
 import {MdEventNote, MdFeedback, MdUpdate} from 'react-icons/md';
 import { SiGoogleanalytics } from 'react-icons/si';
@@ -129,11 +129,11 @@ function HeaderBar({match}){
     }
 
     const adminNav = [
-        {id: 1 ,path: `${match.path}/profile`,  icon: ImProfile },
-        {id: 2 ,path: `${match.path}/userAdmin`,  icon: FaUserEdit },
-        {id: 4 ,path: `${match.path}/eventAdmin`,  icon: BiCarousel },
-        {id: 5 ,path: `${match.path}/updateAdmin`,  icon: MdUpdate },
-        {id: 6 ,path: `${match.path}/approval`,  icon: TiTick }
+        {id: 1 ,path: `${match.path}/profile`, text: 'Profile',  icon: ImProfile },
+        {id: 2 ,path: `${match.path}/courses`, text: 'Courses',  icon: BiChalkboard },
+        {id: 3 ,path: `${match.path}/ads`, text: 'Ads',  icon: BiCarousel },
+        {id: 4 ,path: `${match.path}/comments`, text: 'Comments', icon: BiCommentDetail },
+        {id: 5 ,path: `${match.path}/updateAdmin`, text: 'Edit Profile', icon: FaUserEdit }
     ]
 
     const teamNav = [

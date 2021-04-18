@@ -44,10 +44,12 @@ function Courses() {
         .then(res => {
             setUpdate(!update)
         })
-        .catch(err => console.log(err))
+        .catch(err => {})
     }
 
     const onAddCourse = (e) => {
+        e.preventDefault();
+
         axios.post(`${process.env.REACT_APP_CONFIG}/addCourses`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             name,
@@ -58,8 +60,10 @@ function Courses() {
             setName('')
             setType('')
             setCost('')
+
+            setUpdate(!update);
         })
-        .catch(err => console.log(err))
+        .catch(err => {})
     }
 
     const onUpdateCourse = (id) => {
@@ -75,6 +79,8 @@ function Courses() {
             setType('')
             setCost('')
             setUpdateCourseForm('')
+
+            setUpdate(!update);
         })
         .catch(err => console.log(err))
     }
@@ -93,7 +99,6 @@ function Courses() {
             <MaterialTable
                 title="Courses"
                 columns={[
-                    { title: 'Id', field: 'id', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     { title: 'Course', field: 'name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     { title: 'Type', field: 'type', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     { title: 'Cost in Rs', field: 'Cost', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },

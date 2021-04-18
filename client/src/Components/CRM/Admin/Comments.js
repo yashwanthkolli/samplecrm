@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles'; 
 import MaterialTable from 'material-table'
 import axios from 'axios'
 import Icon from '@material-ui/core/Icon';
@@ -14,10 +16,30 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogContent,
-    AlertDialogOverlay
+    AlertDialogOverlay,
+    useToast
 } from "@chakra-ui/react"
 
+const useStyles = makeStyles((theme) => ({
+    containerLead: {
+        display: 'flex',
+        width: '100%',
+        height: '95%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: theme.spacing(1),
+        padding: theme.spacing(1),
+        flexDirection:'column'
+    }
+}))
+
 function Comments() {
+
+    const classes = useStyles();
+    const toast = useToast();
+    const comment_toast = "comment";
+
+    const [update, setUpdate] = useState(false);
     const [comments, setComments] = useState([])
     const [open, setOpen] = useState(false)
     const [comment, setComment] = useState('')
@@ -27,8 +49,8 @@ function Comments() {
     useEffect( () => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: JSON.parse(localStorage.getItem('user')).Email })
         .then(res => setComments(res.data.comments))
-        .catch(err => console.log(err))
-    }, [])
+        .catch(err => {})
+    }, [update])
 
     const onDeleteComment = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteComments`, {
@@ -36,15 +58,31 @@ function Comments() {
             id: id
         })
         .then(res => {
-            axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setComments(res.data.comments))
-            .catch(err => console.log(err))
+            if(!toast.isActive(comment_toast)){
+                toast({
+                    id: comment_toast,
+                    description: "Deleted Successfully",
+                    duration: 3000,
+                    position: "top"
+                }) 
+            }
+            setUpdate(!update);
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            if(!toast.isActive(comment_toast)){
+                toast({
+                    id: comment_toast,
+                    description: "Deleting Comments Failed",
+                    duration: 3000,
+                    position: "top"
+                }) 
+            }
+        })
     }
 
     const onAddComment = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+
         axios.post(`${process.env.REACT_APP_CONFIG}/addComments`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             comment
@@ -52,19 +90,34 @@ function Comments() {
         .then(res => {
             setOpen(false)
             setComment('')
-            axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setComments(res.data.comments))
-            .catch(err => console.log(err))
+            setUpdate(!update);
+            if(!toast.isActive(comment_toast)){
+                toast({
+                    id: comment_toast,
+                    description: "Added Successfully",
+                    duration: 3000,
+                    position: "top"
+                }) 
+            }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            if(!toast.isActive(comment_toast)){
+                toast({
+                    id: comment_toast,
+                    description: "Adding Comments Failed",
+                    duration: 3000,
+                    position: "top"
+                }) 
+            }
+        })
     }
 
     return (
-        <div style={{width: '90%'}}>
+        <>
+        <Paper elevation={3} className={classes.containerLead}>
             <MaterialTable
                 title="Comments"
                 columns={[
-                    { title: 'Id', field: 'id', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     { title: 'Comment', field: 'comment', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     {
                         title: 'Delete',
@@ -92,11 +145,12 @@ function Comments() {
                         backgroundColor: '#EEE',
                     }
                 }}
-                style={{padding: '15px 30px', margin: '30px 0'}}
+                style={{width: '95%'}}
             />
             <Button style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px', float: 'right'}} variant="contained"  onClick={() => setOpen(!open)}>
                 Add Comment
             </Button>
+        </Paper>
             <Dialog open={open} fullWidth onClose={() => setOpen(false)} aria-labelledby="add-new-lead">
                 <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Add Course</DialogTitle>
                 <DialogContent>
@@ -146,7 +200,7 @@ function Comments() {
                 </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </div>
+        </>
     )
 }
 

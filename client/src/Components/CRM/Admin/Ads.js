@@ -124,9 +124,9 @@ function Ads() {
             <MaterialTable
                 title="Current Active Ads"
                 columns={[
-                    { title: 'Id', field: 'id', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     { title: 'Name', field: 'name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     { title: 'Medium', field: 'source', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                    { title: 'Place', field: 'city', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     {
                         title: 'Delete',
                         field: 'internal_action',
@@ -156,7 +156,7 @@ function Ads() {
                 style={{width: '95%'}}
             />
             <Button style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px', float: 'right'}} variant="contained"  onClick={() => setOpen(!open)}>
-                New Ad
+                Create New Ad
             </Button>
             </Paper>
             <Dialog open={open} fullWidth onClose={() => setOpen(false)} aria-labelledby="add-new-lead">

@@ -12,7 +12,7 @@ module.exports = [
         +' Type CHAR(30) NOT NULL,'
         +' Reporting CHAR(40) NOT NULL,'
         +' Picture VARCHAR(255),'
-        +' Primary Key(Email)'
+        +' Primary Key(Employee_ID)'
     ],
     [
         'Leads',
@@ -20,20 +20,20 @@ module.exports = [
         +' Name VARCHAR(255) NOT NULL,'
         +' Email VARCHAR(255) NOT NULL Unique,'
         +' Mobile Varchar(20),'
-        +' School Varchar(255),'
         +' Qualif Varchar(255),'
         +' Source Varchar(255) NOT NULL,'
         +' Ad_Name Varchar(255) Default \'None\','
-        +' Type Varchar(255) NOT NULL,'
+        +' Course Varchar(255) NOT NULL,'
         +' City Varchar(255) NOT NULL,'
         +' AssignedTo Varchar(255) NOT NULL,'
         +' Status Varchar(255) NOT NULL,'
-        +' Createdt Date,'
-        +' Lstfudt Date,'
+        +' CreatedBy Varchar(255) NOT NUll,'
+        +' Createdt Datetime,'
+        +' Lstfudt Datetime,'
         +' Venue Varchar(100),'
-        +' AssignDt Date,'
-        +' CallingDt Date,'
-        +' UpdationDt Date,'
+        +' AssignDt Datetime,'
+        +' CallingDt Datetime,'
+        +' UpdationDt Datetime,'
         +' Updateuserid varchar(10),'
         +' Comment Varchar(255)'
     ],
@@ -62,8 +62,6 @@ module.exports = [
     [
         'ads',
         'id int auto_increment primary key,'
-        + 'form_id VARCHAR(10) NOT NULL,'
-        + 'name VARCHAR(20) NOT NULL,'
-        + 'source VARCHAR(20) NOT NULL'
+        +'ad_name Varchar(255) Not null'
     ]
 ]

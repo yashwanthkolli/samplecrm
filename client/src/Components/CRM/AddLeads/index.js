@@ -77,10 +77,10 @@ function AddLeads(){
     const [commentsFetched, setCommentsFetched] = useState([]);
     const [employeeFetched, setEmployeesFetched] = useState([]);
     const [sourceFetched, setSourcesFetched] = useState([]);
+    const [adNameFetched, setAdNameFetched] = useState([]);
 
     const [name, setName] = useState("");
     const [email_lead, setEmailLead] = useState("");
-    const [school, setCollege] = useState("");
     const [mobile, setMobile] = useState("");
     const [city, setCity] = useState("");
     const [qualif, setQualif] = useState("");
@@ -88,6 +88,8 @@ function AddLeads(){
     const [course, setCourse] = useState("");
     const [assignTo, setAssignTo] = useState("");
     const [status, setStatus] = useState("");
+    const [comment, setComment] = useState("");
+    const [ad_name, setAdName] = useState("");
 
     const handleOpen = (id) => {
         switch (id) {
@@ -122,10 +124,24 @@ function AddLeads(){
             case 2:
                 setSource(e.target.value)
                 break;
+            case 3:
+                setCourse(e.target.value)
+                break;
+            case 4:
+                setStatus(e.target.value)
+                break;
+            case 5:
+                setAssignTo(e.target.value)
+                break;
+            case 6:
+                setComment(e.target.value);
+                break;
+            case 7:
+                setAdName(e.target.value);
+                break;
             default:
                 break;
         }
-        setQualif(e.target.value)
     }
 
     const turnToPage = (pageId) => {
@@ -155,7 +171,17 @@ function AddLeads(){
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
-
+            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name
+        })
+        .then((res) => {
+            setUpdate(!update);
+        })
+        .catch((err) => {
+            toast({
+                description: "Error in creating new lead",
+                position: "top",
+                duration: 3000
+            })
         })
     }
 
@@ -165,8 +191,12 @@ function AddLeads(){
         setName("");
         setCity("");
         setMobile("");
-        setCollege("");
         setQualif("");
+        setComment("");
+        setStatus("");
+        setSource("");
+        setAssignTo("");
+        setCourse("");
     }
 
     useEffect(() => {
@@ -235,6 +265,22 @@ function AddLeads(){
                 })
             }
         })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getAdName`,{
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
+        .then((res) => {
+            setAdNameFetched(res.data.adnames);
+        })
+        .catch((err) => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Fetching Ads failed",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
+        })
         axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, {
             email: JSON.parse(localStorage.getItem('user')).Email
         })
@@ -246,6 +292,22 @@ function AddLeads(){
                 toast({
                     id: toast_course,
                     description: "Fetching comments failed",
+                    duration: 2000,
+                    position: "top"
+                })
+            }
+        })
+        axios.post(`${process.env.REACT_APP_USER}/getEmployeeList`,{
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
+        .then((res) => {
+            setEmployeesFetched(res.data.employees);
+        })
+        .catch((err) => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Fetching Employee List failed",
                     duration: 2000,
                     position: "top"
                 })
@@ -279,7 +341,6 @@ function AddLeads(){
             </div>
         </Paper>
         <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={() => handleClose(1)} aria-labelledby="add-new-lead">
-            <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>New Lead Details</DialogTitle>
             <DialogContent>
                 <form onSubmit={handleNewLead}>
                     <TextField 
@@ -308,13 +369,13 @@ function AddLeads(){
                     />
                     <div className={classes.fieldHolder}>
                         <TextField 
+                            required
                             autoComplete="off"
-                            name="school"
                             type="text"
-                            label="School/College"
-                            placeholder="Enter School/College"
-                            value={school}
-                            onChange={e=>setCollege(e.target.value)}
+                            label="City"
+                            placeholder="Enter City Name"
+                            value={city}
+                            onChange={e=>setCity(e.target.value)}
                             style={{width: '45%'}}
                         />
                         <TextField 
@@ -329,16 +390,23 @@ function AddLeads(){
                         />
                     </div>
                     <div className={classes.fieldHolder}>
-                        <TextField 
-                            required
-                            autoComplete="off"
-                            type="text"
-                            label="City"
-                            placeholder="Enter City Name"
-                            value={city}
-                            onChange={e=>setCity(e.target.value)}
-                            style={{width: '45%'}}
-                        />
+                        <FormControl className={classes.selectField}>
+                            <InputLabel>Sources</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                value={source}
+                                onChange={(e)=>handleChange(e, 2)}
+                            >
+                            {
+                                sourceFetched.map((element, index) => {
+                                    return (
+                                        <MenuItem key={index} value={element.name}>{element.name}</MenuItem>
+                                    )
+                                })
+                            }
+                            </Select>
+                        </FormControl>
                         <FormControl className={classes.selectField}>
                             <InputLabel>Qualification</InputLabel>
                             <Select
@@ -359,15 +427,15 @@ function AddLeads(){
                     </div>
                     <div className={classes.fieldHolder}>
                         <FormControl className={classes.selectField}>
-                            <InputLabel>Sources</InputLabel>
+                            <InputLabel>Status</InputLabel>
                             <Select
                                 required
                                 fullWidth
-                                value={source}
-                                onChange={handleChange}
+                                value={status}
+                                onChange={(e)=>handleChange(e, 4)}
                             >
                             {
-                                sourceFetched.map((element, index) => {
+                                statusFetched.map((element, index) => {
                                     return (
                                         <MenuItem key={index} value={element.name}>{element.name}</MenuItem>
                                     )
@@ -376,17 +444,87 @@ function AddLeads(){
                             </Select>
                         </FormControl>
                         <FormControl className={classes.selectField}>
-                            <InputLabel>Qualification</InputLabel>
+                            <InputLabel>Courses Offered</InputLabel>
                             <Select
                                 required
                                 fullWidth
-                                value={qualif}
-                                onChange={handleChange}
+                                value={course}
+                                onChange={(e) => handleChange(e, 3)}
                             >
-                                <MenuItem value={"not_available"}>Not Available</MenuItem>
+                            {
+                                coursesFetched.map((element) => {
+                                    return(
+                                        <MenuItem key={element.id} value={element.id}>
+                                            {element.name}{" "}{element.type}{" Rs. "}{element.Cost}  
+                                        </MenuItem>
+                                    )
+                                })
+                            }
                             </Select>
                         </FormControl>
                     </div>
+                    <InputLabel style={{marginTop: '3px'}}>Assigned To</InputLabel>
+                    <Select
+                        required
+                        fullWidth
+                        value={assignTo}
+                        onChange={(e)=>handleChange(e, 5)}
+                    >
+                    {
+                        employeeFetched.map((element, index) => {
+                            return (
+                            <MenuItem key={index} value={element.Employee_ID}>{element.Firstname}{" "}{element.Surname}</MenuItem>
+                            )
+                        })
+                    }
+                    </Select>
+                    <div className={classes.fieldHolder}>
+                        <FormControl className={classes.selectField}>
+                            <InputLabel>Ads Name</InputLabel>
+                            <Select
+                                required
+                                value={ad_name}
+                                fullWidth
+                                onChange={(e) => handleChange(e, 7)}
+                            >
+                            {
+                                adNameFetched.map((element) => {
+                                    return (
+                                        <MenuItem key={element.id} value={element.ad_name}>{element.ad_name}</MenuItem>
+                                    )
+                                })
+                            }
+                            </Select>
+                        </FormControl>
+                        <FormControl className={classes.selectField}>
+                            <InputLabel style={{marginTop: '3px'}}>Comments</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                value={comment}
+                                onChange={(e)=>handleChange(e, 6)}
+                            >
+                            {
+                                commentsFetched.map((element, index) => {
+                                    return (
+                                    <MenuItem key={index} value={element.comment}>{element.comment}</MenuItem>
+                                    )
+                                })
+                            }
+                                <MenuItem value="others" > Others </MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <TextField 
+                        fullWidth
+                        autoComplete="off"
+                        value={comment}
+                        onChange={(e)=>handleChange(e, 6)}
+                        style={{marginTop: '7px'}}
+                        label="Comment"
+                        placeholder="Additional Comment"
+                        disabled={comment === "others" ? false : true}
+                    />
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
                         Add New Lead
                     </Button>

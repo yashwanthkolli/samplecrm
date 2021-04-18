@@ -218,3 +218,20 @@ exports.sourceFetchController = (req, res) => {
         })
     })
 }
+
+exports.adsFetchController = (req, res) => {
+
+    ads_fetch = 'select * from ice.ads';
+    connect.query(ads_fetch, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching the ads"
+            })
+        } else {
+            return res.status(200).json({
+                message: "Fetched Ads",
+                adnames: result
+            })
+        }
+    })
+}

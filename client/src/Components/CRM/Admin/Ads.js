@@ -26,11 +26,13 @@ function Ads() {
     const [source, setSource] = useState('')
     const [deleteAdId, setDeleteAdId] = useState()
 
+    const [update, setUpdate] = useState(false);
+
     useEffect( () => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getAds`, { email: JSON.parse(localStorage.getItem('user')).Email })
         .then(res => setAds(res.data.ads))
         .catch(err => console.log(err))
-    }, [])
+    }, [update])
 
     const onDeleteAd = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteAds`, {
@@ -38,9 +40,7 @@ function Ads() {
             id: id
         })
         .then(res => {
-            axios.post(`${process.env.REACT_APP_CONFIG}/getAds`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setAds(res.data.ads))
-            .catch(err => console.log(err))
+            setUpdate(!update);
         })
         .catch(err => console.log(err))
     }

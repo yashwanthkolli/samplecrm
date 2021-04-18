@@ -165,6 +165,7 @@ exports.adsAddController = (req, res) => {
                 message: "Error in fetching status"
             })
         }
+        
         return res.status(200).json({
             message: "New Ad Added"
         })

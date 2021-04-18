@@ -54,7 +54,7 @@ function Ads() {
         { 
             email: JSON.parse(localStorage.getItem('user')).Email
         })
-        .then(res => setAds(res.data.ads))
+        .then(res => setAds(res.data.adnames))
         .catch(err => {})
     }, [update])
 
@@ -94,7 +94,12 @@ function Ads() {
             ad_name, medium, place
         })
         .then(res => {
-            setUpdate(!update)
+            setUpdate(!update);
+            setOpen(false);
+            setPlace('');
+            setMedium('');
+            setAdName('');
+
             if(!toast.isActive(toast_id)){
                 toast({
                     id: toast_id,
@@ -122,9 +127,9 @@ function Ads() {
             <MaterialTable
                 title="Current Active Ads"
                 columns={[
-                    { title: 'Name', field: 'name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
-                    { title: 'Medium', field: 'source', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
-                    { title: 'Place', field: 'city', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                    { title: 'Name', field: 'ad_name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                    { title: 'Medium', field: 'medium', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                    { title: 'Place', field: 'place', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     {
                         title: 'Delete',
                         field: 'internal_action',

@@ -29,9 +29,12 @@ function Ads() {
     const [update, setUpdate] = useState(false);
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getAds`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getAds`,
+        { 
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
         .then(res => setAds(res.data.ads))
-        .catch(err => console.log(err))
+        .catch(err => {})
     }, [update])
 
     const onDeleteAd = (id) => {
@@ -46,14 +49,16 @@ function Ads() {
     }
 
     const onAddAd = (e) => {
+        e.preventDefault();
+
         axios.post(`${process.env.REACT_APP_CONFIG}/addAds`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             form_id,
             name,
             source
         })
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        .then(res => setUpdate(!update))
+        .catch(err => {})
     }
 
     return (

@@ -18,6 +18,8 @@ import {
   } from "@chakra-ui/react"
 
 function Courses() {
+
+    const [update, setUpdate] = useState(false);
     const [courses, setCourses] = useState([])
     const [openAddCourseForm, setOpenAddCourseForm] = useState(false)
     const [openUpdateCourseForm, setOpenUpdateCourseForm] = useState(false)
@@ -40,9 +42,7 @@ function Courses() {
             id: id
         })
         .then(res => {
-            axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setCourses(res.data.courses))
-            .catch(err => console.log(err))
+            setUpdate(!update)
         })
         .catch(err => console.log(err))
     }

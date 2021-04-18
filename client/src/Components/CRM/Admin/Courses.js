@@ -51,8 +51,8 @@ function Courses() {
     useEffect( () => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
         .then(res => setCourses(res.data.courses))
-        .catch(err => console.log(err))
-    }, [])
+        .catch(err => {})
+    }, [update])
 
     const onDeleteCourse = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteCourses`, {
@@ -78,13 +78,15 @@ function Courses() {
             setName('')
             setType('')
             setCost('')
-
+            onCloseForm();
             setUpdate(!update);
         })
         .catch(err => {})
     }
 
-    const onUpdateCourse = (id) => {
+    const onUpdateCourse = (e, id) => {
+        e.preventDefault();
+
         axios.post(`${process.env.REACT_APP_CONFIG}/updateCourses`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             id,
@@ -97,10 +99,11 @@ function Courses() {
             setType('')
             setCost('')
             setUpdateCourseForm('')
+            onCloseForm();
 
             setUpdate(!update);
         })
-        .catch(err => console.log(err))
+        .catch(err => {})
     }
 
     const onCloseForm = () => {
@@ -218,7 +221,7 @@ function Courses() {
             <Dialog open={openUpdateCourseForm} fullWidth onClose={() => onCloseForm()} aria-labelledby="add-new-lead">
                 <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Update Course</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={ () => onUpdateCourse(updateCourseForm) }>
+                    <form onSubmit={ (e) => onUpdateCourse(e, updateCourseForm) }>
                         <TextField 
                             required
                             fullWidth

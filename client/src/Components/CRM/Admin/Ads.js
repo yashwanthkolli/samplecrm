@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import MaterialTable from 'material-table'
-import axios from 'axios'
+import axios from 'axios';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -14,10 +16,29 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogContent,
-    AlertDialogOverlay
+    AlertDialogOverlay,
+    useToast
   } from "@chakra-ui/react"
 
+const useStyles = makeStyles((theme) => ({
+    containerLead: {
+        display: 'flex',
+        width: '100%',
+        height: '95%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: theme.spacing(1),
+        padding: theme.spacing(1),
+        flexDirection:'column'
+    }
+}))
+
 function Ads() {
+
+    const classes = useStyles();
+    const toast = useToast();
+    const toast_id = "ads_id";
+
     const [ads, setAds] = useState([])
     const [open, setOpen] = useState(false)
     const [popup, setPopup] = useState(false)
@@ -44,8 +65,25 @@ function Ads() {
         })
         .then(res => {
             setUpdate(!update);
+            if(!toast.isActive(toast_id)){
+                toast({
+                    id: toast_id,
+                    description: "Deleted Ad Successfully",
+                    duration: 3000,
+                    position: "top"
+                })
+            }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            if(!toast.isActive(toast_id)){
+                toast({
+                    id: toast_id,
+                    description: "Deleting Ad Failed",
+                    duration: 3000,
+                    position: "top"
+                })
+            }
+        })
     }
 
     const onAddAd = (e) => {
@@ -57,14 +95,34 @@ function Ads() {
             name,
             source
         })
-        .then(res => setUpdate(!update))
-        .catch(err => {})
+        .then(res => {
+            setUpdate(!update)
+            if(!toast.isActive(toast_id)){
+                toast({
+                    id: toast_id,
+                    description: "Added Comment Successfully",
+                    duration: 3000,
+                    position: "top"
+                })
+            }
+        })
+        .catch(err => {
+            if(!toast.isActive(toast_id)){
+                toast({
+                    id: toast_id,
+                    description: "Failed To Add Comment",
+                    duration: 3000,
+                    position: "top"
+                })
+            }
+        })
     }
 
     return (
-        <div style={{width: '90%'}}>
+        <>
+        <Paper elevation={3} className={classes.containerLead}>
             <MaterialTable
-                title="Ads"
+                title="Current Active Ads"
                 columns={[
                     { title: 'Id', field: 'id', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     { title: 'Name', field: 'name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
@@ -95,11 +153,12 @@ function Ads() {
                         backgroundColor: '#EEE',
                     }
                 }}
-                style={{padding: '15px 30px', margin: '30px 0'}}
+                style={{width: '95%'}}
             />
             <Button style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px', float: 'right'}} variant="contained"  onClick={() => setOpen(!open)}>
                 New Ad
             </Button>
+            </Paper>
             <Dialog open={open} fullWidth onClose={() => setOpen(false)} aria-labelledby="add-new-lead">
                 <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Add Course</DialogTitle>
                 <DialogContent>
@@ -172,7 +231,7 @@ function Ads() {
                 </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </div>
+        </>
     )
 }
 

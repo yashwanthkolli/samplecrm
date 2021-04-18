@@ -39,20 +39,31 @@ module.exports = [
     ],
     [
         'courses',
-        'name VARCHAR(255) NOT NULL,'
+        'id int auto_increment primary key,'
+        +'name VARCHAR(255) NOT NULL,'
         +' type VARCHAR(100) NOT NULL,'
         +' Cost varchar(100) NOT NULL'
     ],
     [
         'status',
-        'name Varchar(255) Not null'
+        'id int auto_increment primary key,'
+        + 'name Varchar(255) Not null'
     ],
     [
         'sources',
-        'name Varchar(255) Not null'
+        'id int auto_increment primary key,'
+        + 'name Varchar(255) Not null'
     ],
     [
         'comments',
-        'comment Varchar(255) Not null'
+        'id int auto_increment primary key,'
+        + 'comment Varchar(255) Not null'
+    ],
+    [
+        'ads',
+        'id int auto_increment primary key,'
+        + 'form_id VARCHAR(10) NOT NULL,'
+        + 'name VARCHAR(20) NOT NULL,'
+        + 'source VARCHAR(20) NOT NULL'
     ]
 ]

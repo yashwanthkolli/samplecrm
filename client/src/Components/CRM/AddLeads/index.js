@@ -535,8 +535,20 @@ function AddLeads(){
             </DialogContent>
         </Dialog>
         <Dialog open={open2} fullWidth TransitionComponent={Transition} onClose={() => handleClose(2)} aria-labelledby="add-new-lead">
-            <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads</DialogTitle>
+            <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads By Category</DialogTitle>
             <DialogContent>
+                <form>
+                    <FormControl fullWidth>
+                        <InputLabel>Select Search Category</InputLabel>
+                        <Select
+                            required
+
+                        >
+                            <MenuItem value="Date">Date</MenuItem>
+                            <MenuItem value="City">City</MenuItem>
+                        </Select>
+                    </FormControl>
+                </form>
             </DialogContent>
         </Dialog>
         </>

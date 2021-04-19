@@ -66,6 +66,7 @@ function AddLeads(){
     const classes = useStyles();
     const toast = useToast();
     const toast_course = "toast_course"; 
+    const arr_category = ["Date", "", "Status", "Course", "CreatedBy"];
 
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
@@ -92,6 +93,8 @@ function AddLeads(){
     const [ad_name, setAdName] = useState("");
 
     const [category, setCategory] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     const handleChangeCategory = (e) => {
         setCategory(e.target.value);
@@ -557,12 +560,34 @@ function AddLeads(){
                             <MenuItem value="Mobile">Mobile</MenuItem>
                             <MenuItem value="Status">Status</MenuItem>
                             <MenuItem value="Course">Course</MenuItem>
-                            <MenuItem value="Createdt">Created Date</MenuItem>
+                            <MenuItem value="CreatedBy">Created By</MenuItem>
                         </Select>
                     </FormControl>
-                    <div className={classes.fieldHolder}>
-                        
+                    <div className={classes.fieldHolder} style={{display: category === "Date" ? 'flex' : 'none'}}>
+                        <TextField 
+                            required
+                            type="date"
+                            label="Range Start Date"
+                            value={startDate}
+                            onChange={e=>setStartDate(e.target.value)}
+                            style={{width: '45%'}}
+                        />
+                        <TextField 
+                            required
+                            type="date"
+                            label="Range End Date"
+                            value={endDate}
+                            onChange={e=>setEndDate(e.target.value)}
+                            style={{width: '45%'}}
+                        />
                     </div>
+                    <TextField 
+                        required
+                        fullWidth
+                        style={{display: !(arr_category.includes(category)) 
+                            ? 'flex' : 'none', marginTop: '7px'}}
+                        label={category === "CreatedBy" ? "Created By" : category}
+                    />
                 </form>
             </DialogContent>
         </Dialog>

@@ -14,7 +14,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
-import {FaWalking, FaMailBulk} from 'react-icons/fa';
+import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -83,6 +83,9 @@ function AddLeads(){
 
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+    const [open3, setOpen3] = useState(false);
+    const [open4, setOpen4] = useState(false);
+    const [open5, setOpen5] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [update, setUpdate] = useState(false);
 
@@ -122,6 +125,15 @@ function AddLeads(){
             case 2:
                 setOpen2(true);
                 break;
+            case 3:
+                setOpen3(true);
+                break;
+            case 4:
+                setOpen4(true);
+                break;
+            case 5:
+                setOpen5(true);
+                break;
             default:
                 break;
         }
@@ -133,6 +145,15 @@ function AddLeads(){
                 break;
             case 2:
                 setOpen2(false);
+                break;
+            case 3:
+                setOpen3(false);
+                break;
+            case 4:
+                setOpen4(false);
+                break;
+            case 5:
+                setOpen5(false);
                 break;
             default:
                 break;
@@ -251,7 +272,9 @@ function AddLeads(){
                             <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}}>
                                 <FaMailBulk style={{margin:'5px'}} />
                             </Button>
-                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}}>I</Button>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}}>
+                                <FaBookmark style={{margin: '5px'}} />
+                            </Button>
                         </div>
                 })
             })
@@ -587,7 +610,7 @@ function AddLeads(){
                 </form>
             </DialogContent>
         </Dialog>
-        <Dialog open={open2} fullWidth TransitionComponent={Transition} onClose={() => handleClose(2)} aria-labelledby="add-new-lead">
+        <Dialog open={open2} fullWidth TransitionComponent={Transition} onClose={() => handleClose(2)} aria-labelledby="search-lead">
             <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads By Category</DialogTitle>
             <DialogContent>
                 <form>
@@ -640,6 +663,15 @@ function AddLeads(){
                     </Button>
                 </form>
             </DialogContent>
+        </Dialog>
+        <Dialog open={open3} fullWidth TransitionComponent={Transition} onClose={() => handleClose(3)} aria-labelledby="Lead Details">
+            <DialogTitle>Lead Details</DialogTitle>
+        </Dialog>
+        <Dialog open={open4} fullWidth TransitionComponent={Transition} onClose={() => handleClose(4)} aria-labelledby="Lead Statu Details">
+            <DialogTitle>Lead Status Update</DialogTitle>
+        </Dialog>
+        <Dialog open={open5} fullWidth TransitionComponent={Transition} onClose={() => handleClose(5)} aria-labelledby="Mark Walk-In">
+            <DialogTitle>Lead Mark Walk-in</DialogTitle>
         </Dialog>
         </>
     )

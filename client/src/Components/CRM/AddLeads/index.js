@@ -701,11 +701,15 @@ function AddLeads(){
             <DialogTitle>Lead Mark Walk-in</DialogTitle>
             <DialogContent>
                 <div className={classes.markWalkIn}>
-                    <div className={classes.iconHolder}>
-                        <AiFillAlert />
+                    <div className={classes.iconHolder} >
+                        <AiFillAlert style={{width: '70%', height: '70%'}}/>
                     </div>
                     <div className={classes.btnWalkIn}>
-                        <Button variant="contained" fullWidth style={{backgroundColor: '#202950', color: 'white', marginRight: '25px'}}>
+                        <Button variant="contained" 
+                            fullWidth 
+                            style={{backgroundColor: '#202950', color: 'white', marginRight: '25px'}}
+                            onClick={() => handleClose(5)}
+                        >
                             Cancel
                         </Button>
                         <Button variant="contained" fullWidth style={{backgroundColor: '#202950', color: 'white'}}>

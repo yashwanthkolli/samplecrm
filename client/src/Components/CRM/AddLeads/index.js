@@ -15,6 +15,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
+import { AiFillAlert } from 'react-icons/ai';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -686,6 +687,21 @@ function AddLeads(){
         </Dialog>
         <Dialog open={open5} fullWidth TransitionComponent={Transition} onClose={() => handleClose(5)} aria-labelledby="Mark Walk-In">
             <DialogTitle>Lead Mark Walk-in</DialogTitle>
+            <DialogContent>
+                <div className={classes.markWalkIn}>
+                    <div className={classes.iconHolder}>
+                        <AiFillAlert />
+                    </div>
+                    <div className={classes.btnWalkIn}>
+                        <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}}>
+                            Cancel
+                        </Button>
+                        <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}}>
+                            Yeah! It's a walk-in
+                        </Button>
+                    </div>
+                </div>
+            </DialogContent>
         </Dialog>
         </>
     )

@@ -56,17 +56,26 @@ const useStyles = makeStyles((theme) => ({
     selectField:{
         width: '45%'
     },
-    loadDetails:{
-
+    leadDetails:{
+        fontSize: '15px',
+        fontFamily: 'Nunito'
     },
     course: {
-
+        fontSize: '15px',
+        fontFamily: 'Nunito'
     },
     btnSection:{
-
+        display:'flex'
     },
     status:{
-
+        display: 'flex',
+        flexDirection: 'column',
+        fontSize: '15px',
+        fontFamily: 'Nunito'
+    },
+    assigned:{
+        fontSize: '15px',
+        fontFamily: 'Nunito'
     }
 }));
 
@@ -262,9 +271,14 @@ function AddLeads(){
                         </div>,
                     "status": 
                         <div className={classes.status} style={{cursor: "pointer"}} onClick={() => handleOpen(4)}>
-                            {element.Status + " " + new Date(element.UpdationDt).toLocaleString()}
+                            <div>{element.Status}</div>
+                            <div>{new Date(element.UpdationDt).toLocaleString()}</div>
                         </div>,
-                    "assignedTo": element.assignF + " " + element.assignS,
+                    "assignedTo": 
+                        <div className={classes.assigned}>
+                            <div>{element.assignF + " " + element.assignS}</div>
+                            <div>{new Date(element.AssignDt).toLocaleString()}</div>
+                        </div>,
                     "actions": <div className={classes.btnSection}>
                             <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen(5)}>
                                 <FaWalking style={{margin: '5px'}} />    

@@ -253,23 +253,23 @@ function AddLeads(){
             res.data.latest.forEach((element) => {
                 data_latest.push({
                     "details": 
-                        <div className={classes.leadDetails} style={{cursor: "pointer"}}>
+                        <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => handleOpen(3)}>
                             {element.Name + " | " + element.Email + " | " + element.Mobile}
                         </div>,
                     "course": 
-                        <div className={classes.course}>
+                        <div className={classes.course} >
                             {element.course + " | " + element.courseType + " | Rs." + element.courseCost}
                         </div>,
                     "status": 
-                        <div className={classes.status}>
+                        <div className={classes.status} style={{cursor: "pointer"}} onClick={() => handleOpen(4)}>
                             {element.Status + " " + new Date(element.UpdationDt).toLocaleString()}
                         </div>,
                     "assignedTo": element.assignF + " " + element.assignS,
                     "actions": <div className={classes.btnSection}>
-                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen(5)}>
                                 <FaWalking style={{margin: '5px'}} />    
                             </Button>
-                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} >
                                 <FaMailBulk style={{margin:'5px'}} />
                             </Button>
                             <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}}>

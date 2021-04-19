@@ -164,3 +164,19 @@ exports.addUserController = (req, res) => {
         }
     })
 }
+
+exports.employeeAssignedController = (req, res) => {
+
+    employee_query = 'select Firstname, Surname, Employee_ID, email from ice.employees';
+    connect.query(employee_query, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching employee details"
+            })
+        }
+        return res.status(200).json({
+            message: "Details Fetch Successfull",
+            employees: result
+        })
+    })
+}

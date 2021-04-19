@@ -10,7 +10,7 @@ exports.latestLeadController = (req, res) => {
             })
         }
 
-        if(result[0] <= 20){
+        if(result[0].count <= 20){
             leads_query = 'select * from ice.leads';
             connect.query(leads_query, function(err, r){
                 if(err){
@@ -36,6 +36,44 @@ exports.latestLeadController = (req, res) => {
                     message:"Fetched data",
                     latest: re[0]
                 })
+            })
+        }
+    })
+}
+
+exports.addNewLeadsController = (req, res) => {
+    
+    const {
+        name,
+        email_lead,
+        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name
+    } = req.body;
+    const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0]
+
+    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment) values ('
+        + ' \''+ name +'\' ,'
+        + ' \''+ email_lead +'\' ,'
+        + ' \''+ mobile +'\' ,'
+        + ' \''+ qualif +'\' ,'
+        + ' \''+ source +'\' ,'
+        + ' \''+ ad_name +'\' ,'
+        + ' \''+ course +'\' ,'
+        + ' \''+ city +'\' ,'
+        + ' \''+ assignTo +'\' ,'
+        + '\''+ status +'\','
+        + ' \''+ email +'\' ,'
+        + ' \''+ now +'\' ,'
+        + ' \''+ now +'\' ,'
+        + ' \''+ comment + '\')';
+    connect.query(addnewlead_query, function(err){
+        console.log(err);
+        if(err){
+            return res.status(500).json({
+                err: err 
+            })
+        } else {
+            return res.status(200).json({
+                message: "Created Leads Successfully"
             })
         }
     })

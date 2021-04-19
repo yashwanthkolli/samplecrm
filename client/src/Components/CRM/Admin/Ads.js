@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import MaterialTable from 'material-table'
-import axios from 'axios'
+import axios from 'axios';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import { useToast } from '@chakra-ui/react'; 
 import Dialog from '@material-ui/core/Dialog';
@@ -15,104 +17,122 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogContent,
-    AlertDialogOverlay
+    AlertDialogOverlay,
+    useToast
   } from "@chakra-ui/react"
 
+const useStyles = makeStyles((theme) => ({
+    containerLead: {
+        display: 'flex',
+        width: '100%',
+        height: '95%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: theme.spacing(1),
+        padding: theme.spacing(1),
+        flexDirection:'column'
+    }
+}))
+
 function Ads() {
-    const toast = useToast()
+
+    const classes = useStyles();
+    const toast = useToast();
+    const toast_id = "ads_id";
 
     const [ads, setAds] = useState([])
     const [open, setOpen] = useState(false)
     const [popup, setPopup] = useState(false)
-    const [form_id, setForm_id] = useState('')
-    const [name, setName] = useState('')
-    const [source, setSource] = useState('')
+    const [ad_name, setAdName] = useState('');
+    const [medium, setMedium] = useState('');
+    const [place, setPlace] = useState('');
     const [deleteAdId, setDeleteAdId] = useState()
 
-    useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getAds`, { email: JSON.parse(localStorage.getItem('user')).Email })
-        .then(res => setAds(res.data.ads))
-        .catch(err => {
-                toast({
-                    description: "Error in fetching ads",
-                    duration: 2000,
-                    position: "top"
-                })
-            })
-    }, [])
+    const [update, setUpdate] = useState(false);
 
+    useEffect( () => {
+
+        axios.post(`${process.env.REACT_APP_CONFIG}/getAds`,
+        { 
+            email: JSON.parse(localStorage.getItem('user')).Email
+        })
+        .then(res => setAds(res.data.adnames))
+        .catch(err => {})
+    }, [update])
+  
     const onDeleteAd = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteAds`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             id: id
         })
         .then(res => {
-            toast({
-                description: "Ad deleted",
-                duration: 2000,
-                position: "top"
-            })
-            axios.post(`${process.env.REACT_APP_CONFIG}/getAds`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setAds(res.data.ads))
-            .catch(err => {
+
+            setUpdate(!update);
+            if(!toast.isActive(toast_id)){
                 toast({
-                    description: "Error in fetching ads",
-                    duration: 2000,
+                    id: toast_id,
+                    description: "Deleted Ad Successfully",
+                    duration: 3000,
                     position: "top"
                 })
-            })
+            }
         })
         .catch(err => {
-            toast({
-                description: "Error in deleting ads",
-                duration: 2000,
-                position: "top"
-            })
+            if(!toast.isActive(toast_id)){
+                toast({
+                    id: toast_id,
+                    description: "Deleting Ad Failed",
+                    duration: 3000,
+                    position: "top"
+                })
+            }
         })
     }
 
     const onAddAd = (e) => {
-        e.preventDefault()
-        setOpen(false)
+        e.preventDefault();
+
         axios.post(`${process.env.REACT_APP_CONFIG}/addAds`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
-            form_id,
-            name,
-            source
+            ad_name, medium, place
         })
         .then(res => {
-            toast({
-                description: "New ad added",
-                duration: 2000,
-                position: "top"
-            })
-            axios.post(`${process.env.REACT_APP_CONFIG}/getAds`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setAds(res.data.ads))
-            .catch(err => {
+            setUpdate(!update);
+            setOpen(false);
+            setPlace('');
+            setMedium('');
+            setAdName('');
+
+            if(!toast.isActive(toast_id)){
                 toast({
-                    description: "Error in fetching ads",
-                    duration: 2000,
+                    id: toast_id,
+                    description: "Added Comment Successfully",
+                    duration: 3000,
                     position: "top"
                 })
-            })
+            }
         })
         .catch(err => {
-            toast({
-                description: "Error in adding ads",
-                duration: 2000,
-                position: "top"
-            })
+            if(!toast.isActive(toast_id)){
+                toast({
+                    id: toast_id,
+                    description: "Failed To Add Comment",
+                    duration: 3000,
+                    position: "top"
+                })
+            }
         })
     }
 
     return (
-        <div style={{width: '90%'}}>
+        <>
+        <Paper elevation={3} className={classes.containerLead}>
             <MaterialTable
-                title="Ads"
+                title="Current Active Ads"
                 columns={[
-                    { title: 'Id', field: 'id', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
-                    { title: 'Name', field: 'name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
-                    { title: 'Medium', field: 'source', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                    { title: 'Name', field: 'ad_name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                    { title: 'Medium', field: 'medium', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                    { title: 'Place', field: 'place', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     {
                         title: 'Delete',
                         field: 'internal_action',
@@ -139,36 +159,25 @@ function Ads() {
                         backgroundColor: '#EEE',
                     }
                 }}
-                style={{padding: '15px 30px', margin: '30px 0'}}
+                style={{width: '95%'}}
             />
             <Button style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px', float: 'right'}} variant="contained"  onClick={() => setOpen(!open)}>
-                New Ad
+                Create New Ad
             </Button>
+            </Paper>
             <Dialog open={open} fullWidth onClose={() => setOpen(false)} aria-labelledby="add-new-lead">
-                <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Add Course</DialogTitle>
+                <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Create a new Ad</DialogTitle>
                 <DialogContent>
                     <form onSubmit={ (e) => onAddAd(e) }>
                         <TextField 
                             required
                             fullWidth
                             autoComplete="off"
-                            name="form_id"
+                            name="ad_name"
                             type="text"
-                            value={form_id}
-                            onChange={e=>setForm_id(e.target.value)}
-                            label="Form Id"
-                            placeholder="Enter Form Id"
-                            style={{marginBottom: '7px'}}
-                        />
-                        <TextField 
-                            required
-                            fullWidth
-                            autoComplete="off"
-                            name="name"
-                            type="text"
-                            value={name}
-                            onChange={e=>setName(e.target.value)}
-                            label="Name"
+                            value={ad_name}
+                            onChange={e=>setAdName(e.target.value)}
+                            label="Ad Name"
                             placeholder="Enter Ad Name"
                             style={{marginBottom: '7px'}}
                         />
@@ -176,16 +185,28 @@ function Ads() {
                             required
                             fullWidth
                             autoComplete="off"
-                            name="source"
+                            name="medium"
                             type="text"
-                            value={source}
-                            onChange={e=>setSource(e.target.value)}
-                            label="Medium"
+                            value={medium}
+                            onChange={e=>setMedium(e.target.value)}
+                            label="Ad Medium"
                             placeholder="Enter Ad Medium"
                             style={{marginBottom: '7px'}}
                         />
+                        <TextField 
+                            required
+                            fullWidth
+                            autoComplete="off"
+                            name="place"
+                            type="text"
+                            value={place}
+                            onChange={e=>setPlace(e.target.value)}
+                            label="Place"
+                            placeholder="Enter place of activity"
+                            style={{marginBottom: '7px'}}
+                        />
                         <Button type="submit" style={{backgroundColor: '#202950', color: 'white', margin: '20px 5px'}} variant="contained">
-                            New Ad
+                            Create
                         </Button>
                     </form>
                 </DialogContent>
@@ -216,7 +237,7 @@ function Ads() {
                 </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </div>
+        </>
     )
 }
 

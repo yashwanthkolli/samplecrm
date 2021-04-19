@@ -1,4 +1,5 @@
 const express = require('express');
+const { verify } = require('jsonwebtoken');
 const router = express.Router();
 
 const {
@@ -40,5 +41,7 @@ router.post('/deleteStatus', verifyHigherLevel, statusDeleteController);
 router.post('/addStatus', verifyHigherLevel, statusAddController);
 
 router.post('/getSource', verifyHigherLevel, sourceFetchController);
+router.post('/getComments', verifyHigherLevel, commentFetchController);
+router.post('/getAdName', verifyHigherLevel, adsFetchController);
 
 module.exports = router;

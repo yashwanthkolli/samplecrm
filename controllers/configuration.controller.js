@@ -153,11 +153,11 @@ exports.adsDeleteController = (req, res) => {
 
 exports.adsAddController = (req, res) => {
 
-    const { form_id, name, source } = req.body;
-    newAd_add = 'insert into ice.ads (form_id, name, source) values (' 
-    + '\'' + form_id + '\','
-    + '\'' + name + '\','
-    + '\'' + source + '\''
+    const { ad_name, medium, place } = req.body;
+    newAd_add = 'insert into ice.ads (ad_name, medium, place) values (' 
+    + '\'' + ad_name + '\','
+    + '\'' + medium + '\','
+    + '\'' + place + '\''
     +')';
     connect.query(newAd_add, function(err, result) {
         if(err){
@@ -165,6 +165,7 @@ exports.adsAddController = (req, res) => {
                 message: "Error in fetching status"
             })
         }
+        
         return res.status(200).json({
             message: "New Ad Added"
         })
@@ -232,5 +233,22 @@ exports.sourceFetchController = (req, res) => {
             message: "Fetched Source",
             sources: result
         })
+    })
+}
+
+exports.adsFetchController = (req, res) => {
+
+    ads_fetch = 'select * from ice.ads';
+    connect.query(ads_fetch, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching the ads"
+            })
+        } else {
+            return res.status(200).json({
+                message: "Fetched Ads",
+                adnames: result
+            })
+        }
     })
 }

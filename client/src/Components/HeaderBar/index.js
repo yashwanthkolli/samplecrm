@@ -15,6 +15,7 @@ import Avatar from '@material-ui/core/Avatar';
 import {ImProfile} from 'react-icons/im';
 import {BsFillChatSquareDotsFill} from 'react-icons/bs';
 import { FiLogOut } from 'react-icons/fi';
+import { GrResources } from 'react-icons/gr';
 import {BiCarousel, BiChalkboard, BiCommentDetail} from 'react-icons/bi';
 import { AiFillHome } from 'react-icons/ai';
 import {MdEventNote, MdFeedback, MdUpdate} from 'react-icons/md';
@@ -134,7 +135,8 @@ function HeaderBar({match}){
         {id: 3 ,path: `${match.path}/ads`, text: 'Ads',  icon: BiCarousel },
         {id: 4 ,path: `${match.path}/comments`, text: 'Comments', icon: BiCommentDetail },
         {id: 5 ,path: `${match.path}/status`, text: 'Status', icon: TiTick },
-        {id: 6 ,path: `${match.path}/updateAdmin`, text: 'Edit Profile', icon: FaUserEdit }
+        {id: 6 ,path: `${match.path}/sources`, text: 'Sources', icon: GrResources },
+        {id: 7 ,path: `${match.path}/updateAdmin`, text: 'Edit Profile', icon: FaUserEdit }
     ]
 
     const teamNav = [

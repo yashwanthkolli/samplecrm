@@ -236,19 +236,35 @@ exports.sourceFetchController = (req, res) => {
     })
 }
 
-exports.adsFetchController = (req, res) => {
+exports.sourceDeleteController = (req, res) => {
 
-    ads_fetch = 'select * from ice.ads';
-    connect.query(ads_fetch, function(err, result){
-        if(err){
+    const { id } = req.body;
+    source_delete = 'delete from ice.sources where id=\'' + id + '\'';
+    connect.query(source_delete, function(err, result) {
+        if (err) {
             return res.status(500).json({
-                message: "Error in fetching the ads"
-            })
-        } else {
-            return res.status(200).json({
-                message: "Fetched Ads",
-                adnames: result
+                message: "Error in Deleting source"
             })
         }
+        return res.status(200).json({
+            message: "Deleted rows"
+        })
+    })
+}
+
+exports.sourceAddController = (req, res) => {
+
+    const { source } = req.body;
+    source_add = 'insert into ice.sources (name) values (\'' + source + '\')';
+    connect.query(source_add, function(err, result) {
+        if(err){
+            return res.status(500).json({
+                message: "Error in adding source"
+            })
+        }
+        return res.status(200).json({
+            message: "Source Added"
+        })
+
     })
 }

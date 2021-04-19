@@ -14,6 +14,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
+import {FaWalking, FaMailBulk} from 'react-icons/fa';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -56,6 +57,15 @@ const useStyles = makeStyles((theme) => ({
         width: '45%'
     },
     loadDetails:{
+
+    },
+    course: {
+
+    },
+    btnSection:{
+
+    },
+    status:{
 
     }
 }));
@@ -227,14 +237,22 @@ function AddLeads(){
                         </div>,
                     "course": 
                         <div className={classes.course}>
-                            {element.course + " " + element.courseType}
+                            {element.course + " | " + element.courseType + " | Rs." + element.courseCost}
                         </div>,
-                    "createdBy": element.creatorF + " " + element.creatorS,
+                    "status": 
+                        <div className={classes.status}>
+                            {element.Status + " " + new Date(element.UpdationDt).toLocaleString()}
+                        </div>,
                     "assignedTo": element.assignF + " " + element.assignS,
-                    "status": element.Status,
-                    "actions": <>
-                            <Button variant="contained">I</Button>
-                        </>
+                    "actions": <div className={classes.btnSection}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}}>
+                                <FaWalking style={{margin: '5px'}} />    
+                            </Button>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}}>
+                                <FaMailBulk style={{margin:'5px'}} />
+                            </Button>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}}>I</Button>
+                        </div>
                 })
             })
             setTableData(data_latest);
@@ -361,7 +379,6 @@ function AddLeads(){
                     columns={[
                         {title: 'Lead Details', field: "details", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Course', field: "course", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
-                        {title: 'Created By', field: "createdBy", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Status', field: "status", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Assigned To', field: "assignedTo", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Actions', field: "actions", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}}

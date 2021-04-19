@@ -11,12 +11,13 @@ exports.latestLeadController = (req, res) => {
         }
 
         if(result[0].count <= 20){
-            leads_query = 'select leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status,'
+            leads_query = 'select leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt,'
             +' courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
-            +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS, status from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
+            +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id';
             connect.query(leads_query, function(err, r){
                 if(err){
+                    console.log(err);
                     return res.status(500).json({
                         message: "Error in fetching the data"
                     })
@@ -53,7 +54,7 @@ exports.addNewLeadsController = (req, res) => {
     } = req.body;
     const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0]
 
-    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment) values ('
+    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment, UpdationDt) values ('
         + ' \''+ name +'\' ,'
         + ' \''+ email_lead +'\' ,'
         + ' \''+ mobile +'\' ,'
@@ -67,7 +68,8 @@ exports.addNewLeadsController = (req, res) => {
         + ' \''+ email +'\' ,'
         + ' \''+ now +'\' ,'
         + ' \''+ now +'\' ,'
-        + ' \''+ comment + '\')';
+        + ' \''+ comment + '\','
+        + '\'' + now + '\')';
     connect.query(addnewlead_query, function(err){
         console.log(err);
         if(err){

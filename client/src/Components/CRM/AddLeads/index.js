@@ -108,6 +108,9 @@ function AddLeads(){
     const [open3, setOpen3] = useState(false);
     const [open4, setOpen4] = useState(false);
     const [open5, setOpen5] = useState(false);
+    const [open6, setOpen6] = useState(false);
+    const [open7, setOpen7] = useState(false);
+
     const [tableData, setTableData] = useState([]);
     const [update, setUpdate] = useState(false);
 
@@ -138,6 +141,9 @@ function AddLeads(){
     const handleChangeCategory = (e) => {
         setCategory(e.target.value);
     }
+    const handleChangeValue = (e) => {
+        setSearchValue(e.target.value);
+    }
 
     const handleOpen = (id) => {
         switch (id) {
@@ -155,6 +161,12 @@ function AddLeads(){
                 break;
             case 5:
                 setOpen5(true);
+                break;
+            case 6:
+                setOpen6(true);
+                break;
+            case 7: 
+                setOpen7(true);
                 break;
             default:
                 break;
@@ -176,6 +188,12 @@ function AddLeads(){
                 break;
             case 5:
                 setOpen5(false);
+                break;
+            case 6:
+                setOpen6(false);
+                break;
+            case 7:
+                setOpen7(false);
                 break;
             default:
                 break;
@@ -296,10 +314,10 @@ function AddLeads(){
                             <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen(5)}>
                                 <FaWalking style={{margin: '5px'}} />    
                             </Button>
-                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} >
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen(6)}>
                                 <FaMailBulk style={{margin:'5px'}} />
                             </Button>
-                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}} onClick={() => handleOpen(7)}>
                                 <FaBookmark style={{margin: '5px'}} />
                             </Button>
                         </div>
@@ -655,6 +673,7 @@ function AddLeads(){
                             <MenuItem value="Status">Status</MenuItem>
                             <MenuItem value="Course">Course</MenuItem>
                             <MenuItem value="CreatedBy">Created By</MenuItem>
+                            <MenuItem value="AssignedTo">Assigned To</MenuItem>
                         </Select>
                     </FormControl>
                     <div className={classes.fieldHolder} style={{display: category === "Date" ? 'flex' : 'none'}}>
@@ -685,6 +704,42 @@ function AddLeads(){
                         value={searchValue}
                         onChange={e=>setSearchValue(e.target.value)} 
                     />
+                    <FormControl style={{display: category === "Status" ? 'flex' : 'none', width: '100%'}}> 
+                        <InputLabel>{category}</InputLabel>
+                        <Select
+                            required
+                            fullWidth
+                            value={searchValue}
+                            onChange={handleChangeValue}
+                            style={{width: '100%'}}
+                        >
+                        {
+                            statusFetched.map((element, index) => {
+                                return(
+                                    <MenuItem key={index}>{element.name}</MenuItem>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
+                    <FormControl style={{display: category === "Course" ? 'flex' : 'none', width: '100%'}}> 
+                        <InputLabel>{category}</InputLabel>
+                        <Select
+                            required
+                            fullWidth
+                            value={searchValue}
+                            onChange={handleChangeValue}
+                            style={{width: '100%'}}
+                        >
+                        {
+                            coursesFetched.map((element, index) => {
+                                return(
+                                    <MenuItem key={index}>{element.name}</MenuItem>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
                         Search
                     </Button>
@@ -694,7 +749,7 @@ function AddLeads(){
         <Dialog open={open3} fullWidth TransitionComponent={Transition} onClose={() => handleClose(3)} aria-labelledby="Lead Details">
             <DialogTitle>Lead Details</DialogTitle>
         </Dialog>
-        <Dialog open={open4} fullWidth TransitionComponent={Transition} onClose={() => handleClose(4)} aria-labelledby="Lead Statu Details">
+        <Dialog open={open4} fullWidth TransitionComponent={Transition} onClose={() => handleClose(4)} aria-labelledby="Lead Status Details">
             <DialogTitle>Lead Status Update</DialogTitle>
         </Dialog>
         <Dialog open={open5} fullWidth TransitionComponent={Transition} onClose={() => handleClose(5)} aria-labelledby="Mark Walk-In">
@@ -718,6 +773,12 @@ function AddLeads(){
                     </div>
                 </div>
             </DialogContent>
+        </Dialog>
+        <Dialog open={open6} fullWidth TransitionComponent={Transition} onClose={() => handleClose(6)} aria-labelledby="Lead Message Portal">
+            <DialogTitle>Lead Message Portal</DialogTitle>
+        </Dialog>
+        <Dialog open={open7} fullWidth TransitionComponent={Transition} onClose={() => handleClose(7)} aria-labelledby="Lead Statu Details">
+            <DialogTitle>Book now with details</DialogTitle>
         </Dialog>
         </>
     )

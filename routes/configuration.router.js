@@ -16,7 +16,9 @@ const {
     adsDeleteController,
     adsAddController,
     statusDeleteController,
-    statusAddController
+    statusAddController,
+    sourceDeleteController,
+    sourceAddController
 } = require('../controllers/configuration.controller');
 const {
     verifyHigherLevel
@@ -40,5 +42,7 @@ router.post('/deleteStatus', verifyHigherLevel, statusDeleteController);
 router.post('/addStatus', verifyHigherLevel, statusAddController);
 
 router.post('/getSource', verifyHigherLevel, sourceFetchController);
+router.post('/deleteSource', verifyHigherLevel, sourceDeleteController);
+router.post('/addSource', verifyHigherLevel, sourceAddController);
 
 module.exports = router;

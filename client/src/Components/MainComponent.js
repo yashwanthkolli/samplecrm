@@ -19,6 +19,7 @@ import Courses from './CRM/Admin/Courses';
 import Comments from './CRM/Admin/Comments';
 import Ads from './CRM/Admin/Ads';
 import Status from './CRM/Admin/Status';
+import Sources from './CRM/Admin/Sources';
 
 function Holder({match}){
 
@@ -36,6 +37,7 @@ function Holder({match}){
                     <PrivateRoute path="/crm/comments" exact component={() => <Comments />} />
                     <PrivateRoute path="/crm/ads" exact component={() => <Ads />} />
                     <PrivateRoute path="/crm/status" exact component={() => <Status />} />
+                    <PrivateRoute path="/crm/sources" exact component={() => <Sources />} />
                     <Redirect to = '/crm/home' />
                 </Switch>
             </Section>

@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 function Courses() {
 
     const classes = useStyles();
+    const toast = useToast();
 
     const [update, setUpdate] = useState(false);
     const [courses, setCourses] = useState([])
@@ -62,8 +63,19 @@ function Courses() {
         })
         .then(res => {
             setUpdate(!update)
+            toast({
+                description: "Deleted Course Successfully",
+                duration: 3000,
+                position:"top"
+            })
         })
-        .catch(err => {})
+        .catch(err => {
+            toast({
+                description: "Deleting Course Failed",
+                duration: 3000,
+                position: "top"
+            })
+        })
     }
 
     const onAddCourse = (e) => {
@@ -81,8 +93,19 @@ function Courses() {
             setCost('')
             onCloseForm();
             setUpdate(!update);
+            toast({
+                description: "Added Course Successfully",
+                duration: 3000,
+                position:"top"
+            })
         })
-        .catch(err => {})
+        .catch(err => {
+            toast({
+                description:"Adding Course Failed",
+                duration: 3000,
+                position : "top"
+            })
+        })
     }
 
     const onUpdateCourse = (e, id) => {
@@ -103,8 +126,20 @@ function Courses() {
             onCloseForm();
 
             setUpdate(!update);
+
+            toast({
+                description: "Updated Course Successfully",
+                duration: 3000,
+                position: "top"
+            })
         })
-        .catch(err => {})
+        .catch(err => {
+            toast({
+                description: "Updating Course Failed",
+                duration: 3000,
+                position: "top"
+            })
+        })
     }
 
     const onCloseForm = () => {

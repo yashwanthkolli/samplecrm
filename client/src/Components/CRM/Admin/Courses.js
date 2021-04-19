@@ -3,6 +3,7 @@ import MaterialTable from 'material-table'
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios'
 import Icon from '@material-ui/core/Icon';
+import { useToast } from '@chakra-ui/react'; 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -110,6 +111,7 @@ function Courses() {
         setName('')
         setType('')
         setCost('')
+        setUpdateCourseForm('')
         setOpenAddCourseForm(false)
         setOpenUpdateCourseForm(false)
         setUpdateCourseForm('')

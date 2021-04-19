@@ -4,6 +4,7 @@ import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
+import { useToast } from '@chakra-ui/react'; 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -50,6 +51,7 @@ function Ads() {
     const [update, setUpdate] = useState(false);
 
     useEffect( () => {
+
         axios.post(`${process.env.REACT_APP_CONFIG}/getAds`,
         { 
             email: JSON.parse(localStorage.getItem('user')).Email
@@ -57,13 +59,14 @@ function Ads() {
         .then(res => setAds(res.data.adnames))
         .catch(err => {})
     }, [update])
-
+  
     const onDeleteAd = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteAds`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             id: id
         })
         .then(res => {
+
             setUpdate(!update);
             if(!toast.isActive(toast_id)){
                 toast({

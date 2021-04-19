@@ -11,7 +11,9 @@ exports.latestLeadController = (req, res) => {
         }
 
         if(result[0].count <= 20){
-            leads_query = 'select leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, courses.name as course, leads.City, employees.Firstname, e.Firstname, leads.Status from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id';
+            leads_query = 'select leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, courses.name as course, courses.type as courseType,'
+            +' leads.City, employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS, leads.Status from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
+            +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id';
             connect.query(leads_query, function(err, r){
                 if(err){
                     return res.status(500).json({
@@ -25,7 +27,7 @@ exports.latestLeadController = (req, res) => {
             })
         } else {
             const countLeads = result[0].count - 5;
-            latestLeads_query = 'select * from ice.leads where name not in (select name from ice.leads limit'+ countLeads + ')';
+            latestLeads_query = 'select leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, courses.name as course, leads.City, employees.Firstname, e.Firstname, leads.Status from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id where leads.name not in (select name from ice.leads limit'+ countLeads + ')';
             connect.query(latestLeads_query, function(err, re){
                 if(err){
                     return res.status(500).json({

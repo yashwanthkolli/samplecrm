@@ -221,7 +221,10 @@ function AddLeads(){
                     "name": element.Name,
                     "email": element.Email,
                     "mobile": element.Mobile,
-                    "createdBy": element.CreatedBy,
+                    "city": element.City,
+                    "course": element.course + " " + element.courseType,
+                    "createdBy": element.creatorF + " " + element.creatorS,
+                    "assignedTo": element.assignF + " " + element.assignS,
                     "status": element.Status
                 })
             })
@@ -350,8 +353,12 @@ function AddLeads(){
                         {title: 'Name', field: "name"},
                         {title: 'Email', field: "email"},
                         {title: 'Mobile', field: "mobile"},
-                        {title: 'CreatedBy', field: "createdBy"},
-                        {title: 'Status', field: "status"}
+                        {title: 'City', field: "city"},
+                        {title: 'Course', field: "course"},
+                        {title: 'Created By', field: "createdBy"},
+                        {title: 'Status', field: "status"},
+                        {title: 'Assigned To', field: "assignedTo"},
+                        {title: 'Actions', field: "actions"}
                     ]}
                     data={tableData}
                     style={{width: '98%'}}

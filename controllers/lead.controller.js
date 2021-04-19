@@ -20,7 +20,7 @@ exports.latestLeadController = (req, res) => {
                 }
                 return res.status(200).json({
                     message: "Data fetched",
-                    latest: r[0]
+                    latest: r
                 })
             })
         } else {
@@ -34,7 +34,7 @@ exports.latestLeadController = (req, res) => {
                 }
                 return res.status(200).json({
                     message:"Fetched data",
-                    latest: re[0]
+                    latest: re
                 })
             })
         }

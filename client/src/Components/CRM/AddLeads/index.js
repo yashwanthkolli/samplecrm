@@ -95,6 +95,7 @@ function AddLeads(){
     const [category, setCategory] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [searchValue, setSearchValue] = useState("");
 
     const handleChangeCategory = (e) => {
         setCategory(e.target.value);
@@ -217,7 +218,9 @@ function AddLeads(){
 
             res.data.latest.forEach((element) => {
                 data_latest.push({
-                    "name": element.name
+                    "name": element.Name,
+                    "Email": element.Email,
+                    "Mobile": element.Mobile
                 })
             })
             setTableData(data_latest);
@@ -274,11 +277,11 @@ function AddLeads(){
                 })
             }
         })
-        axios.post(`${process.env.REACT_APP_CONFIG}/getAdName`,{
+        axios.post(`${process.env.REACT_APP_CONFIG}/getAds`,{
             email: JSON.parse(localStorage.getItem('user')).Email
         })
         .then((res) => {
-            setAdNameFetched(res.data.adnames);
+            setAdNameFetched(res.data.ads);
         })
         .catch((err) => {
             if(!toast.isActive(toast_course)){
@@ -340,7 +343,12 @@ function AddLeads(){
             {
                 tableData.length > 0 ?
                 <MaterialTable
-
+                    columns={[
+                        {title: 'Name', field: "name"},
+                        {title: 'Email', field: "email"},
+                        {title: 'Mobile', field: "mobile"}
+                    ]}
+                    data={tableData}
                 />
                 :
                 <div className={classes.noData}>
@@ -586,8 +594,14 @@ function AddLeads(){
                         fullWidth
                         style={{display: !(arr_category.includes(category)) 
                             ? 'flex' : 'none', marginTop: '7px'}}
-                        label={category === "CreatedBy" ? "Created By" : category}
+                        label={category}
+                        placeholder={`Enter ${category}`}
+                        value={searchValue}
+                        onChange={e=>setSearchValue(e.target.value)} 
                     />
+                    <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
+                        Search
+                    </Button>
                 </form>
             </DialogContent>
         </Dialog>

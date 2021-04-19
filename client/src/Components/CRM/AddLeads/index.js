@@ -54,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
     },
     selectField:{
         width: '45%'
+    },
+    loadDetails:{
+
     }
 }));
 
@@ -218,14 +221,20 @@ function AddLeads(){
 
             res.data.latest.forEach((element) => {
                 data_latest.push({
-                    "name": element.Name,
-                    "email": element.Email,
-                    "mobile": element.Mobile,
-                    "city": element.City,
-                    "course": element.course + " " + element.courseType,
+                    "details": 
+                        <div className={classes.leadDetails} style={{cursor: "pointer"}}>
+                            {element.Name + " | " + element.Email + " | " + element.Mobile}
+                        </div>,
+                    "course": 
+                        <div className={classes.course}>
+                            {element.course + " " + element.courseType}
+                        </div>,
                     "createdBy": element.creatorF + " " + element.creatorS,
                     "assignedTo": element.assignF + " " + element.assignS,
-                    "status": element.Status
+                    "status": element.Status,
+                    "actions": <>
+                            <Button variant="contained">I</Button>
+                        </>
                 })
             })
             setTableData(data_latest);
@@ -350,19 +359,15 @@ function AddLeads(){
                 <MaterialTable
                     title="Latest Leads Table"
                     columns={[
-                        {title: 'Name', field: "name"},
-                        {title: 'Email', field: "email"},
-                        {title: 'Mobile', field: "mobile"},
-                        {title: 'City', field: "city"},
-                        {title: 'Course', field: "course"},
-                        {title: 'Created By', field: "createdBy"},
-                        {title: 'Status', field: "status"},
-                        {title: 'Assigned To', field: "assignedTo"},
-                        {title: 'Actions', field: "actions"}
+                        {title: 'Lead Details', field: "details", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Course', field: "course", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Created By', field: "createdBy", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Status', field: "status", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Assigned To', field: "assignedTo", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Actions', field: "actions", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}}
                     ]}
                     data={tableData}
-                    style={{width: '98%'}}
-                    
+                    style={{width: '98%', textAlign:'center'}}
                 />
                 :
                 <div className={classes.noData}>

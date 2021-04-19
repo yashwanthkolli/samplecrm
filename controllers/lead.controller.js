@@ -11,7 +11,7 @@ exports.latestLeadController = (req, res) => {
         }
 
         if(result[0].count <= 20){
-            leads_query = 'select * from ice.leads';
+            leads_query = 'select leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, courses.name as course, leads.City, employees.Firstname, e.Firstname, leads.Status from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id';
             connect.query(leads_query, function(err, r){
                 if(err){
                     return res.status(500).json({

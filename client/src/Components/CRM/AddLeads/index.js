@@ -219,8 +219,10 @@ function AddLeads(){
             res.data.latest.forEach((element) => {
                 data_latest.push({
                     "name": element.Name,
-                    "Email": element.Email,
-                    "Mobile": element.Mobile
+                    "email": element.Email,
+                    "mobile": element.Mobile,
+                    "createdBy": element.CreatedBy,
+                    "status": element.Status
                 })
             })
             setTableData(data_latest);
@@ -343,12 +345,17 @@ function AddLeads(){
             {
                 tableData.length > 0 ?
                 <MaterialTable
+                    title="Latest Leads Table"
                     columns={[
                         {title: 'Name', field: "name"},
                         {title: 'Email', field: "email"},
-                        {title: 'Mobile', field: "mobile"}
+                        {title: 'Mobile', field: "mobile"},
+                        {title: 'CreatedBy', field: "createdBy"},
+                        {title: 'Status', field: "status"}
                     ]}
                     data={tableData}
+                    style={{width: '98%'}}
+                    
                 />
                 :
                 <div className={classes.noData}>

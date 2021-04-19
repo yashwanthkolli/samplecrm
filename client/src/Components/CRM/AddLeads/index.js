@@ -91,6 +91,12 @@ function AddLeads(){
     const [comment, setComment] = useState("");
     const [ad_name, setAdName] = useState("");
 
+    const [category, setCategory] = useState("");
+
+    const handleChangeCategory = (e) => {
+        setCategory(e.target.value);
+    }
+
     const handleOpen = (id) => {
         switch (id) {
             case 1:
@@ -542,12 +548,21 @@ function AddLeads(){
                         <InputLabel>Select Search Category</InputLabel>
                         <Select
                             required
-
+                            value={category}
+                            onChange={handleChangeCategory}
                         >
                             <MenuItem value="Date">Date</MenuItem>
-                            <MenuItem value="City">City</MenuItem>
+                            <MenuItem value="Name">Name</MenuItem>
+                            <MenuItem value="Email">Email</MenuItem>
+                            <MenuItem value="Mobile">Mobile</MenuItem>
+                            <MenuItem value="Status">Status</MenuItem>
+                            <MenuItem value="Course">Course</MenuItem>
+                            <MenuItem value="Createdt">Created Date</MenuItem>
                         </Select>
                     </FormControl>
+                    <div className={classes.fieldHolder}>
+                        
+                    </div>
                 </form>
             </DialogContent>
         </Dialog>

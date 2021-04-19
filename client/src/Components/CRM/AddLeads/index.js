@@ -77,6 +77,18 @@ const useStyles = makeStyles((theme) => ({
     assigned:{
         fontSize: '15px',
         fontFamily: 'Nunito'
+    },
+    iconHolder: {
+        width: '100%',
+        minHeight: '150px',
+        display: 'grid',
+        placeItems: 'center'
+    },
+    btnWalkIn:{
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: '15px'
     }
 }));
 
@@ -693,10 +705,10 @@ function AddLeads(){
                         <AiFillAlert />
                     </div>
                     <div className={classes.btnWalkIn}>
-                        <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}}>
+                        <Button variant="contained" fullWidth style={{backgroundColor: '#202950', color: 'white', marginRight: '25px'}}>
                             Cancel
                         </Button>
-                        <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}}>
+                        <Button variant="contained" fullWidth style={{backgroundColor: '#202950', color: 'white'}}>
                             Yeah! It's a walk-in
                         </Button>
                     </div>

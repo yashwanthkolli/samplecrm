@@ -133,7 +133,8 @@ function HeaderBar({match}){
         {id: 2 ,path: `${match.path}/courses`, text: 'Courses',  icon: BiChalkboard },
         {id: 3 ,path: `${match.path}/ads`, text: 'Ads',  icon: BiCarousel },
         {id: 4 ,path: `${match.path}/comments`, text: 'Comments', icon: BiCommentDetail },
-        {id: 5 ,path: `${match.path}/updateAdmin`, text: 'Edit Profile', icon: FaUserEdit }
+        {id: 5 ,path: `${match.path}/status`, text: 'Status', icon: TiTick },
+        {id: 6 ,path: `${match.path}/updateAdmin`, text: 'Edit Profile', icon: FaUserEdit }
     ]
 
     const teamNav = [

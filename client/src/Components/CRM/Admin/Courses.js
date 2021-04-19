@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import MaterialTable from 'material-table'
 import axios from 'axios'
 import Icon from '@material-ui/core/Icon';
+import { useToast } from '@chakra-ui/react'; 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -18,6 +19,8 @@ import {
   } from "@chakra-ui/react"
 
 function Courses() {
+    const toast = useToast();
+    
     const [courses, setCourses] = useState([])
     const [openAddCourseForm, setOpenAddCourseForm] = useState(false)
     const [openUpdateCourseForm, setOpenUpdateCourseForm] = useState(false)
@@ -31,7 +34,13 @@ function Courses() {
     useEffect( () => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
         .then(res => setCourses(res.data.courses))
-        .catch(err => console.log(err))
+        .catch(err => {
+            toast({
+                description: "Error in fetching courses",
+                duration: 2000,
+                position: "top"
+            })
+        })
     }, [])
 
     const onDeleteCourse = (id) => {
@@ -40,14 +49,32 @@ function Courses() {
             id: id
         })
         .then(res => {
+            toast({
+                description: "Course Deleted",
+                duration: 2000,
+                position: "top"
+            })
             axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
             .then(res => setCourses(res.data.courses))
-            .catch(err => console.log(err))
+            .catch(err => {
+                toast({
+                    description: "Error in fetching courses",
+                    duration: 2000,
+                    position: "top"
+                })
+            })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            toast({
+                description: "Error in deleting course",
+                duration: 2000,
+                position: "top"
+            })
+        })
     }
 
     const onAddCourse = (e) => {
+        e.preventDefault()
         axios.post(`${process.env.REACT_APP_CONFIG}/addCourses`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             name,
@@ -55,14 +82,33 @@ function Courses() {
             cost
         })
         .then(res => {
-            setName('')
-            setType('')
-            setCost('')
+           onCloseForm()
+            toast({
+                description: "Course Added",
+                duration: 2000,
+                position: "top"
+            })
+            axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
+            .then(res => setCourses(res.data.courses))
+            .catch(err => {
+                toast({
+                    description: "Error in fetching courses",
+                    duration: 2000,
+                    position: "top"
+                })
+            })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            toast({
+                description: "Error in adding course",
+                duration: 2000,
+                position: "top"
+            })
+        })
     }
 
-    const onUpdateCourse = (id) => {
+    const onUpdateCourse = (e, id) => {
+        e.preventDefault()
         axios.post(`${process.env.REACT_APP_CONFIG}/updateCourses`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             id,
@@ -71,18 +117,36 @@ function Courses() {
             cost
         })
         .then(res => {
-            setName('')
-            setType('')
-            setCost('')
-            setUpdateCourseForm('')
+            onCloseForm()
+            toast({
+                description: "Course Updated",
+                duration: 2000,
+                position: "top"
+            })
+            axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
+            .then(res => setCourses(res.data.courses))
+            .catch(err => {
+                toast({
+                    description: "Error in fetching courses",
+                    duration: 2000,
+                    position: "top"
+                })
+            })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            toast({
+                description: "Error in updating course",
+                duration: 2000,
+                position: "top"
+            })
+        })
     }
 
     const onCloseForm = () => {
         setName('')
         setType('')
         setCost('')
+        setUpdateCourseForm('')
         setOpenAddCourseForm(false)
         setOpenUpdateCourseForm(false)
         setUpdateCourseForm('')
@@ -193,7 +257,7 @@ function Courses() {
             <Dialog open={openUpdateCourseForm} fullWidth onClose={() => onCloseForm()} aria-labelledby="add-new-lead">
                 <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Update Course</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={ () => onUpdateCourse(updateCourseForm) }>
+                    <form onSubmit={ (e) => onUpdateCourse(e, updateCourseForm) }>
                         <TextField 
                             required
                             fullWidth

@@ -14,7 +14,9 @@ const {
     commentAddController,
     adsFetchController,
     adsDeleteController,
-    adsAddController
+    adsAddController,
+    statusDeleteController,
+    statusAddController
 } = require('../controllers/configuration.controller');
 const {
     verifyHigherLevel
@@ -34,6 +36,9 @@ router.post('/deleteAds', verifyHigherLevel, adsDeleteController);
 router.post('/addAds', verifyHigherLevel, adsAddController);
 
 router.post('/getStatus', verifyHigherLevel, statusFetchController);
+router.post('/deleteStatus', verifyHigherLevel, statusDeleteController);
+router.post('/addStatus', verifyHigherLevel, statusAddController);
+
 router.post('/getSource', verifyHigherLevel, sourceFetchController);
 
 module.exports = router;

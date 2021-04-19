@@ -187,18 +187,34 @@ exports.statusFetchController = (req, res) => {
     })
 }
 
-exports.commentFetchController = (req, res) => {
+exports.statusDeleteController = (req, res) => {
 
-    comment_fetch = 'select * from ice.comments';
-    connect.query(comment_fetch, function(err, result){
-        if(err){
+    const { id } = req.body;
+    status_delete = 'delete from ice.status where id=\'' + id + '\'';
+    connect.query(status_delete, function(err, result) {
+        if (err) {
             return res.status(500).json({
-                message: "Error in fetching comments"
+                message: "Error in Deleting Status"
             })
         }
         return res.status(200).json({
-            message: "Fetched Comments",
-            comments: result
+            message: "Deleted rows"
+        })
+    })
+}
+
+exports.statusAddController = (req, res) => {
+
+    const { status } = req.body;
+    status_add = 'insert into ice.status (name) values (\'' + status + '\')';
+    connect.query(status_add, function(err, result) {
+        if(err){
+            return res.status(500).json({
+                message: "Error in adding status"
+            })
+        }
+        return res.status(200).json({
+            message: "Status Added"
         })
     })
 }

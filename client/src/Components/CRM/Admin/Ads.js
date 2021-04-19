@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import MaterialTable from 'material-table'
 import axios from 'axios'
 import Icon from '@material-ui/core/Icon';
+import { useToast } from '@chakra-ui/react'; 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -18,6 +19,8 @@ import {
   } from "@chakra-ui/react"
 
 function Ads() {
+    const toast = useToast()
+
     const [ads, setAds] = useState([])
     const [open, setOpen] = useState(false)
     const [popup, setPopup] = useState(false)
@@ -29,7 +32,13 @@ function Ads() {
     useEffect( () => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getAds`, { email: JSON.parse(localStorage.getItem('user')).Email })
         .then(res => setAds(res.data.ads))
-        .catch(err => console.log(err))
+        .catch(err => {
+                toast({
+                    description: "Error in fetching ads",
+                    duration: 2000,
+                    position: "top"
+                })
+            })
     }, [])
 
     const onDeleteAd = (id) => {
@@ -38,22 +47,62 @@ function Ads() {
             id: id
         })
         .then(res => {
+            toast({
+                description: "Ad deleted",
+                duration: 2000,
+                position: "top"
+            })
             axios.post(`${process.env.REACT_APP_CONFIG}/getAds`, { email: JSON.parse(localStorage.getItem('user')).Email })
             .then(res => setAds(res.data.ads))
-            .catch(err => console.log(err))
+            .catch(err => {
+                toast({
+                    description: "Error in fetching ads",
+                    duration: 2000,
+                    position: "top"
+                })
+            })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            toast({
+                description: "Error in deleting ads",
+                duration: 2000,
+                position: "top"
+            })
+        })
     }
 
     const onAddAd = (e) => {
+        e.preventDefault()
+        setOpen(false)
         axios.post(`${process.env.REACT_APP_CONFIG}/addAds`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             form_id,
             name,
             source
         })
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        .then(res => {
+            toast({
+                description: "New ad added",
+                duration: 2000,
+                position: "top"
+            })
+            axios.post(`${process.env.REACT_APP_CONFIG}/getAds`, { email: JSON.parse(localStorage.getItem('user')).Email })
+            .then(res => setAds(res.data.ads))
+            .catch(err => {
+                toast({
+                    description: "Error in fetching ads",
+                    duration: 2000,
+                    position: "top"
+                })
+            })
+        })
+        .catch(err => {
+            toast({
+                description: "Error in adding ads",
+                duration: 2000,
+                position: "top"
+            })
+        })
     }
 
     return (

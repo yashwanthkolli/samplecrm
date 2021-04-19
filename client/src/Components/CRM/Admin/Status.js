@@ -18,43 +18,43 @@ import {
     AlertDialogOverlay
 } from "@chakra-ui/react"
 
-function Comments() {
-    const toast = useToast()
-
-    const [comments, setComments] = useState([])
+function Status() {
+    const toast = useToast();
+    
+    const [statusArray, setStatusArray] = useState([])
     const [open, setOpen] = useState(false)
-    const [comment, setComment] = useState('')
+    const [status, setStatus] = useState('')
     const [popup, setPopup] = useState(false)
-    const [deleteCommentId, setDeleteCommentId] = useState()
+    const [deleteStatusId, setDeleteStatusId] = useState()
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: JSON.parse(localStorage.getItem('user')).Email })
-        .then(res => setComments(res.data.comments))
+        axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        .then(res => setStatusArray(res.data.status))
         .catch(err => {
-                toast({
-                    description: "Error in fetching comments",
-                    duration: 2000,
-                    position: "top"
-                })
+            toast({
+                description: "Error In Fetching Status",
+                duration: 2000,
+                position: "top"
             })
+        })
     }, [])
 
-    const onDeleteComment = (id) => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/deleteComments`, {
+    const onDeleteStatus = (id) => {
+        axios.post(`${process.env.REACT_APP_CONFIG}/deleteStatus`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             id: id
         })
         .then(res => {
             toast({
-                description: "Comment deleted",
+                description: "Status Deleted",
                 duration: 2000,
                 position: "top"
             })
-            axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setComments(res.data.comments))
+            axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(localStorage.getItem('user')).Email })
+            .then(res => setStatusArray(res.data.status))
             .catch(err => {
                 toast({
-                    description: "Error in fetching comments",
+                    description: "Error In Fetching Status",
                     duration: 2000,
                     position: "top"
                 })
@@ -62,32 +62,32 @@ function Comments() {
         })
         .catch(err => {
             toast({
-                description: "Error in deleting comment",
+                description: "Error In Deleting Status",
                 duration: 2000,
                 position: "top"
             })
         })
     }
 
-    const onAddComment = (e) => {
+    const onAddStatus = (e) => {
         e.preventDefault()
-        axios.post(`${process.env.REACT_APP_CONFIG}/addComments`, {
+        axios.post(`${process.env.REACT_APP_CONFIG}/addStatus`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
-            comment
+            status
         })
         .then(res => {
             toast({
-                description: "Comment Added",
+                description: "Status Added",
                 duration: 2000,
                 position: "top"
             })
             setOpen(false)
-            setComment('')
-            axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setComments(res.data.comments))
+            setStatus('')
+            axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(localStorage.getItem('user')).Email })
+            .then(res => setStatusArray(res.data.status))
             .catch(err => {
                 toast({
-                    description: "Error in fetching comment",
+                    description: "Error In Fetching Status",
                     duration: 2000,
                     position: "top"
                 })
@@ -95,7 +95,7 @@ function Comments() {
         })
         .catch(err => {
             toast({
-                description: "Error in adding comment",
+                description: "Error In Adding Status",
                 duration: 2000,
                 position: "top"
             })
@@ -105,10 +105,10 @@ function Comments() {
     return (
         <div style={{width: '90%'}}>
             <MaterialTable
-                title="Comments"
+                title="Status"
                 columns={[
                     { title: 'Id', field: 'id', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
-                    { title: 'Comment', field: 'comment', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                    { title: 'Status', field: 'name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     {
                         title: 'Delete',
                         field: 'internal_action',
@@ -121,7 +121,7 @@ function Comments() {
                                 color="secondary"
                                 onClick={() => {
                                     setPopup(true)
-                                    setDeleteCommentId(rowData.id)
+                                    setDeleteStatusId(rowData.id)
                                 }}
                             >
                                 <Icon component={AiFillDelete} />
@@ -129,7 +129,7 @@ function Comments() {
                             )
                     }
                 ]}
-                data={ comments }
+                data={ statusArray }
                 options={{
                     headerStyle: {
                         backgroundColor: '#EEE',
@@ -138,26 +138,26 @@ function Comments() {
                 style={{padding: '15px 30px', margin: '30px 0'}}
             />
             <Button style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px', float: 'right'}} variant="contained"  onClick={() => setOpen(!open)}>
-                Add Comment
+                Add Status
             </Button>
             <Dialog open={open} fullWidth onClose={() => setOpen(false)} aria-labelledby="add-new-lead">
-                <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Add Course</DialogTitle>
+                <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Add Status</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={ (e) => onAddComment(e) }>
+                    <form onSubmit={ (e) => onAddStatus(e) }>
                         <TextField 
                             required
                             fullWidth
                             autoComplete="off"
-                            name="comment"
+                            name="status"
                             type="text"
-                            value={comment}
-                            onChange={e=>setComment(e.target.value)}
-                            label="Comment"
-                            placeholder="Enter Comment"
+                            value={status}
+                            onChange={e=>setStatus(e.target.value)}
+                            label="Status"
+                            placeholder="Enter Status"
                             style={{marginBottom: '7px'}}
                         />
                         <Button type="submit" style={{backgroundColor: '#202950', color: 'white', margin: '20px 5px'}} variant="contained">
-                            Add Comment
+                            Add Status
                         </Button>
                     </form>
                 </DialogContent>
@@ -171,16 +171,16 @@ function Comments() {
                 <AlertDialogOverlay />
 
                 <AlertDialogContent>
-                <AlertDialogHeader>Delete Comment?</AlertDialogHeader>
+                <AlertDialogHeader>Delete Status?</AlertDialogHeader>
                 <AlertDialogBody>
-                    Are you sure you want to delete the comment?
+                    Are you sure you want to delete the status?
                 </AlertDialogBody>
                 <AlertDialogFooter>
                     <Button onClick={() => setPopup(false)}>
                     No
                     </Button>
                     <Button colorScheme="red" ml={3} onClick={() => {
-                        onDeleteComment(deleteCommentId)
+                        onDeleteStatus(deleteStatusId)
                         setPopup(false)
                     }}
                     >
@@ -193,4 +193,4 @@ function Comments() {
     )
 }
 
-export default Comments
+export default Status

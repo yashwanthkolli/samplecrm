@@ -17,8 +17,8 @@ import {
 import { setLocalStorage, isAuth } from '../../helpers/auth.helpers.js';
 import { Redirect } from 'react-router-dom';
 
-const ice = require('../../logo.svg').default;
-// const signIn = require('../../images/signIn.svg').default;
+const ice = require('../../images/001.png').default;
+const signIn = require('../../images/signIn.svg').default;
 
 function Login({history}) {
 
@@ -26,8 +26,6 @@ function Login({history}) {
     const [ password, setPassword ] = useState("");
 
     const toast = useToast();
-
-    console.log(process.env)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -77,7 +75,7 @@ function Login({history}) {
                 <Paper elevation={5} variant="elevation" style={{width: "100%", height: "100%"}}>
                     <Container>
                         <Left>
-                            <Logo src={ice} />
+                            <Logo src={signIn} />
                         </Left>
                         <Right>
                             <Ice src={ice} />

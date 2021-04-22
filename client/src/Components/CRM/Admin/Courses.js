@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import MaterialTable from 'material-table'
+import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios'
 import Icon from '@material-ui/core/Icon';
 import { useToast } from '@chakra-ui/react'; 
@@ -9,6 +10,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import Paper from '@material-ui/core/Paper';
 import {
     AlertDialog,
     AlertDialogBody,
@@ -16,11 +18,27 @@ import {
     AlertDialogHeader,
     AlertDialogContent,
     AlertDialogOverlay
-  } from "@chakra-ui/react"
+} from "@chakra-ui/react"
+
+const useStyles = makeStyles((theme) => ({
+    containerLead: {
+        display: 'flex',
+        width: '98%',
+        height: '95%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: theme.spacing(2),
+        padding: theme.spacing(1),
+        flexDirection:'column'
+    }
+}))
 
 function Courses() {
+
+    const classes = useStyles();
     const toast = useToast();
-    
+
+    const [update, setUpdate] = useState(false);
     const [courses, setCourses] = useState([])
     const [openAddCourseForm, setOpenAddCourseForm] = useState(false)
     const [openUpdateCourseForm, setOpenUpdateCourseForm] = useState(false)
@@ -29,19 +47,14 @@ function Courses() {
     const [type, setType] = useState('')
     const [cost, setCost] = useState('')
     const [popup, setPopup] = useState(false)
-    const [deleteCourseId, setDeleteCourseId] = useState()
+    const [deleteCourseId, setDeleteCourseId] = useState();
+
 
     useEffect( () => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
         .then(res => setCourses(res.data.courses))
-        .catch(err => {
-            toast({
-                description: "Error in fetching courses",
-                duration: 2000,
-                position: "top"
-            })
-        })
-    }, [])
+        .catch(err => {})
+    }, [update])
 
     const onDeleteCourse = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteCourses`, {
@@ -49,32 +62,25 @@ function Courses() {
             id: id
         })
         .then(res => {
+            setUpdate(!update)
             toast({
-                description: "Course Deleted",
-                duration: 2000,
-                position: "top"
-            })
-            axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setCourses(res.data.courses))
-            .catch(err => {
-                toast({
-                    description: "Error in fetching courses",
-                    duration: 2000,
-                    position: "top"
-                })
+                description: "Deleted Course Successfully",
+                duration: 3000,
+                position:"top"
             })
         })
         .catch(err => {
             toast({
-                description: "Error in deleting course",
-                duration: 2000,
+                description: "Deleting Course Failed",
+                duration: 3000,
                 position: "top"
             })
         })
     }
 
     const onAddCourse = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+
         axios.post(`${process.env.REACT_APP_CONFIG}/addCourses`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             name,
@@ -82,33 +88,29 @@ function Courses() {
             cost
         })
         .then(res => {
-           onCloseForm()
+            setName('')
+            setType('')
+            setCost('')
+            onCloseForm();
+            setUpdate(!update);
             toast({
-                description: "Course Added",
-                duration: 2000,
-                position: "top"
-            })
-            axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setCourses(res.data.courses))
-            .catch(err => {
-                toast({
-                    description: "Error in fetching courses",
-                    duration: 2000,
-                    position: "top"
-                })
+                description: "Added Course Successfully",
+                duration: 3000,
+                position:"top"
             })
         })
         .catch(err => {
             toast({
-                description: "Error in adding course",
-                duration: 2000,
-                position: "top"
+                description:"Adding Course Failed",
+                duration: 3000,
+                position : "top"
             })
         })
     }
 
     const onUpdateCourse = (e, id) => {
-        e.preventDefault()
+        e.preventDefault();
+
         axios.post(`${process.env.REACT_APP_CONFIG}/updateCourses`, {
             email: JSON.parse(localStorage.getItem('user')).Email,
             id,
@@ -117,26 +119,24 @@ function Courses() {
             cost
         })
         .then(res => {
-            onCloseForm()
+            setName('')
+            setType('')
+            setCost('')
+            setUpdateCourseForm('')
+            onCloseForm();
+
+            setUpdate(!update);
+
             toast({
-                description: "Course Updated",
-                duration: 2000,
+                description: "Updated Course Successfully",
+                duration: 3000,
                 position: "top"
-            })
-            axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
-            .then(res => setCourses(res.data.courses))
-            .catch(err => {
-                toast({
-                    description: "Error in fetching courses",
-                    duration: 2000,
-                    position: "top"
-                })
             })
         })
         .catch(err => {
             toast({
-                description: "Error in updating course",
-                duration: 2000,
+                description: "Updating Course Failed",
+                duration: 3000,
                 position: "top"
             })
         })
@@ -153,11 +153,11 @@ function Courses() {
     }
 
     return (
-        <div style={{width: '90%'}}>
+        <>
+        <Paper elevation={3} className={classes.containerLead}>
             <MaterialTable
                 title="Courses"
                 columns={[
-                    { title: 'Id', field: 'id', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     { title: 'Course', field: 'name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     { title: 'Type', field: 'type', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
                     { title: 'Cost in Rs', field: 'Cost', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
@@ -203,11 +203,12 @@ function Courses() {
                         backgroundColor: '#EEE',
                     }
                 }}
-                style={{padding: '15px 30px', margin: '30px 0'}}
+                style={{width: '95%'}}
             />
             <Button style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px', float: 'right'}} variant="contained"  onClick={() => setOpenAddCourseForm(!openAddCourseForm)}>
                 Add Course
             </Button>
+            </Paper>
             <Dialog open={openAddCourseForm} fullWidth onClose={() => onCloseForm()} aria-labelledby="add-new-lead">
                 <DialogTitle id="form-dialog-title" style={{marginTop: '20px'}}>Add Course</DialogTitle>
                 <DialogContent>
@@ -220,7 +221,7 @@ function Courses() {
                             type="text"
                             value={name}
                             onChange={e=>setName(e.target.value)}
-                            label="Name"
+                            label="Name of course"
                             placeholder="Enter Course Name"
                             style={{marginBottom: '7px'}}
                         />
@@ -326,7 +327,7 @@ function Courses() {
                 </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        </div>
+        </>
     )
 }
 

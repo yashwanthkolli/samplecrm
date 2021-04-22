@@ -131,12 +131,13 @@ function HeaderBar({match}){
 
     const adminNav = [
         {id: 1 ,path: `${match.path}/profile`, text: 'Profile',  icon: ImProfile },
-        {id: 2 ,path: `${match.path}/courses`, text: 'Courses',  icon: BiChalkboard },
-        {id: 3 ,path: `${match.path}/ads`, text: 'Ads',  icon: BiCarousel },
-        {id: 4 ,path: `${match.path}/comments`, text: 'Comments', icon: BiCommentDetail },
-        {id: 5 ,path: `${match.path}/status`, text: 'Status', icon: TiTick },
-        {id: 6 ,path: `${match.path}/sources`, text: 'Sources', icon: GrResources },
-        {id: 7 ,path: `${match.path}/updateAdmin`, text: 'Edit Profile', icon: FaUserEdit }
+        {id: 2 ,path: `${match.path}/home`, text: 'Home',  icon: AiFillHome },
+        {id: 3 ,path: `${match.path}/courses`, text: 'Courses',  icon: BiChalkboard },
+        {id: 4 ,path: `${match.path}/ads`, text: 'Ads',  icon: BiCarousel },
+        {id: 5 ,path: `${match.path}/comments`, text: 'Comments', icon: BiCommentDetail },
+        {id: 6 ,path: `${match.path}/status`, text: 'Status', icon: TiTick },
+        {id: 7 ,path: `${match.path}/sources`, text: 'Sources', icon: GrResources },
+        {id: 8 ,path: `${match.path}/updateAdmin`, text: 'Edit Profile', icon: FaUserEdit }
     ]
 
     const teamNav = [

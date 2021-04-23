@@ -740,6 +740,42 @@ function AddLeads(){
                         }
                         </Select>
                     </FormControl>
+                    <FormControl style={{display: category === "CreatedBy" ? 'flex' : 'none', width: '100%'}}> 
+                        <InputLabel>{category}</InputLabel>
+                        <Select
+                            required
+                            fullWidth
+                            value={searchValue}
+                            onChange={handleChangeValue}
+                            style={{width: '100%'}}
+                        >
+                        {
+                            employeeFetched.map((element, index) => {
+                                return(
+                                    <MenuItem key={index}>{element.Firstname+ " " +element.Surname}</MenuItem>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
+                    <FormControl style={{display: category === "AssignedTo" ? 'flex' : 'none', width: '100%'}}> 
+                        <InputLabel>{category}</InputLabel>
+                        <Select
+                            required
+                            fullWidth
+                            value={searchValue}
+                            onChange={handleChangeValue}
+                            style={{width: '100%'}}
+                        >
+                        {
+                            employeeFetched.map((element, index) => {
+                                return(
+                                    <MenuItem key={index}>{element.Firstname+ " " +element.Surname}</MenuItem>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
                         Search
                     </Button>

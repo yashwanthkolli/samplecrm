@@ -83,3 +83,160 @@ exports.addNewLeadsController = (req, res) => {
         }
     })
 }
+
+exports.fetchTopPlaceLeadsController = (req, res) => {
+
+    leads_fetch = 'select City, count(City) as \'count\' from ice.leads group by City having count(City) > 0 order by count desc limit 35';
+    connect.query(leads_fetch, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching details"
+            })
+        }
+        return res.status(200).json({
+            message: "Fetched Courses",
+            leads: result
+        })
+    })
+}
+
+exports.fetchNumberOfLeadsController = (req, res) => {
+    leads_count = 'select count(*) as count from ice.leads';
+    connect.query(leads_count, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching details"
+            })
+        }
+        return res.status(200).json({
+            message: "Fetched Courses",
+            count: result
+        })
+    })
+}
+
+exports.fetchLeadToppersController = (req, res) => {
+    leads_toppers = 'select AssignedTo, count(AssignedTo) as \'count\' from ice.leads where AssignedTo not in (select AssignedTo from ice.leads where AssignedTo = \'636-Website Lead Pool\') group by AssignedTo having count(AssignedTo) > 0 order by count desc limit 10';
+    connect.query(leads_toppers, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching details"
+            })
+            console.log(err)
+        }
+        return res.status(200).json({
+            message: "Fetched Courses",
+            count: result
+        })
+    })
+}
+
+exports.fetchCountWebsiteLeads = (req, res) => {
+    website_leads = 'select AssignedTo, count(AssignedTo) as \'count\' from ice.leads where AssignedTo in (select AssignedTo from ice.leads where AssignedTo = \'636-Website Lead Pool\') group by AssignedTo having count(AssignedTo) > 0 order by count desc limit 10';
+    connect.query(website_leads, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching details"
+            })
+            console.log(err)
+        }
+        return res.status(200).json({
+            message: "Fetched Courses",
+            count: result
+        })
+    })
+}
+
+exports.fetchCurrentMonthLeads = (req, res) => {
+    
+    const {fromDate, toDate} = req.body
+    count_fetch = 'SELECT Venue, COUNT(Venue) AS \'count\' FROM ice.lead WHERE Createdt BETWEEN \''+ fromDate +'\' AND \''+ toDate +'\' AND STATUS = \'5-Confirmed\' GROUP BY Venue HAVING COUNT(Venue)>0 ORDER BY COUNT DESC LIMIT 5';
+    connect.query(count_fetch, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching details"
+            })
+            console.log(err)
+        }
+        return res.status(200).json({
+            message: "Fetched Courses",
+            count: result
+        })
+    })
+}
+
+exports.fetchLastFifteenDayLeads = (req, res) => {
+
+    const currentDate = new Date().getDate() < 10 ? `0${new Date().getDate().toString()}` : new Date().getDate().toString()
+    const currentMonth = new Date().getMonth() + 1 < 10 ? `0${(new Date().getMonth()+1).toString()}` : (new Date().getMonth()+1).toString()
+    const date = `${new Date().getFullYear()}-${currentMonth}-${currentDate} 00:00:00`
+
+    const fifteen = new Date(new Date(date).setDate(new Date(date).getDate() - 15))
+    const pastDate = fifteen.getDate() < 10 ? `0${fifteen.getDate().toString()}` : fifteen.getDate().toString()
+    const pastMonth = fifteen.getMonth() + 1 < 10 ? `0${(fifteen.getMonth()+1).toString()}` : (fifteen.getMonth()+1).toString()
+    const fifteenDate = `${fifteen.getFullYear()}-${pastMonth}-${pastDate} 00:00:00`
+
+    fetch_fifteen = 'SELECT CAST(Createdt AS DATE) AS Createdt, COUNT(CAST(Createdt AS DATE)) AS \'count\' FROM ice.leads WHERE Createdt BETWEEN \''+ fifteenDate + '\' AND \''+ date + '\' AND STATUS = \'5-Confirmed\' GROUP BY CAST(Createdt AS DATE) HAVING COUNT(CAST(Createdt AS DATE))>0 LIMIT 15';
+    connect.query(fetch_fifteen, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching details"
+            })
+            console.log(err)
+        }
+        return res.status(200).json({
+            message: "Fetched Courses",
+            leads: result
+        })
+    })
+}
+
+exports.fetchSourceCount = (req, res) => {
+
+    source_count = 'SELECT Source, COUNT(Source) AS \'count\' FROM ice.leads GROUP BY Source HAVING COUNT(Source)>0';
+    connect.query(source_count, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching details"
+            })
+            console.log(err)
+        }
+        return res.status(200).json({
+            message: "Fetched Courses",
+            sources: result
+        })
+    })
+}
+
+exports.fetchTopCourseCount = (req, res) => {
+
+    course_count = 'SELECT Type, COUNT(Type) AS \'count\' FROM ice.leads GROUP BY Type HAVING COUNT(Type)>0 ORDER BY count DESC LIMIT 6';
+    connect.query(course_count, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching details"
+            })
+            console.log(err)
+        }
+        return res.status(200).json({
+            message: "Fetched Courses",
+            courses: result
+        })
+    })
+}
+
+exports.fetchTotalCourseCount = (req, res) => {
+    total_course_count = 'SELECT COUNT(Type) AS \'count\' FROM ice.leads HAVING COUNT(Type)>0';
+    connect.query(total_course_count, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching details"
+            })
+            console.log(err)
+        }
+        return res.status(200).json({
+            message: "Fetched Total",
+            total: result
+        })
+    })
+}

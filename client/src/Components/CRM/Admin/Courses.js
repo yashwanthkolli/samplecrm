@@ -51,14 +51,14 @@ function Courses() {
 
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
         .then(res => setCourses(res.data.courses))
         .catch(err => {})
     }, [update])
 
     const onDeleteCourse = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteCourses`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             id: id
         })
         .then(res => {
@@ -82,7 +82,7 @@ function Courses() {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_CONFIG}/addCourses`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             name,
             type,
             cost
@@ -112,7 +112,7 @@ function Courses() {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_CONFIG}/updateCourses`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             id,
             name,
             type,

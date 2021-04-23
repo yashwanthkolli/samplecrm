@@ -6,7 +6,9 @@ const { detailsController,
     uploadDisplayController,
     userListController,
     addUserController,
-    employeeAssignedController
+    employeeAssignedController,
+    getLoginTimeController,
+    setLoginTimeController
 } = require('../controllers/user.controller');
 const { verifyHigherLevel } = require('../validations/higherlevel');
 
@@ -16,5 +18,7 @@ router.post('/uploadPicture', uploadDisplayController);
 router.post('/usersList', verifyHigherLevel, userListController);
 router.post('/addUser', verifyHigherLevel, addUserController);
 router.post('/getEmployeeList', verifyHigherLevel, employeeAssignedController);
+router.post('/getEmployeeTimings', getLoginTimeController);
+router.post('/setEmployeeTimings', setLoginTimeController);
 
 module.exports = router;

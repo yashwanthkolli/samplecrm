@@ -28,7 +28,7 @@ function Status() {
     const [deleteStatusId, setDeleteStatusId] = useState()
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
         .then(res => setStatusArray(res.data.status))
         .catch(err => {
             toast({
@@ -41,7 +41,7 @@ function Status() {
 
     const onDeleteStatus = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteStatus`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             id: id
         })
         .then(res => {
@@ -50,7 +50,7 @@ function Status() {
                 duration: 2000,
                 position: "top"
             })
-            axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(localStorage.getItem('user')).Email })
+            axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setStatusArray(res.data.status))
             .catch(err => {
                 toast({
@@ -72,7 +72,7 @@ function Status() {
     const onAddStatus = (e) => {
         e.preventDefault()
         axios.post(`${process.env.REACT_APP_CONFIG}/addStatus`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             status
         })
         .then(res => {
@@ -83,7 +83,7 @@ function Status() {
             })
             setOpen(false)
             setStatus('')
-            axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(localStorage.getItem('user')).Email })
+            axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setStatusArray(res.data.status))
             .catch(err => {
                 toast({

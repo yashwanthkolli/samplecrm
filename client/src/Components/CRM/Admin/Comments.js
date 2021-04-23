@@ -49,14 +49,14 @@ function Comments() {
     const [deleteCommentId, setDeleteCommentId] = useState()
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
         .then(res => setComments(res.data.comments))
         .catch(err => {})
     }, [update])
 
     const onDeleteComment = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteComments`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             id: id
         })
         .then(res => {
@@ -86,7 +86,7 @@ function Comments() {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_CONFIG}/addComments`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             comment
         })
         .then(res => {

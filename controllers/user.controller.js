@@ -180,3 +180,36 @@ exports.employeeAssignedController = (req, res) => {
         })
     })
 }
+
+exports.getLoginTimeController = (req, res) => {
+
+    const { email } = req.body
+    getTime_query = 'SELECT Timings FROM ice.employees WHERE Email = \'' + email + '\'';
+    connect.query(getTime_query, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching timings"
+            })
+        }
+        return res.status(200).json({
+            message: "Timings Fetch Successfull",
+            timings: result
+        })
+    })
+}
+
+exports.setLoginTimeController = (req, res) => {
+    const { jsonData, email } = req.body
+    setTime_querry = 'UPDATE ice.employees SET Timings = \'' + JSON.stringify(jsonData) + '\' WHERE Email = \'' + email + '\'';
+    connect.query(setTime_querry, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in updating timings"
+            })
+        }
+        return res.status(200).json({
+            message: "Timings Updated Successfull"
+        })
+    })
+    // JSON.stringify([{"date": "2021-04-23"}, {"date": "2021-04-24"}])
+}

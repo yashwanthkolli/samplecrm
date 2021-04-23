@@ -94,7 +94,7 @@ function AddUsers(){
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_USER}/addUser`,{
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             first: firstname,
             sur: surname,
             new_email: email_new,
@@ -132,7 +132,7 @@ function AddUsers(){
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_USER}/usersList`,{
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
             setRawData(res.data.details);

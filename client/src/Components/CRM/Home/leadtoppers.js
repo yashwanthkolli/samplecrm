@@ -13,7 +13,7 @@ function LeadToppersGraph() {
     const [websiteLeads, setWebsiteLeads] = useState('')
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_LEADS}/getLeadToppers`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/getLeadToppers`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setLeadToppers(res.data.count))
             .catch(err => {
                 toast({
@@ -22,7 +22,7 @@ function LeadToppersGraph() {
                     position: "top"
                 })
             })
-        axios.post(`${process.env.REACT_APP_LEADS}/getWebsiteLeadsCount`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/getWebsiteLeadsCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setWebsiteLeads(res.data.count[0].count))
             .catch(err => {
                 toast({

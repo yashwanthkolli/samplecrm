@@ -13,7 +13,7 @@ function Sources() {
     const [values, setValues] = useState([])
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_LEADS}/sourceCount`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/sourceCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
         .then(res => setSources(res.data.sources))
         .catch(err => {
             toast({

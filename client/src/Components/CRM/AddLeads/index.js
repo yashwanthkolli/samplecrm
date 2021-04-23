@@ -156,7 +156,7 @@ function AddLeads(){
     const turnToPage = (pageId) => {
 
         axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`, {
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         },{
             params: {
                 page: pageId
@@ -179,7 +179,7 @@ function AddLeads(){
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name
         })
         .then((res) => {
@@ -210,7 +210,7 @@ function AddLeads(){
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`,{
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
             let data_latest = [];
@@ -227,7 +227,7 @@ function AddLeads(){
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, {
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
             setCoursesFetched(res.data.courses);
@@ -243,7 +243,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, {
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
             setStatusFetched(res.data.status);
@@ -259,7 +259,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getSource`, {
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
             setSourcesFetched(res.data.sources);
@@ -275,7 +275,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getAdName`,{
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
             setAdNameFetched(res.data.adnames);
@@ -291,7 +291,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, {
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
             setCommentsFetched(res.data.comments);
@@ -307,7 +307,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_USER}/getEmployeeList`,{
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
             setEmployeesFetched(res.data.employees);

@@ -14,7 +14,7 @@ import {
     Ice,
     Form
 } from './LoginComponents.js';
-import { setLocalStorage, isAuth } from '../../helpers/auth.helpers.js';
+import { setSessionStorage, isAuth } from '../../helpers/auth.helpers.js';
 import { Redirect } from 'react-router-dom';
 
 const ice = require('../../logo.svg').default;
@@ -38,8 +38,11 @@ function Login({history}) {
         })
         .then((res) => {
             if(res.data.response === 1){
-                setLocalStorage('token', res.data.token);
-                setLocalStorage('user', res.data.payload);
+                setSessionStorage('token', res.data.token);
+                setSessionStorage('user', res.data.payload);
+                const loginHours = new Date().getHours() >= 10 ? new Date().getHours().toString() : '0'+new Date().getHours().toString()
+                const loginMinutes = new Date().getMinutes() >= 10 ? new Date().getMinutes().toString() : '0'+new Date().getMinutes().toString()
+                setSessionStorage('loginTime', loginHours + ':' + loginMinutes)
 
                 toast({
                     title: "Login Successful",

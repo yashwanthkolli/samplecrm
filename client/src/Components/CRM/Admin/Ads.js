@@ -53,7 +53,7 @@ function Ads() {
 
         axios.post(`${process.env.REACT_APP_CONFIG}/getAds`,
         { 
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then(res => setAds(res.data.adnames))
         .catch(err => {})
@@ -61,7 +61,7 @@ function Ads() {
   
     const onDeleteAd = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteAds`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             id: id
         })
         .then(res => {
@@ -92,7 +92,7 @@ function Ads() {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_CONFIG}/addAds`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             ad_name, medium, place
         })
         .then(res => {

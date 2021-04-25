@@ -6,8 +6,15 @@ import {
 import {
   ChakraProvider
 } from '@chakra-ui/react';
+import { updateLoggedInTimings } from './helpers/auth.helpers';
 
 function App() {
+
+  window.addEventListener('beforeunload', (e) => {
+    e.preventDefault();
+    return updateLoggedInTimings()
+  })
+  
   return (
     <ChakraProvider>
       <BrowserRouter>

@@ -14,6 +14,8 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
+import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
+import { AiFillAlert } from 'react-icons/ai';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -54,6 +56,39 @@ const useStyles = makeStyles((theme) => ({
     },
     selectField:{
         width: '45%'
+    },
+    leadDetails:{
+        fontSize: '15px',
+        fontFamily: 'Nunito'
+    },
+    course: {
+        fontSize: '15px',
+        fontFamily: 'Nunito'
+    },
+    btnSection:{
+        display:'flex'
+    },
+    status:{
+        display: 'flex',
+        flexDirection: 'column',
+        fontSize: '15px',
+        fontFamily: 'Nunito'
+    },
+    assigned:{
+        fontSize: '15px',
+        fontFamily: 'Nunito'
+    },
+    iconHolder: {
+        width: '100%',
+        minHeight: '150px',
+        display: 'grid',
+        placeItems: 'center'
+    },
+    btnWalkIn:{
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: '15px'
     }
 }));
 
@@ -70,6 +105,12 @@ function AddLeads(){
 
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+    const [open3, setOpen3] = useState(false);
+    const [open4, setOpen4] = useState(false);
+    const [open5, setOpen5] = useState(false);
+    const [open6, setOpen6] = useState(false);
+    const [open7, setOpen7] = useState(false);
+
     const [tableData, setTableData] = useState([]);
     const [update, setUpdate] = useState(false);
 
@@ -95,9 +136,13 @@ function AddLeads(){
     const [category, setCategory] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [searchValue, setSearchValue] = useState("");
 
     const handleChangeCategory = (e) => {
         setCategory(e.target.value);
+    }
+    const handleChangeValue = (e) => {
+        setSearchValue(e.target.value);
     }
 
     const handleOpen = (id) => {
@@ -107,6 +152,21 @@ function AddLeads(){
                 break;
             case 2:
                 setOpen2(true);
+                break;
+            case 3:
+                setOpen3(true);
+                break;
+            case 4:
+                setOpen4(true);
+                break;
+            case 5:
+                setOpen5(true);
+                break;
+            case 6:
+                setOpen6(true);
+                break;
+            case 7: 
+                setOpen7(true);
                 break;
             default:
                 break;
@@ -119,6 +179,21 @@ function AddLeads(){
                 break;
             case 2:
                 setOpen2(false);
+                break;
+            case 3:
+                setOpen3(false);
+                break;
+            case 4:
+                setOpen4(false);
+                break;
+            case 5:
+                setOpen5(false);
+                break;
+            case 6:
+                setOpen6(false);
+                break;
+            case 7:
+                setOpen7(false);
                 break;
             default:
                 break;
@@ -217,7 +292,35 @@ function AddLeads(){
 
             res.data.latest.forEach((element) => {
                 data_latest.push({
-                    "name": element.name
+                    "details": 
+                        <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => handleOpen(3)}>
+                            {element.Name + " | " + element.Email + " | " + element.Mobile}
+                        </div>,
+                    "course": 
+                        <div className={classes.course} >
+                            {element.course + " | " + element.courseType + " | Rs." + element.courseCost}
+                        </div>,
+                    "status": 
+                        <div className={classes.status} style={{cursor: "pointer"}} onClick={() => handleOpen(4)}>
+                            <div>{element.Status}</div>
+                            <div>{new Date(element.UpdationDt).toLocaleString()}</div>
+                        </div>,
+                    "assignedTo": 
+                        <div className={classes.assigned}>
+                            <div>{element.assignF + " " + element.assignS}</div>
+                            <div>{new Date(element.AssignDt).toLocaleString()}</div>
+                        </div>,
+                    "actions": <div className={classes.btnSection}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen(5)}>
+                                <FaWalking style={{margin: '5px'}} />    
+                            </Button>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen(6)}>
+                                <FaMailBulk style={{margin:'5px'}} />
+                            </Button>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}} onClick={() => handleOpen(7)}>
+                                <FaBookmark style={{margin: '5px'}} />
+                            </Button>
+                        </div>
                 })
             })
             setTableData(data_latest);
@@ -278,7 +381,7 @@ function AddLeads(){
             email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
-            setAdNameFetched(res.data.adnames);
+            setAdNameFetched(res.data.ads);
         })
         .catch((err) => {
             if(!toast.isActive(toast_course)){
@@ -340,7 +443,16 @@ function AddLeads(){
             {
                 tableData.length > 0 ?
                 <MaterialTable
-
+                    title="Latest Leads Table"
+                    columns={[
+                        {title: 'Lead Details', field: "details", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Course', field: "course", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Status', field: "status", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Assigned To', field: "assignedTo", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Actions', field: "actions", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}}
+                    ]}
+                    data={tableData}
+                    style={{width: '98%', textAlign:'center'}}
                 />
                 :
                 <div className={classes.noData}>
@@ -543,7 +655,7 @@ function AddLeads(){
                 </form>
             </DialogContent>
         </Dialog>
-        <Dialog open={open2} fullWidth TransitionComponent={Transition} onClose={() => handleClose(2)} aria-labelledby="add-new-lead">
+        <Dialog open={open2} fullWidth TransitionComponent={Transition} onClose={() => handleClose(2)} aria-labelledby="search-lead">
             <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads By Category</DialogTitle>
             <DialogContent>
                 <form>
@@ -561,6 +673,7 @@ function AddLeads(){
                             <MenuItem value="Status">Status</MenuItem>
                             <MenuItem value="Course">Course</MenuItem>
                             <MenuItem value="CreatedBy">Created By</MenuItem>
+                            <MenuItem value="AssignedTo">Assigned To</MenuItem>
                         </Select>
                     </FormControl>
                     <div className={classes.fieldHolder} style={{display: category === "Date" ? 'flex' : 'none'}}>
@@ -586,10 +699,122 @@ function AddLeads(){
                         fullWidth
                         style={{display: !(arr_category.includes(category)) 
                             ? 'flex' : 'none', marginTop: '7px'}}
-                        label={category === "CreatedBy" ? "Created By" : category}
+                        label={category}
+                        placeholder={`Enter ${category}`}
+                        value={searchValue}
+                        onChange={e=>setSearchValue(e.target.value)} 
                     />
+                    <FormControl style={{display: category === "Status" ? 'flex' : 'none', width: '100%'}}> 
+                        <InputLabel>{category}</InputLabel>
+                        <Select
+                            required
+                            fullWidth
+                            value={searchValue}
+                            onChange={handleChangeValue}
+                            style={{width: '100%'}}
+                        >
+                        {
+                            statusFetched.map((element, index) => {
+                                return(
+                                    <MenuItem key={index}>{element.name}</MenuItem>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
+                    <FormControl style={{display: category === "Course" ? 'flex' : 'none', width: '100%'}}> 
+                        <InputLabel>{category}</InputLabel>
+                        <Select
+                            required
+                            fullWidth
+                            value={searchValue}
+                            onChange={handleChangeValue}
+                            style={{width: '100%'}}
+                        >
+                        {
+                            coursesFetched.map((element, index) => {
+                                return(
+                                    <MenuItem key={index}>{element.name}</MenuItem>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
+                    <FormControl style={{display: category === "CreatedBy" ? 'flex' : 'none', width: '100%'}}> 
+                        <InputLabel>{category}</InputLabel>
+                        <Select
+                            required
+                            fullWidth
+                            value={searchValue}
+                            onChange={handleChangeValue}
+                            style={{width: '100%'}}
+                        >
+                        {
+                            employeeFetched.map((element, index) => {
+                                return(
+                                    <MenuItem key={index}>{element.Firstname+ " " +element.Surname}</MenuItem>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
+                    <FormControl style={{display: category === "AssignedTo" ? 'flex' : 'none', width: '100%'}}> 
+                        <InputLabel>{category}</InputLabel>
+                        <Select
+                            required
+                            fullWidth
+                            value={searchValue}
+                            onChange={handleChangeValue}
+                            style={{width: '100%'}}
+                        >
+                        {
+                            employeeFetched.map((element, index) => {
+                                return(
+                                    <MenuItem key={index}>{element.Firstname+ " " +element.Surname}</MenuItem>
+                                )
+                            })
+                        }
+                        </Select>
+                    </FormControl>
+                    <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
+                        Search
+                    </Button>
                 </form>
             </DialogContent>
+        </Dialog>
+        <Dialog open={open3} fullWidth TransitionComponent={Transition} onClose={() => handleClose(3)} aria-labelledby="Lead Details">
+            <DialogTitle>Lead Details</DialogTitle>
+        </Dialog>
+        <Dialog open={open4} fullWidth TransitionComponent={Transition} onClose={() => handleClose(4)} aria-labelledby="Lead Status Details">
+            <DialogTitle>Lead Status Update</DialogTitle>
+        </Dialog>
+        <Dialog open={open5} fullWidth TransitionComponent={Transition} onClose={() => handleClose(5)} aria-labelledby="Mark Walk-In">
+            <DialogTitle>Lead Mark Walk-in</DialogTitle>
+            <DialogContent>
+                <div className={classes.markWalkIn}>
+                    <div className={classes.iconHolder} >
+                        <AiFillAlert style={{width: '70%', height: '70%'}}/>
+                    </div>
+                    <div className={classes.btnWalkIn}>
+                        <Button variant="contained" 
+                            fullWidth 
+                            style={{backgroundColor: '#202950', color: 'white', marginRight: '25px'}}
+                            onClick={() => handleClose(5)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button variant="contained" fullWidth style={{backgroundColor: '#202950', color: 'white'}}>
+                            Yeah! It's a walk-in
+                        </Button>
+                    </div>
+                </div>
+            </DialogContent>
+        </Dialog>
+        <Dialog open={open6} fullWidth TransitionComponent={Transition} onClose={() => handleClose(6)} aria-labelledby="Lead Message Portal">
+            <DialogTitle>Lead Message Portal</DialogTitle>
+        </Dialog>
+        <Dialog open={open7} fullWidth TransitionComponent={Transition} onClose={() => handleClose(7)} aria-labelledby="Lead Statu Details">
+            <DialogTitle>Book now with details</DialogTitle>
         </Dialog>
         </>
     )

@@ -87,6 +87,7 @@ function AddUsers(){
 
     const handleChangeRole = (e) => {
         setRole(e.target.value);
+        setReporting("");
     }
     const handleChangeReporting = (e) => {
         setReporting(e.target.value);
@@ -367,7 +368,9 @@ function AddUsers(){
                                     )
                                 } else {
                                     return (
-                                        <></>
+                                        <MenuItem key={index} value="none">
+                                            None
+                                        </MenuItem>
                                     )
                                 }
                             })}

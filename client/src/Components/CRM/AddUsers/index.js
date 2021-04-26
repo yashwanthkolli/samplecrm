@@ -12,6 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/Inputlabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import axios from 'axios';
 import {
     Section
@@ -48,6 +49,26 @@ function AddUsers(){
     const [open, setOpen] = useState(false);
     const [update, setUpdate] = useState(false);
 
+    const toast = useToast();
+    const [tableData, setTableData] = useState([]);
+
+    const lid = "list-toast";
+    const uid = "uid-toast";
+
+    const [userData, setUserData] = useState([]);
+    const [rawData, setRawData] = useState([]);
+    const [cityData, setCityData] = useState([]);
+    const [firstname, setFirstName] = useState("");
+    const [surname, setSurName] = useState("");
+    const [email_new, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [dob, setDob] = useState("");
+    const [address, setAddress] = useState("");
+    const [city, setCity] = useState("");
+    const [role, setRole] = useState("");
+    const [reporting, setReporting] = useState("");
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -67,29 +88,33 @@ function AddUsers(){
 
     const handleChangeRole = (e) => {
         setRole(e.target.value);
+        changeUserData(role);
     }
     const handleChangeReporting = (e) => {
         setReporting(e.target.value);
     }
+    const handleChangeCity = (e) => {
+        setCity(e.target.value)
+    }
 
-    const toast = useToast();
-    const [tableData, setTableData] = useState([]);
-
-    const lid = "list-toast";
-    const uid = "uid-toast";
-
-    const [rawData, setRawData] = useState([]);
-    const [cityData, setCityData] = useState([]);
-    const [firstname, setFirstName] = useState("");
-    const [surname, setSurName] = useState("");
-    const [email_new, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [mobile, setMobile] = useState("");
-    const [dob, setDob] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [role, setRole] = useState("");
-    const [reporting, setReporting] = useState("");
+    const changeUserData = (role) => {
+        switch (role) {
+            case "TeleCaller":
+                setUserData(rawData.filter(element => element.Type !== "Convertor"))
+                break;
+            case "Convertor":
+                setUserData(rawData.filter(element => element.Type !== "manager"))
+                break;
+            case "Manager":
+                setUserData(rawData.filter(element => element.Type !== "national_head"))
+                break;
+            case "national_head":
+                setUserData([{Firstname: "Admin", Surname: "" }])
+                break;
+            default:
+                break;
+        }
+    }
 
     const adduser = (e) => {
         e.preventDefault();
@@ -266,9 +291,10 @@ function AddUsers(){
                             style={{marginBottom: '5px'}}
                             onChange={e=>setMobile(e.target.value)}
                         />
-                        <div>
+                        <div style={{width: '50%'}}>
                             <InputLabel>Date of birth</InputLabel>
                             <TextField 
+                                fullWidth
                                 required
                                 value={dob}
                                 type="date"
@@ -289,7 +315,7 @@ function AddUsers(){
                             value={address}
                             onChange={e=>setAddress(e.target.value)}
                         />
-                        <div className={classes.select}>
+                        <div className={classes.select} style={{width: '50%'}}>
                             <InputLabel>Select City</InputLabel>
                             <Select
                                 required
@@ -300,7 +326,9 @@ function AddUsers(){
                             >
                                 {cityData.map((element, index) => {
                                     return (
-                                        <MenuItem key={index} value={element.city} />
+                                        <MenuItem key={index} value={element.city}>
+                                            {element.city}
+                                        </MenuItem>
                                     )
                                 })}
                             </Select>
@@ -316,12 +344,11 @@ function AddUsers(){
                             value={role}
                             onChange={handleChangeRole}
                         >
-                            <option value="Admin">Admin</option>
-                            <option value="national_head">National Head</option>
-                            <option value="IT Administator">IT Administator</option>
-                            <option value="Manager">Manager</option>
-                            <option value="TeleCaller">TeleCaller</option>
-                            <option value="Convertor">Convertor</option>
+                            <MenuItem value="national_head">National Head</MenuItem>
+                            <MenuItem value="IT Administator">IT Administator</MenuItem>
+                            <MenuItem value="Manager">Manager</MenuItem>
+                            <MenuItem value="TeleCaller">TeleCaller</MenuItem>
+                            <MenuItem value="Convertor">Convertor</MenuItem>
                         </Select>
                     </div>
                     <div className={classes.select}>
@@ -333,11 +360,11 @@ function AddUsers(){
                             value={reporting}
                             onChange={handleChangeReporting}
                         >
-                            {rawData.map((element) => {
+                            {userData.map((element) => {
                                 return (
-                                    <option key={element.Firstname} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                    <MenuItem key={element.Firstname} value={element.Firstname.trim() + " " + element.Surname.trim()}>
                                         {element.Firstname.trim() + " " + element.Surname.trim()}
-                                    </option>
+                                    </MenuItem>
                                 )
                             })}
                         </Select>

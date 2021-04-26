@@ -132,6 +132,7 @@ function AddLeads(){
     const [status, setStatus] = useState("");
     const [comment, setComment] = useState("");
     const [ad_name, setAdName] = useState("");
+    const [otherComment, setOtherComment] = useState("");
 
     const [category, setCategory] = useState("");
     const [startDate, setStartDate] = useState("");
@@ -223,6 +224,9 @@ function AddLeads(){
             case 7:
                 setAdName(e.target.value);
                 break;
+            case 8:
+                setOtherComment(e.target.value);
+                break;
             default:
                 break;
         }
@@ -255,7 +259,7 @@ function AddLeads(){
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
             email: JSON.parse(sessionStorage.getItem('user')).Email,
-            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name
+            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name, otherComment
         })
         .then((res) => {
             setUpdate(!update);
@@ -377,7 +381,7 @@ function AddLeads(){
                 })
             }
         })
-        axios.post(`${process.env.REACT_APP_CONFIG}/getAdName`,{
+        axios.post(`${process.env.REACT_APP_CONFIG}/getAds`,{
             email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
@@ -639,8 +643,8 @@ function AddLeads(){
                     <TextField 
                         fullWidth
                         autoComplete="off"
-                        value={comment}
-                        onChange={(e)=>handleChange(e, 6)}
+                        value={otherComment}
+                        onChange={(e)=>handleChange(e, 8)}
                         style={{marginTop: '7px'}}
                         label="Comment"
                         placeholder="Additional Comment"

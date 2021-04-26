@@ -49,14 +49,14 @@ function Sources() {
     const [deleteSourceId, setDeleteSourceId] = useState()
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getSource`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getSource`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
         .then(res => setSources(res.data.sources))
         .catch(err => {})
     }, [update])
 
     const onDeleteSource = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteSource`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             id: id
         })
         .then(res => {
@@ -86,7 +86,7 @@ function Sources() {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_CONFIG}/addSource`, {
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             source
         })
         .then(res => {

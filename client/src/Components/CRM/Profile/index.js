@@ -22,7 +22,7 @@ import {
     Title,
     Value
 } from './ProfileComponents';
-import {setLocalStorage} from '../../../helpers/auth.helpers';
+import {setSessionStorage} from '../../../helpers/auth.helpers';
 
 const useStyles = makeStyles((theme) => ({
     root:{
@@ -93,11 +93,11 @@ function Profile(){
     const upload = ({target: {files}}) => {
         let data = new FormData()
         data.append('profilePic', files[0])
-        data.append('email', JSON.parse(localStorage.getItem('user')).Email)
+        data.append('email', JSON.parse(sessionStorage.getItem('user')).Email)
         setFormData(data)
     }
 
-    const fullName = JSON.parse(localStorage.getItem('user')).Firstname.trim() + " " + JSON.parse(localStorage.getItem('user')).Surname.trim();
+    const fullName = JSON.parse(sessionStorage.getItem('user')).Firstname.trim() + " " + JSON.parse(sessionStorage.getItem('user')).Surname.trim();
 
     const handleUpdatePassword = (e) => {
         e.preventDefault();
@@ -105,7 +105,7 @@ function Profile(){
         if(nPassword.length > 8){
             if(nPassword === rPassword){
                 axios.post(`${process.env.REACT_APP_USER}/changePassword`, {
-                    email: JSON.parse(localStorage.getItem('user')).Email,
+                    email: JSON.parse(sessionStorage.getItem('user')).Email,
                     current: cPassword,
                     newP: nPassword
                 })
@@ -166,7 +166,7 @@ function Profile(){
                 setProgressPercent(0);
                 handleClose2();
             }, 1000)
-            setLocalStorage('user', res.data.payload);
+            setSessionStorage('user', res.data.payload);
             toast({
                 description: "Upload Successful",
                 duration: 2000,
@@ -190,7 +190,7 @@ function Profile(){
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_USER}/detailsUser`,{
-            email: JSON.parse(localStorage.getItem('user')).Email
+            email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {
             setProfile(res.data.details)
@@ -209,7 +209,7 @@ function Profile(){
                 <Holder>
                     <div className={classes.imageHolder} >
                         <Circle size="250px" style={{border: "1px solid blue", overflow: 'hidden'}}>
-                            <ImageHolder src={JSON.parse(localStorage.getItem('user')).Picture !== null  ? `${process.env.REACT_APP_PICS}/${JSON.parse(localStorage.getItem('user')).Picture}` : `${process.env.REACT_APP_PICS}/001.png`} alt={JSON.parse(localStorage.getItem('user')).Firstname} />
+                            <ImageHolder src={JSON.parse(sessionStorage.getItem('user')).Picture !== null  ? `${process.env.REACT_APP_PICS}/${JSON.parse(sessionStorage.getItem('user')).Picture}` : `${process.env.REACT_APP_PICS}/001.png`} alt={JSON.parse(sessionStorage.getItem('user')).Firstname} />
                         </Circle>  
                     </div>
                     <TextContainer>
@@ -219,11 +219,11 @@ function Profile(){
                         </TextWrapper>
                         <TextWrapper>
                             <Title>Email</Title>
-                            <Value>{JSON.parse(localStorage.getItem('user')).Email}</Value>
+                            <Value>{JSON.parse(sessionStorage.getItem('user')).Email}</Value>
                         </TextWrapper>
                         <TextWrapper>
                             <Title>Mobile</Title>
-                            <Value>{JSON.parse(localStorage.getItem('user')).Mobile}</Value>
+                            <Value>{JSON.parse(sessionStorage.getItem('user')).Mobile}</Value>
                         </TextWrapper>
                         {profile.map((element) => {
                             return(

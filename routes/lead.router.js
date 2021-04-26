@@ -5,6 +5,7 @@ const {
     latestLeadController,
     addNewLeadsController,
     fetchTopPlaceLeadsController, 
+    addNewLeadsController,
     fetchNumberOfLeadsController, 
     fetchLeadToppersController, 
     fetchCountWebsiteLeads, 

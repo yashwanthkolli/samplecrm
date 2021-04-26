@@ -13,7 +13,7 @@ function CoursesGraph() {
     const [values, setValues] = useState([])
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_LEADS}/courseCount`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/courseCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setCourses(res.data.courses))
             .catch(err => {
                 toast({
@@ -22,7 +22,7 @@ function CoursesGraph() {
                     position: "top"
                 })
             })
-        axios.post(`${process.env.REACT_APP_LEADS}/totalCourseCount`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/totalCourseCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setTotalCount(res.data.total[0].count))
             .catch(err => {
                 toast({

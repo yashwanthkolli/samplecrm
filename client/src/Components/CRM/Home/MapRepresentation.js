@@ -45,7 +45,7 @@ const MapRepresentation = () => {
     const [markersData, setMarkersData] = useState([])
 
     useEffect(() => {
-        axios.post(`${process.env.REACT_APP_LEADS}/getPlaceLeads`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/getPlaceLeads`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setLeads(res.data.leads))
             .catch(err => {
                 toast({
@@ -54,7 +54,7 @@ const MapRepresentation = () => {
                     position: "top"
                 })
             })
-        axios.post(`${process.env.REACT_APP_LEADS}/getNoOfLeads`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/getNoOfLeads`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setTotalLeads(res.data.count[0].count))
             .catch(err => {
                 toast({

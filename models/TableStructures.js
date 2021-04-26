@@ -12,6 +12,7 @@ module.exports = [
         +' Type CHAR(30) NOT NULL,'
         +' Reporting CHAR(40) NOT NULL,'
         +' Picture VARCHAR(255),'
+        +' Timings JSON DEFAULT NULL,'
         +' Primary Key(Employee_ID)'
     ],
     [

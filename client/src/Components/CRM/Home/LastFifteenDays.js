@@ -13,7 +13,7 @@ function LastFifteenDaysGraph() {
     const [values, setValues] = useState([])
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_LEADS}/fifteenDaysLeads`, { email: JSON.parse(localStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/fifteenDaysLeads`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
         .then(res => setData(res.data.leads))
         .catch(err => {
             toast({

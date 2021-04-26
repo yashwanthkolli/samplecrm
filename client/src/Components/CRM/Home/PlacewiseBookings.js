@@ -16,7 +16,7 @@ function PlacewiseBookingsGraph() {
         const year = new Date().getFullYear().toString()
         const month = new Date().getMonth() >= 10 ? new Date().getMonth().toString() : `0${new Date().getMonth().toString()}`
         axios.post(`${process.env.REACT_APP_LEADS}/currentMonthLeads`, { 
-            email: JSON.parse(localStorage.getItem('user')).Email,
+            email: JSON.parse(sessionStorage.getItem('user')).Email,
             fromDate: `${year}-${month}-01 00:00:00`,
             toDate: `${year}-${month}-30 00:00:00`
         })

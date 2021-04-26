@@ -159,7 +159,7 @@ function HeaderBar({match}){
 
     let navbarElements;
 
-    switch(JSON.parse(localStorage.getItem('user')).Type){
+    switch(JSON.parse(sessionStorage.getItem('user')).Type){
       case 'admin':
         navbarElements = adminNav
         break;
@@ -249,10 +249,10 @@ function HeaderBar({match}){
         <div className={classes.profile}>
           <Avatar className={classes.large} />
           <Typography noWrap className={classes.profileDetails}>
-            {JSON.parse(localStorage.getItem('user')).Firstname + " " + JSON.parse(localStorage.getItem('user')).Surname}
+            {JSON.parse(sessionStorage.getItem('user')).Firstname + " " + JSON.parse(sessionStorage.getItem('user')).Surname}
           </Typography>
           <Typography noWrap className={classes.profileDetails}>
-            {JSON.parse(localStorage.getItem('user')).Email}
+            {JSON.parse(sessionStorage.getItem('user')).Email}
           </Typography>
         </div>
         <Divider />

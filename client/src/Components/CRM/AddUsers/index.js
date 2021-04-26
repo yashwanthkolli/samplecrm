@@ -341,7 +341,7 @@ function AddUsers(){
                             onChange={handleChangeReporting}
                         >
                             {rawData.map((element, index) => {
-                                if(role === "National Head"){
+                                if(role === "National Head" && element.Type === "Admin"){
                                 return (
                                     <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
                                         {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
@@ -352,6 +352,22 @@ function AddUsers(){
                                         <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
                                             {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
                                         </MenuItem>
+                                    )
+                                } else if( role === "Convertor" && element.Type === "Manager"){
+                                    return (
+                                        <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                            {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                        </MenuItem>
+                                    )
+                                } else if( role === "TeleCaller" && element.Type === "Convertor"){
+                                    return (
+                                        <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                            {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                        </MenuItem>
+                                    )
+                                } else {
+                                    return (
+                                        <></>
                                     )
                                 }
                             })}

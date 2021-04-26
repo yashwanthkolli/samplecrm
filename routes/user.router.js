@@ -9,7 +9,8 @@ const { detailsController,
     employeeAssignedController,
     getLoginTimeController,
     setLoginTimeController,
-    getCityNamesController
+    getCityNamesController,
+    telecallerListController
 } = require('../controllers/user.controller');
 const { verifyHigherLevel } = require('../validations/higherlevel');
 
@@ -22,5 +23,6 @@ router.post('/getEmployeeList', verifyHigherLevel, employeeAssignedController);
 router.post('/getEmployeeTimings', getLoginTimeController);
 router.post('/setEmployeeTimings', setLoginTimeController);
 router.post('/getCityNames', getCityNamesController);
+router.post('/getTelecallerList', verifyHigherLevel, telecallerListController);
 
 module.exports = router;

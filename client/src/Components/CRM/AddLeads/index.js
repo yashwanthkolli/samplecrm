@@ -211,6 +211,7 @@ function AddLeads(){
         })
         .then((res) => {
             setUpdate(!update);
+            handleClose();
         })
         .catch((err) => {
             toast({
@@ -361,7 +362,7 @@ function AddLeads(){
                 })
             }
         })
-        axios.post(`${process.env.REACT_APP_USER}/getEmployeeList`,{
+        axios.post(`${process.env.REACT_APP_USER}/getTeleCallerList`,{
             email: JSON.parse(sessionStorage.getItem('user')).Email
         })
         .then((res) => {

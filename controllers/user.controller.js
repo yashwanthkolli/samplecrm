@@ -229,3 +229,20 @@ exports.getCityNamesController = (req, res) => {
         })
     })
 }
+
+exports.telecallerListController = (req, res) => {
+
+    telecallerQuery = 'select * from ice.employees where Type = \'TeleCaller\' ';
+    connect.query(telecallerQuery, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching telecaller list"
+            })
+        }
+
+        return res.status(200).json({
+            message: "Fetched Telecaller List",
+            employees: result
+        })
+    })
+}

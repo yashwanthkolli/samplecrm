@@ -55,7 +55,6 @@ function AddUsers(){
     const lid = "list-toast";
     const uid = "uid-toast";
 
-    const [userData, setUserData] = useState([]);
     const [rawData, setRawData] = useState([]);
     const [cityData, setCityData] = useState([]);
     const [firstname, setFirstName] = useState("");
@@ -88,7 +87,6 @@ function AddUsers(){
 
     const handleChangeRole = (e) => {
         setRole(e.target.value);
-        changeUserData(role);
     }
     const handleChangeReporting = (e) => {
         setReporting(e.target.value);
@@ -97,28 +95,10 @@ function AddUsers(){
         setCity(e.target.value)
     }
 
-    const changeUserData = (role) => {
-        switch (role) {
-            case "TeleCaller":
-                setUserData(rawData.filter(element => element.Type !== "Convertor"))
-                break;
-            case "Convertor":
-                setUserData(rawData.filter(element => element.Type !== "manager"))
-                break;
-            case "Manager":
-                setUserData(rawData.filter(element => element.Type !== "national_head"))
-                break;
-            case "national_head":
-                setUserData([{Firstname: "Admin", Surname: "" }])
-                break;
-            default:
-                break;
-        }
-    }
-
     const adduser = (e) => {
         e.preventDefault();
 
+        if(role === "")
         axios.post(`${process.env.REACT_APP_USER}/addUser`,{
             email: JSON.parse(sessionStorage.getItem('user')).Email,
             first: firstname,
@@ -344,7 +324,7 @@ function AddUsers(){
                             value={role}
                             onChange={handleChangeRole}
                         >
-                            <MenuItem value="national_head">National Head</MenuItem>
+                            <MenuItem value="National Head">National Head</MenuItem>
                             <MenuItem value="IT Administator">IT Administator</MenuItem>
                             <MenuItem value="Manager">Manager</MenuItem>
                             <MenuItem value="TeleCaller">TeleCaller</MenuItem>
@@ -360,12 +340,20 @@ function AddUsers(){
                             value={reporting}
                             onChange={handleChangeReporting}
                         >
-                            {userData.map((element) => {
+                            {rawData.map((element, index) => {
+                                if(role === "National Head"){
                                 return (
-                                    <MenuItem key={element.Firstname} value={element.Firstname.trim() + " " + element.Surname.trim()}>
-                                        {element.Firstname.trim() + " " + element.Surname.trim()}
+                                    <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                        {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
                                     </MenuItem>
                                 )
+                                } else if( role === "Manager" && element.Type === "National Head"){
+                                    return (
+                                        <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                            {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                        </MenuItem>
+                                    )
+                                }
                             })}
                         </Select>
                     </div>

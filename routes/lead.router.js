@@ -3,6 +3,7 @@ const router = express.Router();
 
 const { 
     latestLeadController,
+    addNewLeadsController,
     fetchTopPlaceLeadsController, 
     fetchNumberOfLeadsController, 
     fetchLeadToppersController, 

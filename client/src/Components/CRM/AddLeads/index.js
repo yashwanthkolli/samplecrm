@@ -194,11 +194,14 @@ function AddLeads(){
             })
         })
         .catch(err => {
-            toast({
-                description: "Error In Fetching Leads",
-                duration: 2000,
-                position: "top"
-            })
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Error In Fetching Leads",
+                    duration: 2000,
+                    position: "top-right"
+                })
+            }
         })
     }
 
@@ -214,11 +217,14 @@ function AddLeads(){
             handleClose();
         })
         .catch((err) => {
-            toast({
-                description: "Error in creating new lead",
-                position: "top",
-                duration: 3000
-            })
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Error in creating new lead",
+                    position: "top-right",
+                    duration: 3000
+                })
+            }
         })
     }
 
@@ -234,6 +240,27 @@ function AddLeads(){
         setSource("");
         setAssignTo("");
         setCourse("");
+    }
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        axios.post(`${process.env.REACT_APP_LEADS}/searchLeads`, {
+            category, startDate, endDate, searchValue
+        })
+        .then((res) => {
+            console.log(res.data);
+        })
+        .catch((err) => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Error in creating new lead",
+                    position: "top",
+                    duration: 3000
+                })
+            }
+        })
     }
 
     useEffect(() => {
@@ -613,7 +640,7 @@ function AddLeads(){
                 <>
                 <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads By Category</DialogTitle>
                 <DialogContent>
-                    <form>
+                    <form onSubmit={handleSearch}>
                         <FormControl fullWidth>
                             <InputLabel>Select Search Category</InputLabel>
                             <Select

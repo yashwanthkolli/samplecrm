@@ -12,7 +12,8 @@ const {
     fetchLastFifteenDayLeads, 
     fetchSourceCount, 
     fetchTopCourseCount, 
-    fetchTotalCourseCount 
+    fetchTotalCourseCount,
+    searchLeadsController
 } = require('../controllers/lead.controller');
 const { verifyHigherLevel } = require('../validations/higherlevel');
 
@@ -27,5 +28,6 @@ router.post('/fifteenDaysLeads', verifyHigherLevel, fetchLastFifteenDayLeads);
 router.post('/sourceCount', verifyHigherLevel, fetchSourceCount);
 router.post('/courseCount', verifyHigherLevel, fetchTopCourseCount);
 router.post('/totalCourseCount', verifyHigherLevel, fetchTotalCourseCount);
+router.post('/searchLeads', searchLeadsController);
 
 module.exports = router;

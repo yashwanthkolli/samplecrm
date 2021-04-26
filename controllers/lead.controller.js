@@ -246,3 +246,27 @@ exports.fetchTotalCourseCount = (req, res) => {
         })
     })
 }
+
+exports.searchLeadsController = (req, res) => {
+
+    const { category, startDate, endDate, searchValue} = req.body;
+
+    if(category === "date"){
+        searchQuery = '';
+    } else {
+        searchQuery = ''
+    }
+
+    connect.query(searchQuery, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in executing the search"
+            })
+        }
+
+        return res.status(200).json({
+            message: "Fetched search query result",
+            queryResult: result
+        })
+    })
+}

@@ -160,13 +160,13 @@ function HeaderBar({match}){
     let navbarElements;
 
     switch(JSON.parse(sessionStorage.getItem('user')).Type){
-      case 'admin':
+      case 'Admin':
         navbarElements = adminNav
         break;
       case 'nationalHead':
         navbarElements = teamNav
         break;
-      case 'national_head':
+      case 'National Head':
         navbarElements = userNav
         break;
       default:

@@ -79,6 +79,7 @@ function AddUsers(){
     const uid = "uid-toast";
 
     const [rawData, setRawData] = useState([]);
+    const [cityData, setCityData] = useState([]);
     const [firstname, setFirstName] = useState("");
     const [surname, setSurName] = useState("");
     const [email_new, setEmail] = useState("");
@@ -131,6 +132,25 @@ function AddUsers(){
     }
 
     useEffect(() => {
+        axios.post(`${process.env.REACT_APP_USER}/getCityNames`, {
+            email: JSON.parse(sessionStorage.getItem('user')).Email
+        })
+        .then((res) => {
+            setCityData(res.data.city);
+        })
+        .catch(err => {
+            if(!toast.isActive(lid)){
+                toast({
+                    id: lid,
+                    description: "Error in fetching city names",
+                    duration: 2000, 
+                    position: "top-right"
+                })
+            }
+        })
+    })
+
+    useEffect(() => {
         axios.post(`${process.env.REACT_APP_USER}/usersList`,{
             email: JSON.parse(sessionStorage.getItem('user')).Email
         })
@@ -155,8 +175,8 @@ function AddUsers(){
                 toast({
                     id: lid,
                     description: "Error in fetching users list",
-                    duration: 2000,
-                    position: "top"
+                    duration: 2000, 
+                    position: "top-right"
                 })
             }
         })
@@ -269,15 +289,22 @@ function AddUsers(){
                             value={address}
                             onChange={e=>setAddress(e.target.value)}
                         />
-                        <TextField 
-                            required
-                            autoComplete="off"
-                            type="text"
-                            name="city"
-                            label="City"
-                            value={city}
-                            onChange={e=>setCity(e.target.value)}
-                        />
+                        <div className={classes.select}>
+                            <InputLabel>Select City</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                label="Select City"
+                                value={city}
+                                onChange={handleChangeCity}
+                            >
+                                {cityData.map((element, index) => {
+                                    return (
+                                        <MenuItem key={index} value={element.city} />
+                                    )
+                                })}
+                            </Select>
+                        </div>
                     </div>
                     <div className={classes.select}>
                         <InputLabel>Role</InputLabel>

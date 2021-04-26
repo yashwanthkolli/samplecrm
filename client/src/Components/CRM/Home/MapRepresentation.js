@@ -63,9 +63,9 @@ const MapRepresentation = () => {
                     position: "top"
                 })
             })
-    }, [])
+    }, [toast])
 
-    const addLeadsToMarkers = () => {
+    useEffect(() => {
         const markerData = []
         const cities = []
         for(var i = 0; i<markers.length; i++){
@@ -82,10 +82,6 @@ const MapRepresentation = () => {
             }
         }
         setMarkersData(markerData)
-    }
-
-    useEffect(() => {
-        addLeadsToMarkers()
     }, [leads])
 
     return (

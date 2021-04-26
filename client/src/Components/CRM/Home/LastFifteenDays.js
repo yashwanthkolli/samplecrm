@@ -22,7 +22,7 @@ function LastFifteenDaysGraph() {
                 position: "top"
             })
         })
-    }, [])
+    }, [toast])
 
     useEffect(() => {
         setNames(data.map( lead => lead.Createdt))

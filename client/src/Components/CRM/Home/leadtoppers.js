@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import axios from 'axios'
-import { useToast } from '@chakra-ui/react';
 const Plotly = window.Plotly;
 const Plot = createPlotlyComponent(Plotly);
 
 function LeadToppersGraph() {
-    const toast = useToast()
     const [leadToppers, setLeadToppers] = useState([])
     const [names, setNames] = useState([])
     const [values, setValues] = useState([])

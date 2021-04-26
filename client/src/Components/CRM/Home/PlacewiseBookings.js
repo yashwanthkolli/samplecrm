@@ -22,7 +22,7 @@ function PlacewiseBookingsGraph() {
         })
         .then(res => setVenues(res.data.count))
         .catch(err => {})
-    }, [])
+    }, [toast])
 
     useEffect(() => {
         setNames(venues.map( lead => lead.Venue))

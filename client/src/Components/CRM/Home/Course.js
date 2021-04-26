@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import axios from 'axios'
-import { useToast } from '@chakra-ui/react';
 const Plotly = window.Plotly;
 const Plot = createPlotlyComponent(Plotly);
 
 function CoursesGraph() {
-    const toast = useToast()
     const [courses, setCourses] = useState([])
     const [totalCount, setTotalCount] = useState(0)
     const [names, setNames] = useState([])

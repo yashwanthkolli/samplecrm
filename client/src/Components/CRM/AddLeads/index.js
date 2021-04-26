@@ -330,7 +330,7 @@ function AddLeads(){
             setTableData(data_latest);
         })
         .catch((err) =>{})
-    }, [update])
+    }, [update, classes.btnSection, classes.assigned, classes.course, classes.leadDetails, classes.status])
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, {

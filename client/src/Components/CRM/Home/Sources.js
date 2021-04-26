@@ -22,7 +22,7 @@ function Sources() {
                 position: "top"
             })
         })
-    }, [])
+    }, [toast])
 
     useEffect(() => {
         setNames(sources.map( source => source.Source))

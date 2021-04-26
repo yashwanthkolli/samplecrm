@@ -15,22 +15,10 @@ function CoursesGraph() {
     useEffect( () => {
         axios.post(`${process.env.REACT_APP_LEADS}/courseCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setCourses(res.data.courses))
-            .catch(err => {
-                toast({
-                    description: "Error in fetching course list",
-                    duration: 2000,
-                    position: "top"
-                })
-            })
+            .catch(err => {})
         axios.post(`${process.env.REACT_APP_LEADS}/totalCourseCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setTotalCount(res.data.total[0].count))
-            .catch(err => {
-                toast({
-                    description: "Error in fetching courses",
-                    duration: 2000,
-                    position: "top"
-                })
-            })
+            .catch(err => {})
     }, [])
 
     useEffect(() => {

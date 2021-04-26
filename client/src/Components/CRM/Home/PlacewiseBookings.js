@@ -21,13 +21,7 @@ function PlacewiseBookingsGraph() {
             toDate: `${year}-${month}-30 00:00:00`
         })
         .then(res => setVenues(res.data.count))
-        .catch(err => {
-            toast({
-                description: "Error in fetching monthly leads",
-                duration: 2000,
-                position: "top"
-            })
-        })
+        .catch(err => {})
     }, [])
 
     useEffect(() => {

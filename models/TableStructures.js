@@ -66,5 +66,10 @@ module.exports = [
         +'ad_name Varchar(255) Not null,'
         +'medium Varchar(255) not null,'
         +'place varchar(255) not null'
+    ],
+    [
+        'city',
+        'id int auto_increment primary key,'
+        + 'city Varchar(100) Not null'
     ]
 ]

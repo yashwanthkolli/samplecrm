@@ -15,22 +15,10 @@ function LeadToppersGraph() {
     useEffect( () => {
         axios.post(`${process.env.REACT_APP_LEADS}/getLeadToppers`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setLeadToppers(res.data.count))
-            .catch(err => {
-                toast({
-                    description: "Error in fetching lead toppers",
-                    duration: 2000,
-                    position: "top"
-                })
-            })
+            .catch(err => {})
         axios.post(`${process.env.REACT_APP_LEADS}/getWebsiteLeadsCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
             .then(res => setWebsiteLeads(res.data.count[0].count))
-            .catch(err => {
-                toast({
-                    description: "Error in fetching wesite leads",
-                    duration: 2000,
-                    position: "top"
-                })
-            })
+            .catch(err => {})
     }, [])
 
     useEffect(() => {

@@ -17,8 +17,8 @@ import {
 import { setSessionStorage, isAuth } from '../../helpers/auth.helpers.js';
 import { Redirect } from 'react-router-dom';
 
-const ice = require('../../logo.svg').default;
-const signIn = require('../../logo.svg').default;
+const ice = require('../../images/001.png').default;
+const signIn = require('../../images/signIn.svg').default;
 
 function Login({history}) {
 

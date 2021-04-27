@@ -44,14 +44,6 @@ function Login({history}) {
                 const loginMinutes = new Date().getMinutes() >= 10 ? new Date().getMinutes().toString() : '0'+new Date().getMinutes().toString()
                 setSessionStorage('loginTime', loginHours + ':' + loginMinutes)
 
-                toast({
-                    title: "Login Successful",
-                    description: "Please wait while we redirect you!",
-                    duration: 1500,
-                    position: "top",
-                    status: "success"
-                })
-
                 history.push('/crm/home');
             } else {
                 toast({

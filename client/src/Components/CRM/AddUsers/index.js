@@ -99,7 +99,6 @@ function AddUsers(){
     const adduser = (e) => {
         e.preventDefault();
 
-        if(role === "")
         axios.post(`${process.env.REACT_APP_USER}/addUser`,{
             email: JSON.parse(sessionStorage.getItem('user')).Email,
             first: firstname,
@@ -342,30 +341,38 @@ function AddUsers(){
                             onChange={handleChangeReporting}
                         >
                             {rawData.map((element, index) => {
-                                if(role === "National Head" && element.Type === "Admin"){
-                                return (
-                                    <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
-                                        {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
-                                    </MenuItem>
-                                )
-                                } else if( role === "Manager" && element.Type === "National Head"){
-                                    return (
-                                        <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
-                                            {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
-                                        </MenuItem>
-                                    )
-                                } else if( role === "Convertor" && element.Type === "Manager"){
-                                    return (
-                                        <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
-                                            {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
-                                        </MenuItem>
-                                    )
-                                } else if( role === "TeleCaller" && element.Type === "Convertor"){
-                                    return (
-                                        <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
-                                            {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
-                                        </MenuItem>
-                                    )
+                                if(role === "National Head"){
+                                    if(element.Type === "Admin"){
+                                        return (
+                                            <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                                {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                            </MenuItem>
+                                        )
+                                    } 
+                                } else if( role === "Manager"){
+                                    if(element.Type === "National Head"){
+                                        return (
+                                            <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                                {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                            </MenuItem>
+                                        )
+                                    }
+                                } else if( role === "Convertor"){
+                                    if(element.Type === "Manager"){
+                                        return (
+                                            <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                                {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                            </MenuItem>
+                                        )
+                                    }
+                                } else if( role === "TeleCaller"){
+                                    if(element.Type === "Convertor"){
+                                        return (
+                                            <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                                {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                            </MenuItem>
+                                        )
+                                    } 
                                 } else {
                                     return (
                                         <MenuItem key={index} value="none">

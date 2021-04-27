@@ -153,7 +153,7 @@ function AddUsers(){
                 })
             }
         })
-    })
+    }, [toast])
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_USER}/usersList`,{

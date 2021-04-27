@@ -46,7 +46,11 @@ const useStyles = makeStyles((theme) => ({
     },
     noData:{
         fontFamily: 'Nunito',
-        fontSize: '25px'
+        fontSize: '25px',
+        minHeight: '90vh',
+        display: 'grid',
+        placeSelf: 'center',
+        placeItems:'center'
     },
     fieldHolder:{
         display: 'flex',
@@ -243,24 +247,53 @@ function AddLeads(){
     }
 
     const handleSearch = (e) => {
+        var checksOut = false;
         e.preventDefault();
+        handleClose();
 
-        axios.post(`${process.env.REACT_APP_LEADS}/searchLeads`, {
-            category, startDate, endDate, searchValue
-        })
-        .then((res) => {
-            console.log(res.data);
-        })
-        .catch((err) => {
+        if(category === "Date"){
+            if(startDate !== "" || endDate !== ""){
+                checksOut = true;
+            } else {
+                checksOut = false;
+            }
+        } else if(category !== "Date" && category !== ""){
+            if(checksOut === ""){
+                checksOut = false;
+            } else {
+                checksOut = true;
+            }
+        }else {
+            checksOut = false;
+        }
+
+        if(checksOut === true){
+            axios.post(`${process.env.REACT_APP_LEADS}/searchLeads`, {
+                category, startDate, endDate, searchValue
+            })
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                if(!toast.isActive(toast_course)){
+                    toast({
+                        id: toast_course,
+                        description: "Error in creating new lead",
+                        position: "top",
+                        duration: 3000
+                    })
+                }
+            })
+        } else {
             if(!toast.isActive(toast_course)){
                 toast({
                     id: toast_course,
-                    description: "Error in creating new lead",
-                    position: "top",
-                    duration: 3000
+                    description: "Please provide the relevant information",
+                    duration: 2000,
+                    position: "top-right"
                 })
             }
-        })
+        }
     }
 
     useEffect(() => {
@@ -645,6 +678,7 @@ function AddLeads(){
                             <InputLabel>Select Search Category</InputLabel>
                             <Select
                                 required
+                                name="category"
                                 value={category}
                                 onChange={handleChangeCategory}
                             >
@@ -660,16 +694,16 @@ function AddLeads(){
                         </FormControl>
                         <div className={classes.fieldHolder} style={{display: category === "Date" ? 'flex' : 'none'}}>
                             <TextField 
-                                required
                                 type="date"
+                                name="startDate"
                                 label="Range Start Date"
                                 value={startDate}
                                 onChange={e=>setStartDate(e.target.value)}
                                 style={{width: '45%'}}
                             />
                             <TextField 
-                                required
                                 type="date"
+                                name="endDate"
                                 label="Range End Date"
                                 value={endDate}
                                 onChange={e=>setEndDate(e.target.value)}
@@ -677,19 +711,18 @@ function AddLeads(){
                             />
                         </div>
                         <TextField 
-                            required
                             fullWidth
                             style={{display: !(arr_category.includes(category)) 
                                 ? 'flex' : 'none', marginTop: '7px'}}
                             label={category}
                             placeholder={`Enter ${category}`}
                             value={searchValue}
+                            name="searchValue"
                             onChange={e=>setSearchValue(e.target.value)} 
                         />
                         <FormControl name="searchStatus" style={{display: category === "Status" ? 'flex' : 'none', width: '100%'}}> 
                             <InputLabel>{category}</InputLabel>
                             <Select
-                                required
                                 fullWidth
                                 value={searchValue}
                                 onChange={handleChangeValue}
@@ -707,7 +740,6 @@ function AddLeads(){
                         <FormControl name="searchCourse" style={{display: category === "Course" ? 'flex' : 'none', width: '100%'}}> 
                             <InputLabel>{category}</InputLabel>
                             <Select
-                                required
                                 fullWidth
                                 value={searchValue}
                                 onChange={handleChangeValue}
@@ -725,7 +757,6 @@ function AddLeads(){
                         <FormControl name="searchEmployee" style={{display: category === "CreatedBy" ? 'flex' : 'none', width: '100%'}}> 
                             <InputLabel>{category}</InputLabel>
                             <Select
-                                required
                                 fullWidth
                                 value={searchValue}
                                 onChange={handleChangeValue}
@@ -743,7 +774,6 @@ function AddLeads(){
                         <FormControl name="searchAssigned" style={{display: category === "AssignedTo" ? 'flex' : 'none', width: '100%'}}> 
                             <InputLabel>{category}</InputLabel>
                             <Select
-                                required
                                 fullWidth
                                 value={searchValue}
                                 onChange={handleChangeValue}

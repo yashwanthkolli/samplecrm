@@ -242,13 +242,20 @@ exports.fetchTotalCourseCount = (req, res) => {
 
 exports.searchLeadsController = (req, res) => {
     const { category, startDate, endDate, sentValue} = req.body;
-
-    if(category === "Date"){
-        searchCount_Query = 'select count(*) as count from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\'';
-        search_Query = 'select * from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by Createdt asc limit 60';
+    searchCount_Query = 'select count(*) as count from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\'';
+    
+    if(req.query.page === 1){
+        if(category === "Date"){
+            search_Query = 'select * from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by Createdt asc limit 40';
+        } else {
+            search_Query = 'select * from ice.leads where ' + category + ' = \'' + sentValue + '\' order by Createdt asc limit 40';
+        }
     } else {
-        searchCount_Query = 'select count(*) as count from ice.leads where  '+ category + ' = \'' + sentValue + '\'';
-        search_Query = 'select * from ice.leads where ' + category + ' = \'' + sentValue + '\' order by Createdt asc limit 60';
+        if(category === "Date"){
+            search_Query = 'select * from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by Createdt asc limit 40';
+        } else {
+            search_Query = 'select * from ice.leads where ' + category + ' = \'' + sentValue + '\' order by Createdt asc limit 40';
+        }
     }
 
     connect.query(searchCount_Query, function(err, r){

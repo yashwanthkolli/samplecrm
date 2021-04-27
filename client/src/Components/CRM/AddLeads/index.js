@@ -208,8 +208,7 @@ function AddLeads(){
 
     const turnToPage = (pageId) => {
 
-        console.log(pageId);
-        axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`, {
+        axios.post(`${process.env.REACT_APP_LEADS}/getLeadPages`, {
             email: JSON.parse(sessionStorage.getItem('user')).Email
         },{
             params: {
@@ -551,10 +550,10 @@ function AddLeads(){
             }
             </div>
             {
-                searchCount > 40 ?
+                searchCount < 40 ?
                     <Pagination 
                         style={{justifyContent: 'center', padding: '10px'}}
-                        count={searchCount/40} 
+                        count={10} //section to count depending on the searchCount 
                         shape="rounded" 
                         size="large"
                         onChange={(e, page) => turnToPage(page)}

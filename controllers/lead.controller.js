@@ -241,27 +241,36 @@ exports.fetchTotalCourseCount = (req, res) => {
 }
 
 exports.searchLeadsController = (req, res) => {
+    const { category, startDate, endDate, sentValue} = req.body;
 
-    const { category, startDate, endDate, searchValue} = req.body;
-    console.log(startDate);
-    console.log(endDate);
-
-    if(category === "date"){
-        searchQuery = 'select count(*) from ice.employees where Createdt between';
+    if(category === "Date"){
+        searchCount_Query = 'select count(*) as count from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\'';
+        search_Query = 'select * from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by Createdt asc limit 60';
     } else {
-        searchQuery = ''
+        searchCount_Query = 'select count(*) as count from ice.leads where  '+ category + ' = \'' + sentValue + '\'';
+        search_Query = 'select * from ice.leads where ' + category + ' = \'' + sentValue + '\' order by Createdt asc limit 60';
     }
 
-    connect.query(searchQuery, function(err, result){
+    connect.query(searchCount_Query, function(err, r){
+        console.log(err);
         if(err){
             return res.status(500).json({
                 message: "Error in executing the search"
             })
         }
 
-        return res.status(200).json({
-            message: "Fetched search query result",
-            queryResult: result
+        connect.query(search_Query, function(err, result){
+            console.log(err);
+            if(err){
+                return res.status(500).json({
+                    message: "Error in fetching data"
+                })
+            }
+            return res.status(200).json({
+                message: "Fetched search query result",
+                queryResult: result,
+                queryCount: r[0].count
+            })
         })
     })
 }

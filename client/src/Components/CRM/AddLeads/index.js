@@ -136,12 +136,32 @@ function AddLeads(){
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [searchValue, setSearchValue] = useState("");
+    const [searchValueStatus, setSearchStatus] = useState("");
+    const [searchValueCourse, setSearchCourse] = useState("");
+    const [searchValueCreated, setSearchCreated] = useState("");
+    const [searchValueAssigned, setSearchAssigned] = useState("");
+
 
     const handleChangeCategory = (e) => {
         setCategory(e.target.value);
     }
-    const handleChangeValue = (e) => {
-        setSearchValue(e.target.value);
+    const handleChangeValue = (e, type) => {
+        switch (type) {
+            case 1:
+                setSearchStatus(e.target.value)
+                break;
+            case 2:
+                setSearchCourse(e.target.value)
+                break;
+            case 3:
+                setSearchCreated(e.target.value)
+                break;
+            case 4:
+                setSearchAssigned(e.target.value)
+                break;
+            default:
+                break;
+        }
     }
 
     const handleOpen = (type) => {
@@ -247,29 +267,83 @@ function AddLeads(){
     }
 
     const handleSearch = (e) => {
-        var checksOut = false;
         e.preventDefault();
         handleClose();
 
-        if(category === "Date"){
-            if(startDate !== "" || endDate !== ""){
-                checksOut = true;
-            } else {
-                checksOut = false;
-            }
-        } else if(category !== "Date" && category !== ""){
-            if(checksOut === ""){
-                checksOut = false;
-            } else {
-                checksOut = true;
-            }
-        }else {
-            checksOut = false;
+        var checksOut = false;
+        var sentValue = "";
+
+        switch (category) {
+            case "Date":
+                if(startDate === "" || endDate === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                }
+                break;
+            case "Name":
+                if(searchValue === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValue;
+                }
+                break;
+            case "Email":
+                if(searchValue === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValue;
+                }
+                break;
+            case "Mobile":
+                if(searchValue === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValue;
+                }
+                break;
+            case "Status":
+                if(searchValueStatus === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValueStatus;
+                }
+                break;
+            case "Course":
+                if(searchValueCourse === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValueCourse;
+                }
+                break;
+            case "CreatedBy":
+                if(searchValueCreated === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValueCreated;
+                }
+                break;
+            case "AssignedTo":
+                if(searchValueAssigned === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValueAssigned;
+                }
+                break;
+            default:
+                break;
         }
 
         if(checksOut === true){
             axios.post(`${process.env.REACT_APP_LEADS}/searchLeads`, {
-                category, startDate, endDate, searchValue
+                category, startDate, endDate, sentValue
             })
             .then((res) => {
                 console.log(res.data);
@@ -724,14 +798,14 @@ function AddLeads(){
                             <InputLabel>{category}</InputLabel>
                             <Select
                                 fullWidth
-                                value={searchValue}
-                                onChange={handleChangeValue}
+                                value={searchValueStatus}
+                                onChange={(e) => handleChangeValue(e, 1)}
                                 style={{width: '100%'}}
                             >
                             {
                                 statusFetched.map((element, index) => {
                                     return(
-                                        <MenuItem key={index}>{element.name}</MenuItem>
+                                        <MenuItem key={index} value={element.id}>{element.name}</MenuItem>
                                     )
                                 })
                             }
@@ -741,31 +815,31 @@ function AddLeads(){
                             <InputLabel>{category}</InputLabel>
                             <Select
                                 fullWidth
-                                value={searchValue}
-                                onChange={handleChangeValue}
+                                value={searchValueCourse}
+                                onChange={(e) => handleChangeValue(e, 2)}
                                 style={{width: '100%'}}
                             >
                             {
                                 coursesFetched.map((element, index) => {
                                     return(
-                                        <MenuItem key={index}>{element.name}</MenuItem>
+                                        <MenuItem key={index} value={element.id}>{element.name}</MenuItem>
                                     )
                                 })
                             }
                             </Select>
                         </FormControl>
-                        <FormControl name="searchEmployee" style={{display: category === "CreatedBy" ? 'flex' : 'none', width: '100%'}}> 
+                        <FormControl name="searchCreated" style={{display: category === "CreatedBy" ? 'flex' : 'none', width: '100%'}}> 
                             <InputLabel>{category}</InputLabel>
                             <Select
                                 fullWidth
-                                value={searchValue}
-                                onChange={handleChangeValue}
+                                value={searchValueCreated}
+                                onChange={(e) => handleChangeValue(e, 3)}
                                 style={{width: '100%'}}
                             >
                             {
                                 employeeFetched.map((element, index) => {
                                     return(
-                                        <MenuItem key={index}>{element.Firstname+ " " +element.Surname}</MenuItem>
+                                        <MenuItem key={index} value={element.Employee_ID}>{element.Firstname+ " " +element.Surname}</MenuItem>
                                     )
                                 })
                             }
@@ -775,14 +849,14 @@ function AddLeads(){
                             <InputLabel>{category}</InputLabel>
                             <Select
                                 fullWidth
-                                value={searchValue}
-                                onChange={handleChangeValue}
+                                value={searchValueAssigned}
+                                onChange={(e) => handleChangeValue(e, 4)}
                                 style={{width: '100%'}}
                             >
                             {
                                 employeeFetched.map((element, index) => {
                                     return(
-                                        <MenuItem key={index} value={element.Firstname+ " " +element.Surname}>
+                                        <MenuItem key={index} value={element.Employee_ID}>
                                             {element.Firstname+ " " +element.Surname}
                                         </MenuItem>
                                     )

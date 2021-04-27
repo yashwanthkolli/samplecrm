@@ -262,24 +262,24 @@ exports.searchLeadsController = (req, res) => {
         }
     }
 
-    connect.query(searchCount_Query, function(err, r){
-        if(err){
-            return res.status(500).json({
-                message: "Error in executing the search"
-            })
-        }
+    // connect.query(searchCount_Query, function(err, r){
+    //     if(err){
+    //         return res.status(500).json({
+    //             message: "Error in executing the search"
+    //         })
+    //     }
 
-        connect.query(search_Query, function(err, result){
-            if(err){
-                return res.status(500).json({
-                    message: "Error in fetching data"
-                })
-            }
-            return res.status(200).json({
-                message: "Fetched search query result",
-                queryResult: result,
-                queryCount: r[0].count
-            })
-        })
-    })
+    //     connect.query(search_Query, function(err, result){
+    //         if(err){
+    //             return res.status(500).json({
+    //                 message: "Error in fetching data"
+    //             })
+    //         }
+    //         return res.status(200).json({
+    //             message: "Fetched search query result",
+    //             queryResult: result,
+    //             queryCount: r[0].count
+    //         })
+    //     })
+    // })
 }

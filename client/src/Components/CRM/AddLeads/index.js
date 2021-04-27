@@ -15,6 +15,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Pagination from '@material-ui/lab/Pagination';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
 
@@ -94,6 +95,14 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         width: '100%',
         marginTop: '15px'
+    },
+    progressCircle: {
+        display: 'grid',
+        placeItems: 'center',
+        width: '100%',
+        height: '35vh',
+        fontSize: '25px',
+        fontFamily: 'Nunito'
     }
 }));
 
@@ -206,27 +215,6 @@ function AddLeads(){
         }
     }
 
-    const turnToPage = (pageId) => {
-
-        axios.post(`${process.env.REACT_APP_LEADS}/getLeadPages`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email
-        })
-        .then((res) => {
-            res.data.content.forEach((element) => {
-            })
-        })
-        .catch(err => {
-            if(!toast.isActive(toast_course)){
-                toast({
-                    id: toast_course,
-                    description: "Error In Fetching Leads",
-                    duration: 2000,
-                    position: "top-right"
-                })
-            }
-        })
-    }
-
     const handleNewLead = (e) => {
         e.preventDefault();
 
@@ -269,6 +257,7 @@ function AddLeads(){
             e.preventDefault();
         }
         handleClose();
+        handleOpen("loading");
 
         var checksOut = false;
         var sentValue = "";
@@ -350,6 +339,7 @@ function AddLeads(){
                 }
             })
             .then((res) => {
+                handleClose();
                 setSearchCount(res.data.queryCount);
             })
             .catch((err) => {
@@ -923,7 +913,12 @@ function AddLeads(){
             typeOfDialog === "bookDetails" ?
                 <DialogTitle>Book now with details</DialogTitle>
             :
-                null
+            typeOfDialog === "loading"?
+                <DialogContent className={classes.progressCircle}>
+                   Loading Search Results <CircularProgress />
+                </DialogContent>
+            :    
+            null
             }
         </Dialog>
         </>

@@ -14,6 +14,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
+import Pagination from '@material-ui/lab/Pagination';
 import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
 
@@ -141,6 +142,7 @@ function AddLeads(){
     const [searchValueCreated, setSearchCreated] = useState("");
     const [searchValueAssigned, setSearchAssigned] = useState("");
 
+    const [searchCount, setSearchCount] = useState(0);
 
     const handleChangeCategory = (e) => {
         setCategory(e.target.value);
@@ -206,6 +208,7 @@ function AddLeads(){
 
     const turnToPage = (pageId) => {
 
+        console.log(pageId);
         axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`, {
             email: JSON.parse(sessionStorage.getItem('user')).Email
         },{
@@ -346,7 +349,7 @@ function AddLeads(){
                 category, startDate, endDate, sentValue
             })
             .then((res) => {
-                console.log(res.data);
+                setSearchCount(res.data.queryCount);
             })
             .catch((err) => {
                 if(!toast.isActive(toast_course)){
@@ -547,6 +550,18 @@ function AddLeads(){
                 </div>
             }
             </div>
+            {
+                searchCount > 40 ?
+                    <Pagination 
+                        style={{justifyContent: 'center', padding: '10px'}}
+                        count={searchCount/40} 
+                        shape="rounded" 
+                        size="large"
+                        onChange={(e, page) => turnToPage(page)}
+                    />
+                :
+                    null
+            }
         </Paper>
         <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={() => handleClose()} aria-labelledby={typeOfDialog}>
             {typeOfDialog === "addNewLead" ? 

@@ -151,8 +151,8 @@ function HeaderBar({match}){
     const userNav = [
         {id: 6, path: `${match.path}/home`, icon: AiFillHome, text: 'Home'},
         {id: 1, path: `${match.path}/profile`,  icon: ImProfile, text: 'Your Profile' },
-        {id: 2, path: `${match.path}/addLeads`,  icon: BiCarousel, text: 'Add Leads' },
-        {id: 3, path: `${match.path}/addUsers`,  icon: MdUpdate, text: 'Add Users' },
+        {id: 2, path: `${match.path}/addLeads`,  icon: BiCarousel, text: 'Leads View' },
+        {id: 3, path: `${match.path}/addUsers`,  icon: MdUpdate, text: 'Users Panel' },
         {id: 4, path: `${match.path}/contact`,  icon: BsFillChatSquareDotsFill, text: 'Profile' },
         {id: 5, path: `${match.path}/feedback`,  icon: MdFeedback, text: 'Profile' }
     ]

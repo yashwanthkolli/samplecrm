@@ -251,15 +251,17 @@ exports.searchLeadsController = (req, res) => {
             search_Query = 'select * from ice.leads where ' + category + ' = \'' + sentValue + '\' order by Createdt asc limit 40';
         }
     } else {
+        const sl = Number(req.query.page) * 40;
+        const el = (Number(req.query.page) + 1) * 40;
+
         if(category === "Date"){
-            search_Query = 'select * from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by Createdt asc limit 40';
-        } else {
-            search_Query = 'select * from ice.leads where ' + category + ' = \'' + sentValue + '\' order by Createdt asc limit 40';
+            search_Query = 'select * from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by Createdt desc limit ' + sl + ',' + el;
+        } else { 
+            search_Query = 'select * from ice.leads where ' + category + ' = \'' + sentValue + '\' order by Createdt asc limit ' + sl + ',' + el;
         }
     }
 
     connect.query(searchCount_Query, function(err, r){
-        console.log(err);
         if(err){
             return res.status(500).json({
                 message: "Error in executing the search"
@@ -267,7 +269,6 @@ exports.searchLeadsController = (req, res) => {
         }
 
         connect.query(search_Query, function(err, result){
-            console.log(err);
             if(err){
                 return res.status(500).json({
                     message: "Error in fetching data"

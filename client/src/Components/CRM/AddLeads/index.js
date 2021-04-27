@@ -151,6 +151,7 @@ function AddLeads(){
     const [searchValueCreated, setSearchCreated] = useState("");
     const [searchValueAssigned, setSearchAssigned] = useState("");
 
+    const [openLoading, setOpenLoading] = useState(false);
     const [searchCount, setSearchCount] = useState(0);
 
     const handleChangeCategory = (e) => {
@@ -257,7 +258,7 @@ function AddLeads(){
             e.preventDefault();
         }
         handleClose();
-        handleOpen("loading");
+        setOpenLoading(true);
 
         var checksOut = false;
         var sentValue = "";
@@ -339,7 +340,7 @@ function AddLeads(){
                 }
             })
             .then((res) => {
-                handleClose();
+                setOpenLoading(false);
                 setSearchCount(res.data.queryCount);
             })
             .catch((err) => {
@@ -542,7 +543,7 @@ function AddLeads(){
             }
             </div>
             {
-                searchCount < 40 ?
+                searchCount < 40 ? //to be changed to accomdate correct rendering conditions for pagination
                     <Pagination 
                         style={{justifyContent: 'center', padding: '10px'}}
                         count={10} //section to count depending on the searchCount 
@@ -912,14 +913,17 @@ function AddLeads(){
             :
             typeOfDialog === "bookDetails" ?
                 <DialogTitle>Book now with details</DialogTitle>
-            :
-            typeOfDialog === "loading"?
-                <DialogContent className={classes.progressCircle}>
-                   Loading Search Results <CircularProgress />
-                </DialogContent>
             :    
             null
             }
+        </Dialog>
+        <Dialog open={openLoading} fullWidth disableBackdropClick disableEscapeKeyDown 
+            TransitionComponent={Transition}
+            onClose={() => setOpenLoading(false)} aria-labelledby="loading search results"
+        >
+            <DialogContent className={classes.progressCircle}>
+                Loading Search Results <CircularProgress />
+            </DialogContent>
         </Dialog>
         </>
     )

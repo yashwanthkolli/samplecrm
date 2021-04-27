@@ -210,10 +210,6 @@ function AddLeads(){
 
         axios.post(`${process.env.REACT_APP_LEADS}/getLeadPages`, {
             email: JSON.parse(sessionStorage.getItem('user')).Email
-        },{
-            params: {
-                page: pageId
-            }
         })
         .then((res) => {
             res.data.content.forEach((element) => {
@@ -268,8 +264,10 @@ function AddLeads(){
         setCourse("");
     }
 
-    const handleSearch = (e) => {
-        e.preventDefault();
+    const handleSearch = (e, pageId) => {
+        if(e){
+            e.preventDefault();
+        }
         handleClose();
 
         var checksOut = false;
@@ -346,6 +344,10 @@ function AddLeads(){
         if(checksOut === true){
             axios.post(`${process.env.REACT_APP_LEADS}/searchLeads`, {
                 category, startDate, endDate, sentValue
+            },{
+                params: {
+                    page: pageId
+                }
             })
             .then((res) => {
                 setSearchCount(res.data.queryCount);
@@ -354,7 +356,7 @@ function AddLeads(){
                 if(!toast.isActive(toast_course)){
                     toast({
                         id: toast_course,
-                        description: "Error in creating new lead",
+                        description: "Error in searching leads",
                         position: "top",
                         duration: 3000
                     })
@@ -556,7 +558,7 @@ function AddLeads(){
                         count={10} //section to count depending on the searchCount 
                         shape="rounded" 
                         size="large"
-                        onChange={(e, page) => turnToPage(page)}
+                        onChange={(e, page) => handleSearch(false , page)}
                     />
                 :
                     null
@@ -761,7 +763,7 @@ function AddLeads(){
                 <>
                 <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads By Category</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={handleSearch}>
+                    <form onSubmit={(e) => handleSearch(e, 1)}>
                         <FormControl fullWidth name="category">
                             <InputLabel>Select Search Category</InputLabel>
                             <Select

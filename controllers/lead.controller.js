@@ -242,6 +242,7 @@ exports.fetchTotalCourseCount = (req, res) => {
 
 exports.searchLeadsController = (req, res) => {
     const { category, startDate, endDate, sentValue} = req.body;
+
     searchCount_Query = 'select count(*) as count from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\'';
     
     if(req.query.page === 1){

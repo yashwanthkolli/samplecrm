@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     containerLead: {
         display: 'flex',
         width: '100%',
-        height: '95%',
+        height: 'max-content',
         alignItems: 'center',
         justifyContent: 'center',
         margin: theme.spacing(1),
@@ -641,7 +641,7 @@ function AddLeads(){
                 <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads By Category</DialogTitle>
                 <DialogContent>
                     <form onSubmit={handleSearch}>
-                        <FormControl fullWidth>
+                        <FormControl fullWidth name="category">
                             <InputLabel>Select Search Category</InputLabel>
                             <Select
                                 required
@@ -686,7 +686,7 @@ function AddLeads(){
                             value={searchValue}
                             onChange={e=>setSearchValue(e.target.value)} 
                         />
-                        <FormControl style={{display: category === "Status" ? 'flex' : 'none', width: '100%'}}> 
+                        <FormControl name="searchStatus" style={{display: category === "Status" ? 'flex' : 'none', width: '100%'}}> 
                             <InputLabel>{category}</InputLabel>
                             <Select
                                 required
@@ -704,7 +704,7 @@ function AddLeads(){
                             }
                             </Select>
                         </FormControl>
-                        <FormControl style={{display: category === "Course" ? 'flex' : 'none', width: '100%'}}> 
+                        <FormControl name="searchCourse" style={{display: category === "Course" ? 'flex' : 'none', width: '100%'}}> 
                             <InputLabel>{category}</InputLabel>
                             <Select
                                 required
@@ -722,7 +722,7 @@ function AddLeads(){
                             }
                             </Select>
                         </FormControl>
-                        <FormControl style={{display: category === "CreatedBy" ? 'flex' : 'none', width: '100%'}}> 
+                        <FormControl name="searchEmployee" style={{display: category === "CreatedBy" ? 'flex' : 'none', width: '100%'}}> 
                             <InputLabel>{category}</InputLabel>
                             <Select
                                 required
@@ -740,7 +740,7 @@ function AddLeads(){
                             }
                             </Select>
                         </FormControl>
-                        <FormControl style={{display: category === "AssignedTo" ? 'flex' : 'none', width: '100%'}}> 
+                        <FormControl name="searchAssigned" style={{display: category === "AssignedTo" ? 'flex' : 'none', width: '100%'}}> 
                             <InputLabel>{category}</InputLabel>
                             <Select
                                 required

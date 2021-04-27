@@ -26,7 +26,7 @@ function Holder({match}){
     return(
         <>
             <HeaderBar match={match}/>
-            <div style={{backgroundColor: '#E0E0F8', width: '100%'}}>
+            <div style={{backgroundColor: '#E0E0F8', width: '100%', height: 'max-content'}}>
             <Section>
                 <Switch>
                     <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} />} />

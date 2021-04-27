@@ -17,7 +17,7 @@ exports.latestLeadController = (req, res) => {
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id';
             connect.query(leads_query, function(err, r){
                 if(err){
-                    console.log(err);
+                     ;
                     return res.status(500).json({
                         message: "Error in fetching the data"
                     })
@@ -52,7 +52,7 @@ exports.addNewLeadsController = (req, res) => {
         email_lead,
         mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name, otherComment
     } = req.body;
-    const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0]
+    const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0];
 
     var comment_select = "";
     if(otherComment !== ""){
@@ -70,14 +70,14 @@ exports.addNewLeadsController = (req, res) => {
         + ' \''+ course +'\' ,'
         + ' \''+ city +'\' ,'
         + ' \''+ assignTo +'\' ,'
-        + '\''+ status +'\','
+        + ' \''+ status +'\','
         + ' \''+ email +'\' ,'
         + ' \''+ now +'\' ,'
         + ' \''+ now +'\' ,'
         + ' \''+ comment_select + '\','
         + '\'' + now + '\')';
     connect.query(addnewlead_query, function(err){
-        console.log(err);
+         ;
         if(err){
             return res.status(500).json({
                 err: err 
@@ -127,8 +127,7 @@ exports.fetchLeadToppersController = (req, res) => {
         if(err){
             return res.status(500).json({
                 message: "Error in fetching details"
-            })
-            console.log(err)
+            })    
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -144,7 +143,6 @@ exports.fetchCountWebsiteLeads = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -162,7 +160,6 @@ exports.fetchCurrentMonthLeads = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -188,7 +185,6 @@ exports.fetchLastFifteenDayLeads = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -205,7 +201,6 @@ exports.fetchSourceCount = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -222,7 +217,6 @@ exports.fetchTopCourseCount = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -238,7 +232,6 @@ exports.fetchTotalCourseCount = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Total",
@@ -250,9 +243,11 @@ exports.fetchTotalCourseCount = (req, res) => {
 exports.searchLeadsController = (req, res) => {
 
     const { category, startDate, endDate, searchValue} = req.body;
+    console.log(startDate);
+    console.log(endDate);
 
     if(category === "date"){
-        searchQuery = '';
+        searchQuery = 'select count(*) from ice.employees where Createdt between';
     } else {
         searchQuery = ''
     }

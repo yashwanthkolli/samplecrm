@@ -18,7 +18,8 @@ import {
     AlertDialogContent,
     AlertDialogOverlay,
     useToast
-  } from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function Ads() {
+    const userData = decodeSessionStorage().payload;
 
     const classes = useStyles();
     const toast = useToast();
@@ -53,7 +55,7 @@ function Ads() {
 
         axios.post(`${process.env.REACT_APP_CONFIG}/getAds`,
         { 
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then(res => setAds(res.data.adnames))
         .catch(err => {})
@@ -61,7 +63,7 @@ function Ads() {
   
     const onDeleteAd = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteAds`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             id: id
         })
         .then(res => {
@@ -92,7 +94,7 @@ function Ads() {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_CONFIG}/addAds`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             ad_name, medium, place
         })
         .then(res => {

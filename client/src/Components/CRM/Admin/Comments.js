@@ -18,7 +18,8 @@ import {
     AlertDialogContent,
     AlertDialogOverlay,
     useToast
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function Comments() {
-
+    const userData = decodeSessionStorage().payload;
 
     const classes = useStyles();
     const toast = useToast();
@@ -49,14 +50,14 @@ function Comments() {
     const [deleteCommentId, setDeleteCommentId] = useState()
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: userData.Email })
         .then(res => setComments(res.data.comments))
         .catch(err => {})
     }, [update])
 
     const onDeleteComment = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteComments`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             id: id
         })
         .then(res => {
@@ -86,7 +87,7 @@ function Comments() {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_CONFIG}/addComments`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             comment
         })
         .then(res => {

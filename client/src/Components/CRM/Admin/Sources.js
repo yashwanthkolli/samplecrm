@@ -19,6 +19,7 @@ import {
     AlertDialogOverlay,
     useToast
 } from "@chakra-ui/react"
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function Sources() {
-
+    const userData = decodeSessionStorage().payload;
 
     const classes = useStyles();
     const toast = useToast();
@@ -49,14 +50,14 @@ function Sources() {
     const [deleteSourceId, setDeleteSourceId] = useState()
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getSource`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getSource`, { email: userData.Email })
         .then(res => setSources(res.data.sources))
         .catch(err => {})
     }, [update])
 
     const onDeleteSource = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteSource`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             id: id
         })
         .then(res => {
@@ -86,7 +87,7 @@ function Sources() {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_CONFIG}/addSource`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             source
         })
         .then(res => {

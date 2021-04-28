@@ -19,6 +19,7 @@ import {
     AlertDialogContent,
     AlertDialogOverlay
 } from "@chakra-ui/react"
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function Courses() {
+    const userData = decodeSessionStorage().payload;
 
     const classes = useStyles();
     const toast = useToast();
@@ -51,14 +53,14 @@ function Courses() {
 
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: userData.Email })
         .then(res => setCourses(res.data.courses))
         .catch(err => {})
     }, [update])
 
     const onDeleteCourse = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteCourses`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             id: id
         })
         .then(res => {
@@ -82,7 +84,7 @@ function Courses() {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_CONFIG}/addCourses`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             name,
             type,
             cost
@@ -112,7 +114,7 @@ function Courses() {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_CONFIG}/updateCourses`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             id,
             name,
             type,

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 export const setSessionStorage = (key, value) => {
     if(window !== 'undefined'){
-        sessionStorage.setItem(key, JSON.stringify(value))
+        sessionStorage.setItem(key, value)
     }
 }
 
@@ -15,8 +15,8 @@ export const removeSessionStoragee = key => {
 
 export const isAuth = () => {
     if(sessionStorage.getItem("token")){
-        const token = sessionStorage.getItem("token").substring(1, sessionStorage.getItem("token").length - 1);
-        let state = "";
+        const token = sessionStorage.getItem("token");
+        let state = false;
 
         //modify the backend to reverse this process.
 
@@ -28,11 +28,7 @@ export const isAuth = () => {
                 state = true;
             }
         })
-        if(state === true){
-            return true
-        } else {
-            return false
-        }
+        return state;
     }
 }
 
@@ -78,4 +74,17 @@ export const updateLoggedInTimings = async () => {
         removeSessionStoragee('user')
     })
     .catch(err => console.log(err))
+}
+
+export const decodeSessionStorage = () => {
+
+    const payload_token = sessionStorage.getItem("user");
+
+    console.log(jwt.verify(payload_token, process.env.REACT_APP_JWT_PAYLOAD, (err, decoded) => {
+        if(err){
+            return false
+        }
+
+        return decoded
+    }));
 }

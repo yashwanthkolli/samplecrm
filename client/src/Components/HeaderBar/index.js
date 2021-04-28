@@ -27,6 +27,7 @@ import {TiTick} from 'react-icons/ti';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
+import { decodeSessionStorage } from '../../helpers/auth.helpers';
 
 const drawerWidth = 240;
 
@@ -129,6 +130,8 @@ function HeaderBar({match}){
         setOpen(!open);
     }
 
+    decodeSessionStorage();
+
     const adminNav = [
         {id: 1 ,path: `${match.path}/profile`, text: 'Profile',  icon: ImProfile },
         {id: 2 ,path: `${match.path}/home`, text: 'Home',  icon: AiFillHome },
@@ -159,19 +162,19 @@ function HeaderBar({match}){
 
     let navbarElements;
 
-    switch(JSON.parse(sessionStorage.getItem('user')).Type){
-      case 'Admin':
-        navbarElements = adminNav
-        break;
-      case 'nationalHead':
-        navbarElements = teamNav
-        break;
-      case 'National Head':
-        navbarElements = userNav
-        break;
-      default:
-        break;
-    }
+    // switch(userRole){
+    //   case 'Admin':
+    //     navbarElements = adminNav
+    //     break;
+    //   case 'nationalHead':
+    //     navbarElements = teamNav
+    //     break;
+    //   case 'National Head':
+    //     navbarElements = userNav
+    //     break;
+    //   default:
+    //     break;
+    // }
 
     const list = () => (
         <div

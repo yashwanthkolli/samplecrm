@@ -20,10 +20,16 @@ exports.loginController = (req, res) => {
                 expiresIn: '24h'
             })
 
+            const payload_Encrypt = jwt.sign({
+                payload: result[0]
+            }, process.env.JWT_PAYLOAD_ENCRYPT_SIGN, {
+                expiresIn: '24h'
+            })
+
             return res.status(200).json({
                 message: "Login Successful",
                 token: token,
-                payload: result[0],
+                payload: payload_Encrypt,
                 response: 1
             })
         } else {

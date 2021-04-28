@@ -30,7 +30,7 @@ function Loading(props){
         onClose={() => props.setOpenLoading(false)} aria-labelledby="loading search results"
         >
             <DialogContent className={classes.progressCircle}>
-                Loading {props.type === "" ? "Search Results" : null} <CircularProgress />
+                Loading {props.type === "search" ? "Search Results" : null} <CircularProgress />
             </DialogContent>
         </Dialog>
     ) 

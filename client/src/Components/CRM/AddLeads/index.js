@@ -251,6 +251,7 @@ function AddLeads(){
             e.preventDefault();
         }
         handleClose();
+        setTypeLoading("search");
         setOpenLoading(true);
 
         var checksOut = false;
@@ -335,6 +336,46 @@ function AddLeads(){
             .then((res) => {
                 setSearchCount(res.data.queryCount);
 
+                //changing the table data to display the fetched lead details.
+                let data = [];
+                res.data.queryResult.forEach((element) => {
+                    data.push({
+                        "details": 
+                        <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => handleOpen("leadDetails")}>
+                            {element.Name + " | " + element.Email + " | " + element.Mobile}
+                        </div>,
+                    "course": 
+                        <div className={classes.course} >
+                            {element.course + " | " + element.courseType + " | Rs." + element.courseCost}
+                        </div>,
+                    "status": 
+                        <div className={classes.status} style={{cursor: "pointer"}} onClick={() => handleOpen("leadStatus")}>
+                            <div>{element.Status}</div>
+                            <div>{new Date(element.UpdationDt).toLocaleString()}</div>
+                        </div>,
+                    "assignedTo": 
+                        <div className={classes.assigned}>
+                            <div>{element.assignF + " " + element.assignS}</div>
+                            <div>{new Date(element.AssignDt).toLocaleString()}</div>
+                        </div>,
+                    "actions": <div className={classes.btnSection}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("walkIn")}>
+                                <FaWalking style={{margin: '5px'}} />    
+                            </Button>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("mailPortal")}>
+                                <FaMailBulk style={{margin:'5px'}} />
+                            </Button>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}} onClick={() => handleOpen("bookDetails")}>
+                                <FaBookmark style={{margin: '5px'}} />
+                            </Button>
+                        </div>
+                    })
+                })
+                setTableData(data);
+                setTimeout(() => {
+                    setTypeLoading("");
+                    setOpenLoading(false);
+                }, 1000);
             })
             .catch((err) => {
                 if(!toast.isActive(toast_course)){

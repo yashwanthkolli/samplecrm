@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
@@ -129,8 +129,7 @@ function HeaderBar({match}){
     const toggleDrawer = () => {
         setOpen(!open);
     }
-
-    decodeSessionStorage();
+    const userData = decodeSessionStorage().payload;
 
     const adminNav = [
         {id: 1 ,path: `${match.path}/profile`, text: 'Profile',  icon: ImProfile },
@@ -162,19 +161,19 @@ function HeaderBar({match}){
 
     let navbarElements;
 
-    // switch(userRole){
-    //   case 'Admin':
-    //     navbarElements = adminNav
-    //     break;
-    //   case 'nationalHead':
-    //     navbarElements = teamNav
-    //     break;
-    //   case 'National Head':
-    //     navbarElements = userNav
-    //     break;
-    //   default:
-    //     break;
-    // }
+    switch(userData.Type){
+      case 'Admin':
+        navbarElements = adminNav
+        break;
+      case 'nationalHead':
+        navbarElements = teamNav
+        break;
+      case 'National Head':
+        navbarElements = userNav
+        break;
+      default:
+        break;
+    }
 
     const list = () => (
         <div
@@ -252,10 +251,10 @@ function HeaderBar({match}){
         <div className={classes.profile}>
           <Avatar className={classes.large} />
           <Typography noWrap className={classes.profileDetails}>
-            {JSON.parse(sessionStorage.getItem('user')).Firstname + " " + JSON.parse(sessionStorage.getItem('user')).Surname}
+            {userData.Firstname + " " + userData.Surname}
           </Typography>
           <Typography noWrap className={classes.profileDetails}>
-            {JSON.parse(sessionStorage.getItem('user')).Email}
+            {userData.Email}
           </Typography>
         </div>
         <Divider />

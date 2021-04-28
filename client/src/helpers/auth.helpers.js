@@ -29,6 +29,8 @@ export const isAuth = () => {
             }
         })
         return state;
+    } else {
+        return false;
     }
 }
 
@@ -79,12 +81,14 @@ export const updateLoggedInTimings = async () => {
 export const decodeSessionStorage = () => {
 
     const payload_token = sessionStorage.getItem("user");
+    var userData = {};
 
-    console.log(jwt.verify(payload_token, process.env.REACT_APP_JWT_PAYLOAD, (err, decoded) => {
+    jwt.verify(payload_token, process.env.REACT_APP_JWT_PAYLOAD, (err, decoded) => {
         if(err){
-            return false
+            userData = {};
         }
+        userData = decoded
+    })
 
-        return decoded
-    }));
+    return userData
 }

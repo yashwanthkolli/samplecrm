@@ -936,8 +936,39 @@ function AddLeads(){
                         <TextField 
                             required
                             fullWidth
+                            name="leadName"
+                            label="Lead Name"
+                            placeholder="Change the lead name"
                             value={dialogData.Name}
+                            style={{marginBottom: '7px'}}
                         />
+                        <div className={classes.fieldHolder}>
+                            <TextField 
+                                required
+                                fullWidth
+                                name="leadEmail"
+                                label="Lead Email"
+                                placeholder="Change the lead email"
+                                value={dialogData.Email}
+                                style={{marginBottom: '7px'}}
+                            />
+                            <TextField 
+                                required
+                                fullWidth
+                                name="leadMobile"
+                                label="Lead Mobile"
+                                placeholder="Change the mobile number"
+                                value={dialogData.Mobile}
+                                style={{marginBottom: '7px'}}
+                            />
+                        </div>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            style={{backgroundColor: '#202950', color: 'white', marginTop: '3px', width: '100%'}}
+                        >
+                            Change Details
+                        </Button>
                     </form>
                 </DialogContent>
             </>

@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react';
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 const Plotly = window.Plotly;
 const Plot = createPlotlyComponent(Plotly);
 
 function LastFifteenDaysGraph() {
-    const toast = useToast() 
+    const toast = useToast();
+    const userData = decodeSessionStorage().payload;
     
     const [data, setData] = useState([])
     const [names, setNames] = useState([])
     const [values, setValues] = useState([])
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_LEADS}/fifteenDaysLeads`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/fifteenDaysLeads`, { email: userData.Email })
         .then(res => setData(res.data.leads))
         .catch(err => {
             toast({

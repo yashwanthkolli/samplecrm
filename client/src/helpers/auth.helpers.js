@@ -40,16 +40,20 @@ export const signout = () => {
 }
 
 export const updateLoggedInTimings = async () => {
+
+    const userData = decodeSessionStorage().payload;
+
     const date = new Date().getDate() >= 10 ? new Date().getDate().toString() : '0'+new Date().getDate().toString()
     const month = new Date().getMonth()+1 >= 10 ? (new Date().getMonth()+1).toString() : '0'+(new Date().getMonth()+1).toString()
     const year =  new Date().getFullYear().toString()
     const fullDate = year + '-' + month + '-' + date
     const logoutHours = new Date().getHours() >= 10 ? new Date().getHours().toString() : '0'+new Date().getHours().toString()
     const logoutMinutes = new Date().getMinutes() >= 10 ? new Date().getMinutes().toString() : '0'+new Date().getMinutes().toString()
-    const logoutTime = logoutHours + ':' + logoutMinutes
-    var data = []
+    const logoutTime = logoutHours + ':' + logoutMinutes;
 
-    await axios.post(`${process.env.REACT_APP_USER}/getEmployeeTimings`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+    var data = [];
+
+    await axios.post(`${process.env.REACT_APP_USER}/getEmployeeTimings`, { email: userData.Email })
     .then(res => {
         const timings = JSON.parse(res.data.timings[0].Timings)
         if(timings){
@@ -70,12 +74,12 @@ export const updateLoggedInTimings = async () => {
     })
     .catch(err => console.log(err))
     
-    await axios.post(`${process.env.REACT_APP_USER}/setEmployeeTimings`, { email: JSON.parse(sessionStorage.getItem('user')).Email, jsonData: data })
+    await axios.post(`${process.env.REACT_APP_USER}/setEmployeeTimings`, { email: userData.Email, jsonData: data })
     .then(res => {
         removeSessionStoragee('loginTime')
         removeSessionStoragee('user')
     })
-    .catch(err => console.log(err))
+    .catch(err => {})
 }
 
 export const decodeSessionStorage = () => {

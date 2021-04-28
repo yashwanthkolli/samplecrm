@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import createPlotlyComponent from 'react-plotly.js/factory';
-import axios from 'axios'
+import axios from 'axios';
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 const Plotly = window.Plotly;
 const Plot = createPlotlyComponent(Plotly);
 
 function CoursesGraph() {
+    const userData = decodeSessionStorage().payload;
+
     const [courses, setCourses] = useState([])
     const [totalCount, setTotalCount] = useState(0)
     const [names, setNames] = useState([])
     const [values, setValues] = useState([])
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_LEADS}/courseCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/courseCount`, { email: userData.Email })
             .then(res => setCourses(res.data.courses))
             .catch(err => {})
-        axios.post(`${process.env.REACT_APP_LEADS}/totalCourseCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/totalCourseCount`, { email: userData.Email })
             .then(res => setTotalCount(res.data.total[0].count))
             .catch(err => {})
     }, [])

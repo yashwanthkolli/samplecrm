@@ -415,7 +415,7 @@ function AddLeads(){
                             {element.Name + " | " + element.Email + " | " + element.Mobile}
                         </div>,
                     "course": 
-                        <div className={classes.course} >
+                        <div className={classes.course} style={{cursor: 'pointer'}} onClick={() => handleOpen("courseSource")}>
                             {element.course + " | " + element.courseType + " | Rs." + element.courseCost + " | " + element.Source}
                         </div>,
                     "status": 
@@ -916,6 +916,9 @@ function AddLeads(){
             :
             typeOfDialog === "leadDetails" ?
                 <DialogTitle>Lead Details</DialogTitle>
+            :
+            typeOfDialog === "courseSource" ?
+                <DialogTitle>Change Course Or Status</DialogTitle>
             :
             typeOfDialog === "leadStatus" ?
                 <DialogTitle>Lead Status Update</DialogTitle>

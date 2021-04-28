@@ -147,6 +147,8 @@ function AddLeads(){
 
     const [openLoading, setOpenLoading] = useState(false);
     const [typeLoading, setTypeLoading] = useState("");
+    const [dialogData, setDialogData] = useState({});
+
     const [searchCount, setSearchCount] = useState(0);
 
     const handleChangeCategory = (e) => {
@@ -171,9 +173,14 @@ function AddLeads(){
         }
     }
 
-    const handleOpen = (type) => {
+    const handleOpen = (type, element) => {
         setOpen(true);
         setTypeOfDialog(type);
+
+        console.log("Element Passed", element);
+        if(element){
+            setDialogData(element);
+        }
     }
     const handleClose = () => {
         setOpen(false);
@@ -343,7 +350,7 @@ function AddLeads(){
                 res.data.queryResult.forEach((element) => {
                     data.push({
                         "details": 
-                        <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => handleOpen("leadDetails")}>
+                        <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => {handleOpen("leadDetails")}}>
                             {element.Name + " | " + element.Email + " | " + element.Mobile}
                         </div>,
                     "course": 
@@ -401,6 +408,13 @@ function AddLeads(){
         }
     }
 
+    const handleChangesDetails = (e) => {
+        e.preventDefault();
+
+        //changing the details of a particular lead.
+        axios.post(`${process.env.REACT_APP_LEADS}`, )
+    }
+
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`,{
             email: userData.Email
@@ -411,7 +425,7 @@ function AddLeads(){
             res.data.latest.forEach((element) => {
                 data_latest.push({
                     "details": 
-                        <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => handleOpen("leadDetails")}>
+                        <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => handleOpen("leadDetails", element)}>
                             {element.Name + " | " + element.Email + " | " + element.Mobile}
                         </div>,
                     "course": 
@@ -915,7 +929,18 @@ function AddLeads(){
                 </>
             :
             typeOfDialog === "leadDetails" ?
+            <>
                 <DialogTitle>Lead Details</DialogTitle>
+                <DialogContent>
+                    <form onSubmit={handleChangesDetails}>
+                        <TextField 
+                            required
+                            fullWidth
+                            value={dialogData.Name}
+                        />
+                    </form>
+                </DialogContent>
+            </>
             :
             typeOfDialog === "courseSource" ?
                 <DialogTitle>Change Course Or Status</DialogTitle>

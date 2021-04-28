@@ -416,7 +416,7 @@ function AddLeads(){
                         </div>,
                     "course": 
                         <div className={classes.course} >
-                            {element.course + " | " + element.courseType + " | Rs." + element.courseCost}
+                            {element.course + " | " + element.courseType + " | Rs." + element.courseCost + " | " + element.Source}
                         </div>,
                     "status": 
                         <div className={classes.status} style={{cursor: "pointer"}} onClick={() => handleOpen("leadStatus")}>
@@ -564,7 +564,7 @@ function AddLeads(){
                     title="Latest Leads Table"
                     columns={[
                         {title: 'Lead Details', field: "details", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
-                        {title: 'Course', field: "course", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Course | Source', field: "course", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Status', field: "status", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Assigned To', field: "assignedTo", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Actions', field: "actions", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}}

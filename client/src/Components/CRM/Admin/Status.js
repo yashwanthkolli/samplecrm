@@ -39,7 +39,7 @@ function Status() {
                 position: "top"
             })
         })
-    }, [toast])
+    }, [toast, userData.Email])
 
     const onDeleteStatus = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteStatus`, {

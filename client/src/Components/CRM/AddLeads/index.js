@@ -444,7 +444,7 @@ function AddLeads(){
             setTableData(data_latest);
         })
         .catch((err) =>{})
-    }, [update, classes.btnSection, classes.assigned, classes.course, classes.leadDetails, classes.status])
+    }, [update, classes.btnSection, classes.assigned, classes.course, classes.leadDetails, classes.status, userData.Email])
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, {
@@ -544,7 +544,7 @@ function AddLeads(){
             }
         })
 
-    }, [toast])
+    }, [toast, userData.Email])
 
     return(
         <>

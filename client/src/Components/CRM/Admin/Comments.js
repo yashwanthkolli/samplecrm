@@ -53,7 +53,7 @@ function Comments() {
         axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, { email: userData.Email })
         .then(res => setComments(res.data.comments))
         .catch(err => {})
-    }, [update])
+    }, [update, userData.Email])
 
     const onDeleteComment = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteComments`, {

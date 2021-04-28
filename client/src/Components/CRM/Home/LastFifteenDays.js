@@ -24,7 +24,7 @@ function LastFifteenDaysGraph() {
                 position: "top"
             })
         })
-    }, [toast])
+    }, [toast, userData.Email])
 
     useEffect(() => {
         setNames(data.map( lead => lead.Createdt))

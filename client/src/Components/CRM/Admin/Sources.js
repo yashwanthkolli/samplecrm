@@ -53,7 +53,7 @@ function Sources() {
         axios.post(`${process.env.REACT_APP_CONFIG}/getSource`, { email: userData.Email })
         .then(res => setSources(res.data.sources))
         .catch(err => {})
-    }, [update])
+    }, [update, userData.Email])
 
     const onDeleteSource = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteSource`, {

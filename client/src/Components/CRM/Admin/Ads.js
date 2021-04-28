@@ -59,7 +59,7 @@ function Ads() {
         })
         .then(res => setAds(res.data.adnames))
         .catch(err => {})
-    }, [update])
+    }, [update, userData.Email])
   
     const onDeleteAd = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteAds`, {

@@ -24,7 +24,7 @@ function Sources() {
                 position: "top"
             })
         })
-    }, [toast])
+    }, [toast, userData.Email])
 
     useEffect(() => {
         setNames(sources.map( source => source.Source))

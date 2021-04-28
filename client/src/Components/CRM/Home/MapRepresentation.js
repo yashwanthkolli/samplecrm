@@ -65,7 +65,7 @@ const MapRepresentation = () => {
                     position: "top"
                 })
             })
-    }, [toast])
+    }, [toast, userData.Email])
 
     useEffect(() => {
         const markerData = [];

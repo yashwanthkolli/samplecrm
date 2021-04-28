@@ -20,7 +20,7 @@ function LeadToppersGraph() {
         axios.post(`${process.env.REACT_APP_LEADS}/getWebsiteLeadsCount`, { email: userData.Email })
             .then(res => setWebsiteLeads(res.data.count[0].count))
             .catch(err => {})
-    }, [])
+    }, [userData.Email])
 
     useEffect(() => {
         setNames(leadToppers.map( lead => lead.AssignedTo.substring(4)))

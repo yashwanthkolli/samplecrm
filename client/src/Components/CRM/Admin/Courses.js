@@ -56,7 +56,7 @@ function Courses() {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, { email: userData.Email })
         .then(res => setCourses(res.data.courses))
         .catch(err => {})
-    }, [update])
+    }, [update, userData.Email])
 
     const onDeleteCourse = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteCourses`, {

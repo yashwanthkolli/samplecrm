@@ -155,7 +155,7 @@ function AddUsers(){
                 })
             }
         })
-    }, [toast])
+    }, [toast, userData.Email])
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_USER}/usersList`,{
@@ -187,7 +187,7 @@ function AddUsers(){
                 })
             }
         })
-    }, [toast, update])
+    }, [toast, update, userData.Email])
 
     return (
         <>

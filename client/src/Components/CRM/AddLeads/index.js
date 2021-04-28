@@ -18,6 +18,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
 import Loading from '../../Loading';
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -103,6 +104,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function AddLeads(){
+    const userData = decodeSessionStorage().payload;
 
     const classes = useStyles();
     const toast = useToast();
@@ -213,7 +215,7 @@ function AddLeads(){
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name, otherComment
         })
         .then((res) => {
@@ -401,7 +403,7 @@ function AddLeads(){
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`,{
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             let data_latest = [];
@@ -446,7 +448,7 @@ function AddLeads(){
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setCoursesFetched(res.data.courses);
@@ -462,7 +464,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setStatusFetched(res.data.status);
@@ -478,7 +480,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getSource`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setSourcesFetched(res.data.sources);
@@ -494,7 +496,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getAds`,{
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setAdNameFetched(res.data.ads);
@@ -510,7 +512,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setCommentsFetched(res.data.comments);
@@ -526,7 +528,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_USER}/getTeleCallerList`,{
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setEmployeesFetched(res.data.employees);

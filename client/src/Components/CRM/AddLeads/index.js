@@ -15,9 +15,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Pagination from '@material-ui/lab/Pagination';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
+import Loading from '../../Loading';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
@@ -95,14 +95,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         width: '100%',
         marginTop: '15px'
-    },
-    progressCircle: {
-        display: 'grid',
-        placeItems: 'center',
-        width: '100%',
-        height: '35vh',
-        fontSize: '25px',
-        fontFamily: 'Nunito'
     }
 }));
 
@@ -152,6 +144,7 @@ function AddLeads(){
     const [searchValueAssigned, setSearchAssigned] = useState("");
 
     const [openLoading, setOpenLoading] = useState(false);
+    const [typeLoading, setTypeLoading] = useState("");
     const [searchCount, setSearchCount] = useState(0);
 
     const handleChangeCategory = (e) => {
@@ -340,8 +333,8 @@ function AddLeads(){
                 }
             })
             .then((res) => {
-                setOpenLoading(false);
                 setSearchCount(res.data.queryCount);
+
             })
             .catch((err) => {
                 if(!toast.isActive(toast_course)){
@@ -917,14 +910,7 @@ function AddLeads(){
             null
             }
         </Dialog>
-        <Dialog open={openLoading} fullWidth disableBackdropClick disableEscapeKeyDown 
-            TransitionComponent={Transition}
-            onClose={() => setOpenLoading(false)} aria-labelledby="loading search results"
-        >
-            <DialogContent className={classes.progressCircle}>
-                Loading Search Results <CircularProgress />
-            </DialogContent>
-        </Dialog>
+        <Loading open={openLoading} setOpenLoading={setOpenLoading} type={typeLoading} />
         </>
     )
 }

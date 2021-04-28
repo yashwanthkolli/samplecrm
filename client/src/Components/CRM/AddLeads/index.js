@@ -937,6 +937,7 @@ function AddLeads(){
                             required
                             fullWidth
                             name="leadName"
+                            type="text"
                             label="Lead Name"
                             placeholder="Change the lead name"
                             value={dialogData.Name}
@@ -945,21 +946,45 @@ function AddLeads(){
                         <div className={classes.fieldHolder}>
                             <TextField 
                                 required
-                                fullWidth
+                                autoComplete="off"
                                 name="leadEmail"
                                 label="Lead Email"
+                                type="email"
                                 placeholder="Change the lead email"
                                 value={dialogData.Email}
-                                style={{marginBottom: '7px'}}
+                                style={{marginBottom: '7px', width: '45%'}}
                             />
                             <TextField 
                                 required
-                                fullWidth
+                                autoComplete="off"
                                 name="leadMobile"
                                 label="Lead Mobile"
+                                type="tel"
                                 placeholder="Change the mobile number"
                                 value={dialogData.Mobile}
-                                style={{marginBottom: '7px'}}
+                                style={{marginBottom: '7px', width: '45%'}}
+                            />
+                        </div>
+                        <div className={classes.fielHolder}>
+                            <TextField 
+                                required
+                                autoComplete="off"
+                                name="leadDOB"
+                                type="date"
+                                label="Lead DOB"
+                                placeholder="Change the DOB"
+                                value={dialogData.DOB}
+                                style={{marginBottom: '7px', width: '45%'}}
+                            />
+                            <TextField 
+                                required
+                                autoComplete="off"
+                                name="leadCity"
+                                label="Lead City"
+                                type="text"
+                                placeholder="Change the city"
+                                value={dialogData.City}
+                                style={{marginBottom: '7px', width: '45%'}}
                             />
                         </div>
                         <Button

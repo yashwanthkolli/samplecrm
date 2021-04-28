@@ -23,6 +23,7 @@ module.exports = [
         +' Mobile Varchar(20),'
         +' Qualif Varchar(255),'
         +' Source Varchar(255) NOT NULL,'
+        +' DOB Date,'
         +' Ad_Name Varchar(255) Default \'None\','
         +' Course Varchar(255) NOT NULL,'
         +' City Varchar(255) NOT NULL,'

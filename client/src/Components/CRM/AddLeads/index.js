@@ -18,6 +18,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Chip from '@material-ui/core/Chip';
 import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
 import Loading from '../../Loading';
@@ -495,13 +496,15 @@ function AddLeads(){
             email: userData.Email
         })
         .then((res) => {
+            console.log(res);
             let data_latest = [];
 
             res.data.latest.forEach((element) => {
                 data_latest.push({
                     "details": 
                         <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => handleOpen("leadDetails", element)}>
-                            {element.Name + " | " + element.Email + " | " + element.Mobile}
+                            {element.Name + " | " + element.Email + " | " + element.Mobile + " "}
+                            {element.Hot === "1" ? <Chip style={{backgroundColor: '#202950', color: "white", fontFamily: 'Nunito'}} size="small" label="Hot Lead" /> : null }
                         </div>,
                     "course": 
                         <div className={classes.course} style={{cursor: 'pointer'}} onClick={() => handleOpen("courseSource", element)}>

@@ -309,7 +309,6 @@ exports.modifyDetailController = (req, res) => {
         + '\' where Lead_id = ' + Number(req.body.id);
 
     connect.query(update_query, function(err, result){
-        console.log(err);
         if(err){
             return res.status(500).json({
                 message: "Error in updating the lead details"
@@ -318,6 +317,23 @@ exports.modifyDetailController = (req, res) => {
 
         return res.status(200).json({
             message: "Lead Details Updated Successfully"
+        })
+    })
+}
+
+exports.modifySourceCourseController = (req, res) => {
+
+    update_course_query = 'update ice.leads set Course = \'' + req.body.course + '\', Source = \'' + req.body.source + '\' where Lead_id = ' + req.body.id;
+
+    connect.query(update_course_query, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in updating the lead course and source"
+            })
+        }
+
+        return res.status(200).json({
+            message: "Lead course and source updated successfully"
         })
     })
 }

@@ -444,7 +444,7 @@ function AddLeads(){
 
         //change the course and the source of the lead only available to the national head.
         axios.post(`${process.env.REACT_APP_LEADS}/modifySourceCourse`, {
-            id: dialogData.Lead_id, source: dialogData.Source, course: dialogData.Course
+            id: dialogData.Lead_id, source: dialogData.Source, course: dialogData.courseId
         })
         .then((res) => {
             setUpdate(!update);

@@ -32,6 +32,7 @@ module.exports = [
         +' CreatedBy Varchar(255) NOT NUll,'
         +' Createdt Datetime,'
         +' Lstfudt Datetime,'
+        +' Hot Varchar(10),'
         +' Venue Varchar(100),'
         +' AssignDt Datetime,'
         +' CallingDt Datetime,'

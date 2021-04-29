@@ -50,17 +50,24 @@ exports.addNewLeadsController = (req, res) => {
     const {
         name,
         email_lead,
-        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name, otherComment
+        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name, otherComment, hot
     } = req.body;
     const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0];
 
     var comment_select = "";
+    var hot_indicator = 0;
+
     if(otherComment !== ""){
         comment_select = otherComment
     } else {
         comment_select = comment
     }
-    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment, UpdationDt) values ('
+
+    if(hot){
+        hot_indicator = 1
+    }
+
+    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment, UpdationDt, Hot) values ('
         + ' \''+ name +'\' ,'
         + ' \''+ email_lead +'\' ,'
         + ' \''+ mobile +'\' ,'
@@ -75,9 +82,9 @@ exports.addNewLeadsController = (req, res) => {
         + ' \''+ now +'\' ,'
         + ' \''+ now +'\' ,'
         + ' \''+ comment_select + '\','
-        + '\'' + now + '\')';
+        + ' \''+ now + '\','
+        + '\'' + hot_indicator + '\')';
     connect.query(addnewlead_query, function(err){
-         ;
         if(err){
             return res.status(500).json({
                 err: err 

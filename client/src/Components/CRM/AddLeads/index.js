@@ -16,6 +16,8 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Pagination from '@material-ui/lab/Pagination';
 import Typography from '@material-ui/core/Typography';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
 import Loading from '../../Loading';
@@ -142,6 +144,7 @@ function AddLeads(){
     const [comment, setComment] = useState("");
     const [ad_name, setAdName] = useState("");
     const [otherComment, setOtherComment] = useState("");
+    const [hot, setHot] = useState(false);
 
     const [category, setCategory] = useState("");
     const [startDate, setStartDate] = useState("");
@@ -231,7 +234,7 @@ function AddLeads(){
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
             email: userData.Email,
-            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name, otherComment
+            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name, otherComment, hot
         })
         .then((res) => {
             setUpdate(!update);
@@ -868,6 +871,14 @@ function AddLeads(){
                         placeholder="Additional Comment"
                         disabled={comment === "others" ? false : true}
                     />
+                    <FormControl fullWidth>
+                        <FormControlLabel
+                            value="start"
+                            control={<Checkbox checked={hot} onChange={e=>setHot(e.target.checked)} color="primary" />}
+                            label="Checkbox for hot lead"
+                            labelPlacement="end"
+                        />
+                    </FormControl>
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
                         Add New Lead
                     </Button>

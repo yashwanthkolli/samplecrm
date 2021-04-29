@@ -941,6 +941,7 @@ function AddLeads(){
                             label="Lead Name"
                             placeholder="Change the lead name"
                             value={dialogData.Name}
+                            onChange={e=>setDialogData({...dialogData, Name: e.target.value})}
                             style={{marginBottom: '7px'}}
                         />
                         <div className={classes.fieldHolder}>
@@ -952,6 +953,7 @@ function AddLeads(){
                                 type="email"
                                 placeholder="Change the lead email"
                                 value={dialogData.Email}
+                                onChange={e=>setDialogData({...dialogData, Email: e.target.value})}
                                 style={{marginBottom: '7px', width: '45%'}}
                             />
                             <TextField 
@@ -962,10 +964,11 @@ function AddLeads(){
                                 type="tel"
                                 placeholder="Change the mobile number"
                                 value={dialogData.Mobile}
+                                onChange={e=>setDialogData({...dialogData, Mobile: e.target.value})}
                                 style={{marginBottom: '7px', width: '45%'}}
                             />
                         </div>
-                        <div className={classes.fielHolder}>
+                        <div className={classes.fieldHolder}>
                             <TextField 
                                 required
                                 autoComplete="off"
@@ -974,6 +977,7 @@ function AddLeads(){
                                 label="Lead DOB"
                                 placeholder="Change the DOB"
                                 value={dialogData.DOB}
+                                onChange={e=>setDialogData({...dialogData, DOB: e.target.value})}
                                 style={{marginBottom: '7px', width: '45%'}}
                             />
                             <TextField 
@@ -984,9 +988,27 @@ function AddLeads(){
                                 type="text"
                                 placeholder="Change the city"
                                 value={dialogData.City}
+                                onChange={e=>setDialogData({...dialogData, City: e.target.value})}
                                 style={{marginBottom: '7px', width: '45%'}}
                             />
                         </div>
+                        <FormControl style={{marginBottom: '7px'}} fullWidth>
+                            <InputLabel>Lead Qualification</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                value={dialogData.Qualif}
+                                onChange={e => setDialogData({...dialogData, Qualif: e.target.value})}
+                            >
+                                <MenuItem value={"not_available"}>Not Available</MenuItem>
+                                <MenuItem value={"10"}>10th</MenuItem>
+                                <MenuItem value={"12"}>12th</MenuItem>
+                                <MenuItem value={"grad"}>Graduation</MenuItem>
+                                <MenuItem value={"postGrad"}>Post-graduation</MenuItem>
+                                <MenuItem value={"MBA"}>MBA</MenuItem>
+                                <MenuItem value={"iti_others"}>ITI/Others</MenuItem>
+                            </Select>
+                        </FormControl>
                         <Button
                             type="submit"
                             variant="contained"

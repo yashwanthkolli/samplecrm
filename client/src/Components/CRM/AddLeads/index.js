@@ -1072,6 +1072,7 @@ function AddLeads(){
                                     required
                                     fullWidth
                                     value={dialogData.courseId}
+                                    onChange={e=>setDialogData({...dialogData, courseId: e.target.value})}
                                 >
                                 {
                                     coursesFetched.map((element) => {
@@ -1079,6 +1080,23 @@ function AddLeads(){
                                             <MenuItem key={element.id} value={element.id}>
                                                 {element.name}{" "}{element.type}{" Rs. "}{element.Cost}  
                                             </MenuItem>
+                                        )
+                                    })
+                                }
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                                <InputLabel>Select New Source</InputLabel>
+                                <Select
+                                    required
+                                    fullWidth
+                                    value={dialogData.Source}
+                                    onChange={e=>setDialogData({...dialogData, Source: e.target.value})}
+                                >
+                                {
+                                    sourceFetched.map((element, index) => {
+                                        return (
+                                            <MenuItem key={index} value={element.name}>{element.name}</MenuItem>
                                         )
                                     })
                                 }

@@ -412,10 +412,28 @@ function AddLeads(){
         e.preventDefault();
 
         //changing the details of a particular lead.
-        console.log(dialogData);
+        axios.post(`${process.env.REACT_APP_LEADS}/modifyDetails`,{
+            id: dialogData.Lead_id, Name: dialogData.Name, Email: dialogData.Email, Mobile: dialogData.Mobile, DOB: dialogData.DOB, Qualif: dialogData.Qualif, City: dialogData.City
+        })
+        .then((res) => {
+            setUpdate(!update);
+        })
+        .catch((err) => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Lead Details Update Failed",
+                    position: "top-right",
+                    duration: 3000
+                })
+            }
+        })
     }
 
     useEffect(() => {
+        setTypeLoading("latestLeads");
+        setOpenLoading(true);
+
         axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`,{
             email: userData.Email
         })
@@ -456,6 +474,11 @@ function AddLeads(){
                 })
             })
             setTableData(data_latest);
+            setTimeout(() => {
+                setOpenLoading(false);
+                setTypeLoading("");    
+            }, 1000);
+            
         })
         .catch((err) =>{})
     }, [update, classes.btnSection, classes.assigned, classes.course, classes.leadDetails, classes.status, userData.Email])

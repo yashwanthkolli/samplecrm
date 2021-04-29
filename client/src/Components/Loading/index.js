@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function Loading(props){
-
     const classes = useStyles();
 
     return (
@@ -30,7 +29,7 @@ function Loading(props){
         onClose={() => props.setOpenLoading(false)} aria-labelledby="loading search results"
         >
             <DialogContent className={classes.progressCircle}>
-                Loading {props.type === "search" ? "Search Results" : null} <CircularProgress />
+                Loading {props.type === "search" ? "Search Results" : props.type === "latestLeads" ? "Latest Leads" :null} <CircularProgress />
             </DialogContent>
         </Dialog>
     ) 

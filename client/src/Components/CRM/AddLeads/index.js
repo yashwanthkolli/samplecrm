@@ -69,11 +69,11 @@ const useStyles = makeStyles((theme) => ({
         width: '45%'
     },
     leadDetails:{
-        fontSize: '15px',
+        fontSize: '13px',
         fontFamily: 'Nunito'
     },
     course: {
-        fontSize: '15px',
+        fontSize: '13px',
         fontFamily: 'Nunito'
     },
     btnSection:{
@@ -82,11 +82,11 @@ const useStyles = makeStyles((theme) => ({
     status:{
         display: 'flex',
         flexDirection: 'column',
-        fontSize: '15px',
+        fontSize: '13px',
         fontFamily: 'Nunito'
     },
     assigned:{
-        fontSize: '15px',
+        fontSize: '13px',
         fontFamily: 'Nunito'
     },
     iconHolder: {
@@ -759,7 +759,6 @@ function AddLeads(){
                         <FormControl className={classes.selectField}>
                             <InputLabel>Qualification</InputLabel>
                             <Select
-                                required
                                 fullWidth
                                 value={qualif}
                                 onChange={(e) => handleChange(e, 1)}

@@ -15,6 +15,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Pagination from '@material-ui/lab/Pagination';
+import Typography from '@material-ui/core/Typography';
 import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
 import Loading from '../../Loading';
@@ -96,6 +97,12 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         width: '100%',
         marginTop: '15px'
+    },
+    TypoCourse: {
+        fontFamily: 'Nunito',
+        fontSize: '15px',
+        marginBottom: '10px',
+        fontWeight: '600'
     }
 }));
 
@@ -176,7 +183,9 @@ function AddLeads(){
     const handleOpen = (type, element) => {
         setOpen(true);
         setTypeOfDialog(type);
-        
+
+        // setting the data for the opened dialog box that dynamically changes with the row of the table.
+        console.log(element);
         if(element){
             setDialogData(element);
         }
@@ -430,6 +439,12 @@ function AddLeads(){
         })
     }
 
+    const handleCourseSourceChange = (e) => {
+        e.preventDefault();
+
+        //change the course and the source of the lead only available to the national head.
+    }
+
     useEffect(() => {
         setTypeLoading("latestLeads");
         setOpenLoading(true);
@@ -447,7 +462,7 @@ function AddLeads(){
                             {element.Name + " | " + element.Email + " | " + element.Mobile}
                         </div>,
                     "course": 
-                        <div className={classes.course} style={{cursor: 'pointer'}} onClick={() => handleOpen("courseSource")}>
+                        <div className={classes.course} style={{cursor: 'pointer'}} onClick={() => handleOpen("courseSource", element)}>
                             {element.course + " | " + element.courseType + " | Rs." + element.courseCost + " | " + element.Source}
                         </div>,
                     "status": 
@@ -1044,7 +1059,41 @@ function AddLeads(){
             </>
             :
             typeOfDialog === "courseSource" ?
-                <DialogTitle>Change Course Or Status</DialogTitle>
+                <>
+                    <DialogTitle>Change Course Or Status</DialogTitle>
+                    <DialogContent>
+                        <Typography className={classes.TypoCourse}>
+                            This details changed through this form will be mapped to the lead. Please make sure that the changes are valid.
+                        </Typography>
+                        <form onSubmit={handleCourseSourceChange}>
+                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                                <InputLabel>Select New Course</InputLabel>
+                                <Select
+                                    required
+                                    fullWidth
+                                    value={dialogData.courseId}
+                                >
+                                {
+                                    coursesFetched.map((element) => {
+                                        return(
+                                            <MenuItem key={element.id} value={element.id}>
+                                                {element.name}{" "}{element.type}{" Rs. "}{element.Cost}  
+                                            </MenuItem>
+                                        )
+                                    })
+                                }
+                                </Select>
+                            </FormControl>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                style={{backgroundColor: '#202950', color: 'white', marginTop: '3px', width: '100%'}}
+                            >
+                                Apply Changes
+                            </Button>
+                        </form>
+                    </DialogContent>
+                </>
             :
             typeOfDialog === "leadStatus" ?
                 <DialogTitle>Lead Status Update</DialogTitle>

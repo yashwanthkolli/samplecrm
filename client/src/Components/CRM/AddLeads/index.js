@@ -176,8 +176,7 @@ function AddLeads(){
     const handleOpen = (type, element) => {
         setOpen(true);
         setTypeOfDialog(type);
-
-        console.log("Element Passed", element);
+        
         if(element){
             setDialogData(element);
         }
@@ -417,6 +416,7 @@ function AddLeads(){
         })
         .then((res) => {
             setUpdate(!update);
+            handleClose();
         })
         .catch((err) => {
             if(!toast.isActive(toast_course)){
@@ -477,7 +477,7 @@ function AddLeads(){
             setTimeout(() => {
                 setOpenLoading(false);
                 setTypeLoading("");    
-            }, 1000);
+            }, 500);
             
         })
         .catch((err) =>{})

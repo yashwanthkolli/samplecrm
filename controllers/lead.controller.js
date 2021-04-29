@@ -299,3 +299,25 @@ exports.searchLeadsController = (req, res) => {
         })
     })
 }
+
+exports.modifyDetailController = (req, res) => {
+
+    const date  = new Date(new Date(req.body.DOB).getTime() - new Date(req.body.DOB).getTimezoneOffset()*60*1000).toISOString().split("T")[0];
+
+    update_query = 'update ice.leads set Name = \'' + req.body.Name + '\', Email = \'' + req.body.Email + '\','
+        + ' City = \'' + req.body.City + '\', DOB = \'' + date + '\', Mobile = \'' + req.body.Mobile + '\', Qualif = \'' + req.body.Qualif 
+        + '\' where Lead_id = ' + Number(req.body.id);
+
+    connect.query(update_query, function(err, result){
+        console.log(err);
+        if(err){
+            return res.status(500).json({
+                message: "Error in updating the lead details"
+            })
+        }
+
+        return res.status(200).json({
+            message: "Lead Details Updated Successfully"
+        })
+    })
+}

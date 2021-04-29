@@ -412,7 +412,7 @@ function AddLeads(){
         e.preventDefault();
 
         //changing the details of a particular lead.
-        axios.post(`${process.env.REACT_APP_LEADS}`, )
+        console.log(dialogData);
     }
 
     useEffect(() => {
@@ -976,7 +976,7 @@ function AddLeads(){
                                 type="date"
                                 label="Lead DOB"
                                 placeholder="Change the DOB"
-                                value={dialogData.DOB}
+                                value={new Date(new Date(dialogData.DOB).getTime() - (new Date(dialogData.DOB).getTimezoneOffset()*60000)).toISOString().split("T")[0]}
                                 onChange={e=>setDialogData({...dialogData, DOB: e.target.value})}
                                 style={{marginBottom: '7px', width: '45%'}}
                             />

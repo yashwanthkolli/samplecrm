@@ -462,6 +462,28 @@ function AddLeads(){
         })
     }
 
+    const handleStatusUpdate = (e) => {
+        e.preventDefault();
+
+        axios.post(`${process.env.REACT_APP_LEADS}/statusUpdate`,{
+            id: dialogData.Lead_id, status: dialogData.Status
+        })
+        .then((res) => {
+            setUpdate(!update);
+            handleClose();
+        })
+        .catch((err) => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Status Update Failed",
+                    duration: 3000,
+                    position: "top-right"
+                })
+            }
+        })
+    }
+
     useEffect(() => {
         setTypeLoading("latestLeads");
         setOpenLoading(true);
@@ -483,7 +505,7 @@ function AddLeads(){
                             {element.course + " | " + element.courseType + " | Rs." + element.courseCost + " | " + element.Source}
                         </div>,
                     "status": 
-                        <div className={classes.status} style={{cursor: "pointer"}} onClick={() => handleOpen("leadStatus")}>
+                        <div className={classes.status} style={{cursor: "pointer"}} onClick={() => handleOpen("leadStatus", element)}>
                             <div>{element.Status}</div>
                             <div>{new Date(element.UpdationDt).toLocaleString()}</div>
                         </div>,
@@ -987,6 +1009,9 @@ function AddLeads(){
             <>
                 <DialogTitle>Lead Details</DialogTitle>
                 <DialogContent>
+                    <Typography className={classes.TypoCourse}>
+                        This dialog box can be used to change the personal and contact details of a lead.
+                    </Typography>
                     <form onSubmit={handleChangesDetails}>
                         <TextField 
                             required
@@ -1080,7 +1105,7 @@ function AddLeads(){
                     <DialogTitle>Change Course Or Status</DialogTitle>
                     <DialogContent>
                         <Typography className={classes.TypoCourse}>
-                            This details changed through this form will be mapped to the lead. Please make sure that the changes are valid.
+                            The details changed through this form will be mapped to the lead. Please make sure that the changes are valid.
                         </Typography>
                         <form onSubmit={handleCourseSourceChange}>
                             <FormControl fullWidth style={{marginBottom: '7px'}}>
@@ -1131,7 +1156,31 @@ function AddLeads(){
                 </>
             :
             typeOfDialog === "leadStatus" ?
-                <DialogTitle>Lead Status Update</DialogTitle>
+                <>
+                    <DialogTitle>Lead Status Update</DialogTitle>
+                    <DialogContent>
+                        <Typography className={classes.TypoCourse}>Please make sure to fill all the required details to update the status of a lead.</Typography>
+                        <form onSubmit={handleStatusUpdate}>
+                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                                <InputLabel>Lead Status</InputLabel>
+                                <Select
+                                    required
+                                    fullWidth
+                                    value={dialogData.Status}
+                                    onChange={e=>setDialogData({...dialogData, Status: e.target.value})}
+                                >
+                                {
+                                    statusFetched.map((element, index) => {
+                                        return (
+                                            <MenuItem key={index} value={element.name}>{element.name}</MenuItem>
+                                        )
+                                    })
+                                }
+                                </Select>
+                            </FormControl>
+                        </form>
+                    </DialogContent>
+                </>
             :
             typeOfDialog === "walkIn" ?
                 <>

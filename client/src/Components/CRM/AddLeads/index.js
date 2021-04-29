@@ -363,7 +363,8 @@ function AddLeads(){
                     data.push({
                         "details": 
                         <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => {handleOpen("leadDetails")}}>
-                            {element.Name + " | " + element.Email + " | " + element.Mobile}
+                            {element.Name + " | " + element.Email + " | " + element.Mobile + " "}
+                            {element.Hot === "1" ? <Chip style={{backgroundColor: '#202950', color: "white", fontFamily: 'Nunito'}} size="small" label="Hot Lead" /> : null }
                         </div>,
                     "course": 
                         <div className={classes.course} >
@@ -1191,6 +1192,42 @@ function AddLeads(){
                                 }
                                 </Select>
                             </FormControl>
+                            <div className={classes.fieldHolder}>
+                                <TextField 
+                                    required
+                                    style={{width: '45%'}}
+                                    type="date"
+                                    label="Follow-up Date"
+                                />
+                                <TextField 
+                                    required
+                                    style={{width: '45%'}}
+                                    type="time"
+                                    label="Follow-up Time"
+                                />
+                            </div>
+                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                                <InputLabel>Assigned To</InputLabel>
+                                <Select
+                                    required
+                                    fullWidth
+                                >
+                                {
+                                    employeeFetched.map((element, index) => {
+                                        return (
+                                        <MenuItem key={index} value={element.Employee_ID}>{element.Firstname}{" "}{element.Surname}</MenuItem>
+                                        )
+                                    })
+                                }
+                                </Select>
+                            </FormControl>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                style={{backgroundColor: '#202950', color: 'white', marginTop: '3px', width: '100%'}}
+                            >
+                                Update Lead Status
+                            </Button>
                         </form>
                     </DialogContent>
                 </>
@@ -1234,5 +1271,3 @@ function AddLeads(){
 }
 
 export default AddLeads;
-
-//pagination to handle the data into different pages so that load balancing can be done.

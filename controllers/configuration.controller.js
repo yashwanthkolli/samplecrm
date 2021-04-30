@@ -304,7 +304,7 @@ exports.userDeleteController = (req, res) => {
 
 exports.fetchReportingEmployees = (req, res) => {
     const { id } = req.body;
-    fetch_employees = 'SELECT CONCAT(Firstname, \' \', Surname) as Name, Employee_ID, Email, Mobile, Type, City  FROM ice.employees WHERE Reporting =\'' + id + '\'';
+    fetch_employees = 'SELECT CONCAT(Firstname, \' \', Surname) as Name, Employee_ID, Email, Mobile, Type, City FROM ice.employees WHERE Reporting =\'' + id + '\'';
     connect.query(fetch_employees, function(err, result) {
         if (err) {
             return res.status(500).json({

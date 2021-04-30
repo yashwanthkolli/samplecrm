@@ -219,9 +219,8 @@ exports.fetchSourceCount = (req, res) => {
 
 exports.fetchTopCourseCount = (req, res) => {
 
-    course_count = 'SELECT Type, COUNT(Type) AS \'count\' FROM ice.leads GROUP BY Type HAVING COUNT(Type)>0 ORDER BY count DESC LIMIT 6';
+    course_count = 'SELECT courses.Name, COUNT(courses.Name) AS \'count\' FROM ice.leads inner join ice.courses on leads.Course = courses.id GROUP BY courses.Name HAVING COUNT(courses.Name)>0 ORDER BY count DESC LIMIT 6';
     connect.query(course_count, function(err, result){
-        console.log("err", err);
         if(err){
             return res.status(500).json({
                 message: "Error in fetching details"
@@ -235,7 +234,7 @@ exports.fetchTopCourseCount = (req, res) => {
 }
 
 exports.fetchTotalCourseCount = (req, res) => {
-    total_course_count = 'SELECT COUNT(Type) AS \'count\' FROM ice.leads HAVING COUNT(Type)>0';
+    total_course_count = 'SELECT COUNT(courses.Name) AS \'count\' FROM ice.leads inner join ice.courses on leads.Course = courses.id HAVING COUNT(courses.Name)>0';
     connect.query(total_course_count, function(err, result){
         if(err){
             return res.status(500).json({

@@ -15,15 +15,19 @@ function CoursesGraph() {
 
     useEffect( () => {
         axios.post(`${process.env.REACT_APP_LEADS}/courseCount`, { email: userData.Email })
-            .then(res => setCourses(res.data.courses))
+            .then(res => {
+                setCourses(res.data.courses)
+            })
             .catch(err => {})
         axios.post(`${process.env.REACT_APP_LEADS}/totalCourseCount`, { email: userData.Email })
-            .then(res => setTotalCount(res.data.total[0].count))
+            .then(res => {
+                setTotalCount(res.data.total[0].count)
+            })
             .catch(err => {})
     }, [userData.Email])
 
     useEffect(() => {
-        setNames(courses.map( source => source.Type))
+        setNames(courses.map( source => source.Name))
         setValues(courses.map( source => source.count))
     }, [courses])
 

@@ -1175,7 +1175,7 @@ function AddLeads(){
                     <DialogContent>
                         <Typography className={classes.TypoCourse}>Please make sure to fill all the required details to update the status of a lead.</Typography>
                         <form onSubmit={handleStatusUpdate}>
-                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                            <FormControl fullWidth style={{marginBottom: '4px'}}>
                                 <InputLabel>Lead Status</InputLabel>
                                 <Select
                                     required
@@ -1221,12 +1221,12 @@ function AddLeads(){
                                 }
                                 </Select>
                             </FormControl>
-                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                            <FormControl fullWidth style={{marginBottom: '4px'}}>
                                 <InputLabel>Comments (Select other to enter manually)</InputLabel>
                                 <Select
                                     required
                                     fullWidth
-                                    value={dialogData.Comments}
+                                    value={dialogData.newcomment}
                                     onChange={e=>setDialogData({...dialogData, newcomment: e.target.value})}
                                 >
                                 {
@@ -1239,6 +1239,29 @@ function AddLeads(){
                                     <MenuItem value="others" > Others </MenuItem>
                                 </Select>
                             </FormControl>
+                            <TextField 
+                                required
+                                fullWidth
+                                disabled={dialogData.newcomment === "others" ? false : true}
+                                value={dialogData.newotherComment}
+                                onChange={e=>setDialogData({...dialogData, newotherComment: e.target.value})}
+                                label="Other Comment"
+                                placeholder="Type comments here..."
+                                style={{marginBottom: '4px'}}
+                            />
+                            {dialogData.Comment ?
+                                <div className={classes.commentHolder}>
+                                {
+                                    JSON.parse(dialogData.Comment).map((element) => {
+                                        return (
+                                            <Typography className={classes.TypoCourse}>{element}</Typography> 
+                                        )
+                                    })
+                                }
+                                </div>
+                                :
+                                null
+                            }
                             <Button
                                 type="submit"
                                 variant="contained"

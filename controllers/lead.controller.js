@@ -11,7 +11,7 @@ exports.latestLeadController = (req, res) => {
         }
 
         if(result[0].count <= 20){
-            leads_query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            leads_query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.Comment,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id';
@@ -81,10 +81,12 @@ exports.addNewLeadsController = (req, res) => {
         + ' \''+ email +'\' ,'
         + ' \''+ now +'\' ,'
         + ' \''+ now +'\' ,'
-        + ' \''+ comment_select + '\','
+        + ' JSON_Array('+ comment_select + ',' + new Date().getTime() + '),'
         + ' \''+ now + '\','
         + '\'' + hot_indicator + '\')';
+
     connect.query(addnewlead_query, function(err){
+
         if(err){
             return res.status(500).json({
                 err: err 

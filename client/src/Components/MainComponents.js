@@ -5,6 +5,6 @@ export const Section = styled.div`
     display: grid;
     place-items: center;
     width: 100%;
-    height: 90vh;
+    min-height: 90vh;
     background-color: #E0E0F8;
 `

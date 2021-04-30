@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react';
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 const Plotly = window.Plotly;
 const Plot = createPlotlyComponent(Plotly);
 
 function Sources() {
-    const toast = useToast()
+    const toast = useToast();
+    const userData = decodeSessionStorage().payload;
     
     const [sources, setSources] = useState([])
     const [names, setNames] = useState([])
     const [values, setValues] = useState([])
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_LEADS}/sourceCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/sourceCount`, { email: userData.Email })
         .then(res => setSources(res.data.sources))
         .catch(err => {
             toast({
@@ -22,7 +24,7 @@ function Sources() {
                 position: "top"
             })
         })
-    }, [])
+    }, [toast, userData.Email])
 
     useEffect(() => {
         setNames(sources.map( source => source.Source))

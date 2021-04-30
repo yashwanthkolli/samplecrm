@@ -12,10 +12,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/Inputlabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import axios from 'axios';
 import {
     Section
 } from './addUserComponents';
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 
 const useStyles = makeStyles((theme) => ({
     useTable: {
@@ -43,10 +45,30 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function AddUsers(){
+    const userData = decodeSessionStorage().payload;
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [update, setUpdate] = useState(false);
+
+    const toast = useToast();
+    const [tableData, setTableData] = useState([]);
+
+    const lid = "list-toast";
+    const uid = "uid-toast";
+
+    const [rawData, setRawData] = useState([]);
+    const [cityData, setCityData] = useState([]);
+    const [firstname, setFirstName] = useState("");
+    const [surname, setSurName] = useState("");
+    const [email_new, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [dob, setDob] = useState("");
+    const [address, setAddress] = useState("");
+    const [city, setCity] = useState("");
+    const [role, setRole] = useState("");
+    const [reporting, setReporting] = useState("");
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -67,34 +89,20 @@ function AddUsers(){
 
     const handleChangeRole = (e) => {
         setRole(e.target.value);
+        setReporting("");
     }
     const handleChangeReporting = (e) => {
         setReporting(e.target.value);
     }
-
-    const toast = useToast();
-    const [tableData, setTableData] = useState([]);
-
-    const lid = "list-toast";
-    const uid = "uid-toast";
-
-    const [rawData, setRawData] = useState([]);
-    const [firstname, setFirstName] = useState("");
-    const [surname, setSurName] = useState("");
-    const [email_new, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [mobile, setMobile] = useState("");
-    const [dob, setDob] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [role, setRole] = useState("");
-    const [reporting, setReporting] = useState("");
+    const handleChangeCity = (e) => {
+        setCity(e.target.value)
+    }
 
     const adduser = (e) => {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_USER}/addUser`,{
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             first: firstname,
             sur: surname,
             new_email: email_new,
@@ -131,8 +139,27 @@ function AddUsers(){
     }
 
     useEffect(() => {
+        axios.post(`${process.env.REACT_APP_USER}/getCityNames`, {
+            email: userData.Email
+        })
+        .then((res) => {
+            setCityData(res.data.city);
+        })
+        .catch(err => {
+            if(!toast.isActive(lid)){
+                toast({
+                    id: lid,
+                    description: "Error in fetching city names",
+                    duration: 2000, 
+                    position: "top-right"
+                })
+            }
+        })
+    }, [toast, userData.Email])
+
+    useEffect(() => {
         axios.post(`${process.env.REACT_APP_USER}/usersList`,{
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setRawData(res.data.details);
@@ -155,12 +182,12 @@ function AddUsers(){
                 toast({
                     id: lid,
                     description: "Error in fetching users list",
-                    duration: 2000,
-                    position: "top"
+                    duration: 2000, 
+                    position: "top-right"
                 })
             }
         })
-    }, [toast, update])
+    }, [toast, update, userData.Email])
 
     return (
         <>
@@ -246,9 +273,10 @@ function AddUsers(){
                             style={{marginBottom: '5px'}}
                             onChange={e=>setMobile(e.target.value)}
                         />
-                        <div>
+                        <div style={{width: '50%'}}>
                             <InputLabel>Date of birth</InputLabel>
                             <TextField 
+                                fullWidth
                                 required
                                 value={dob}
                                 type="date"
@@ -269,15 +297,24 @@ function AddUsers(){
                             value={address}
                             onChange={e=>setAddress(e.target.value)}
                         />
-                        <TextField 
-                            required
-                            autoComplete="off"
-                            type="text"
-                            name="city"
-                            label="City"
-                            value={city}
-                            onChange={e=>setCity(e.target.value)}
-                        />
+                        <div className={classes.select} style={{width: '50%'}}>
+                            <InputLabel>Select City</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                label="Select City"
+                                value={city}
+                                onChange={handleChangeCity}
+                            >
+                                {cityData.map((element, index) => {
+                                    return (
+                                        <MenuItem key={index} value={element.city}>
+                                            {element.city}
+                                        </MenuItem>
+                                    )
+                                })}
+                            </Select>
+                        </div>
                     </div>
                     <div className={classes.select}>
                         <InputLabel>Role</InputLabel>
@@ -289,12 +326,11 @@ function AddUsers(){
                             value={role}
                             onChange={handleChangeRole}
                         >
-                            <option value="Admin">Admin</option>
-                            <option value="national_head">National Head</option>
-                            <option value="IT Administator">IT Administator</option>
-                            <option value="Manager">Manager</option>
-                            <option value="TeleCaller">TeleCaller</option>
-                            <option value="Convertor">Convertor</option>
+                            <MenuItem value="National Head">National Head</MenuItem>
+                            <MenuItem value="IT Administator">IT Administator</MenuItem>
+                            <MenuItem value="Manager">Manager</MenuItem>
+                            <MenuItem value="TeleCaller">TeleCaller</MenuItem>
+                            <MenuItem value="Convertor">Convertor</MenuItem>
                         </Select>
                     </div>
                     <div className={classes.select}>
@@ -306,12 +342,46 @@ function AddUsers(){
                             value={reporting}
                             onChange={handleChangeReporting}
                         >
-                            {rawData.map((element) => {
-                                return (
-                                    <option key={element.Firstname} value={element.Firstname.trim() + " " + element.Surname.trim()}>
-                                        {element.Firstname.trim() + " " + element.Surname.trim()}
-                                    </option>
-                                )
+                            {rawData.map((element, index) => {
+                                if(role === "National Head"){
+                                    if(element.Type === "Admin"){
+                                        return (
+                                            <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                                {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                            </MenuItem>
+                                        )
+                                    } 
+                                } else if( role === "Manager"){
+                                    if(element.Type === "National Head"){
+                                        return (
+                                            <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                                {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                            </MenuItem>
+                                        )
+                                    }
+                                } else if( role === "Convertor"){
+                                    if(element.Type === "Manager"){
+                                        return (
+                                            <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                                {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                            </MenuItem>
+                                        )
+                                    }
+                                } else if( role === "TeleCaller"){
+                                    if(element.Type === "Convertor"){
+                                        return (
+                                            <MenuItem key={index} value={element.Firstname.trim() + " " + element.Surname.trim()}>
+                                                {element.Firstname.trim() + " " + element.Surname.trim()+ " ( " + element.Type + " )"}
+                                            </MenuItem>
+                                        )
+                                    } 
+                                } else {
+                                    return (
+                                        <MenuItem key={index} value="none">
+                                            None
+                                        </MenuItem>
+                                    )
+                                }
                             })}
                         </Select>
                     </div>

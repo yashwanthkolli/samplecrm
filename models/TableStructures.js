@@ -23,6 +23,7 @@ module.exports = [
         +' Mobile Varchar(20),'
         +' Qualif Varchar(255),'
         +' Source Varchar(255) NOT NULL,'
+        +' DOB Date,'
         +' Ad_Name Varchar(255) Default \'None\','
         +' Course Varchar(255) NOT NULL,'
         +' City Varchar(255) NOT NULL,'
@@ -31,6 +32,7 @@ module.exports = [
         +' CreatedBy Varchar(255) NOT NUll,'
         +' Createdt Datetime,'
         +' Lstfudt Datetime,'
+        +' Hot Varchar(10),'
         +' Venue Varchar(100),'
         +' AssignDt Datetime,'
         +' CallingDt Datetime,'
@@ -66,5 +68,10 @@ module.exports = [
         +'ad_name Varchar(255) Not null,'
         +'medium Varchar(255) not null,'
         +'place varchar(255) not null'
+    ],
+    [
+        'city',
+        'id int auto_increment primary key,'
+        + 'city Varchar(100) Not null'
     ]
 ]

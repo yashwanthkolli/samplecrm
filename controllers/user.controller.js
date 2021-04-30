@@ -211,5 +211,38 @@ exports.setLoginTimeController = (req, res) => {
             message: "Timings Updated Successfull"
         })
     })
-    // JSON.stringify([{"date": "2021-04-23"}, {"date": "2021-04-24"}])
+}
+
+exports.getCityNamesController = (req, res) => {
+
+    getCityQuery = 'select * from ice.city';
+    connect.query(getCityQuery, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching cities"
+            })
+        }
+
+        return res.status(200).json({
+            message: "Fetched Cities Successfully",
+            city: result
+        })
+    })
+}
+
+exports.telecallerListController = (req, res) => {
+
+    telecallerQuery = 'select * from ice.employees where Type = \'TeleCaller\' ';
+    connect.query(telecallerQuery, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in fetching telecaller list"
+            })
+        }
+
+        return res.status(200).json({
+            message: "Fetched Telecaller List",
+            employees: result
+        })
+    })
 }

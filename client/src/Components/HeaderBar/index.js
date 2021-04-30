@@ -27,6 +27,7 @@ import {TiTick} from 'react-icons/ti';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
+import { decodeSessionStorage } from '../../helpers/auth.helpers';
 
 const drawerWidth = 240;
 
@@ -128,6 +129,7 @@ function HeaderBar({match}){
     const toggleDrawer = () => {
         setOpen(!open);
     }
+    const userData = decodeSessionStorage().payload;
 
     const adminNav = [
         {id: 1 ,path: `${match.path}/profile`, text: 'Profile',  icon: ImProfile },
@@ -152,22 +154,22 @@ function HeaderBar({match}){
     const userNav = [
         {id: 6, path: `${match.path}/home`, icon: AiFillHome, text: 'Home'},
         {id: 1, path: `${match.path}/profile`,  icon: ImProfile, text: 'Your Profile' },
-        {id: 2, path: `${match.path}/addLeads`,  icon: BiCarousel, text: 'Add Leads' },
-        {id: 3, path: `${match.path}/addUsers`,  icon: MdUpdate, text: 'Add Users' },
+        {id: 2, path: `${match.path}/addLeads`,  icon: BiCarousel, text: 'Leads View' },
+        {id: 3, path: `${match.path}/addUsers`,  icon: MdUpdate, text: 'Users Panel' },
         {id: 4, path: `${match.path}/contact`,  icon: BsFillChatSquareDotsFill, text: 'Profile' },
         {id: 5, path: `${match.path}/feedback`,  icon: MdFeedback, text: 'Profile' }
     ]
 
     let navbarElements;
 
-    switch(JSON.parse(sessionStorage.getItem('user')).Type){
-      case 'admin':
+    switch(userData.Type){
+      case 'Admin':
         navbarElements = adminNav
         break;
       case 'nationalHead':
         navbarElements = teamNav
         break;
-      case 'national_head':
+      case 'National Head':
         navbarElements = userNav
         break;
       default:
@@ -250,10 +252,10 @@ function HeaderBar({match}){
         <div className={classes.profile}>
           <Avatar className={classes.large} />
           <Typography noWrap className={classes.profileDetails}>
-            {JSON.parse(sessionStorage.getItem('user')).Firstname + " " + JSON.parse(sessionStorage.getItem('user')).Surname}
+            {userData.Firstname + " " + userData.Surname}
           </Typography>
           <Typography noWrap className={classes.profileDetails}>
-            {JSON.parse(sessionStorage.getItem('user')).Email}
+            {userData.Email}
           </Typography>
         </div>
         <Divider />

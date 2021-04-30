@@ -17,9 +17,11 @@ import {
     AlertDialogContent,
     AlertDialogOverlay
 } from "@chakra-ui/react"
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 
 function Status() {
     const toast = useToast();
+    const userData = decodeSessionStorage().payload;
     
     const [statusArray, setStatusArray] = useState([])
     const [open, setOpen] = useState(false)
@@ -28,7 +30,7 @@ function Status() {
     const [deleteStatusId, setDeleteStatusId] = useState()
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: userData.Email })
         .then(res => setStatusArray(res.data.status))
         .catch(err => {
             toast({
@@ -37,11 +39,11 @@ function Status() {
                 position: "top"
             })
         })
-    }, [toast])
+    }, [toast, userData.Email])
 
     const onDeleteStatus = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteStatus`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             id: id
         })
         .then(res => {
@@ -50,7 +52,7 @@ function Status() {
                 duration: 2000,
                 position: "top"
             })
-            axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+            axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: userData.Email })
             .then(res => setStatusArray(res.data.status))
             .catch(err => {
                 toast({
@@ -72,7 +74,7 @@ function Status() {
     const onAddStatus = (e) => {
         e.preventDefault()
         axios.post(`${process.env.REACT_APP_CONFIG}/addStatus`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             status
         })
         .then(res => {
@@ -83,7 +85,7 @@ function Status() {
             })
             setOpen(false)
             setStatus('')
-            axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+            axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, { email: userData.Email })
             .then(res => setStatusArray(res.data.status))
             .catch(err => {
                 toast({

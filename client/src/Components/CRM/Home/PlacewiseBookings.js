@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react';
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 const Plotly = window.Plotly;
 const Plot = createPlotlyComponent(Plotly);
 
 function PlacewiseBookingsGraph() {
-    const toast = useToast()
+    const toast = useToast();
+    const userData = decodeSessionStorage().payload;
 
     const [venues, setVenues] = useState([])
     const [names, setNames] = useState([])
@@ -16,19 +18,13 @@ function PlacewiseBookingsGraph() {
         const year = new Date().getFullYear().toString()
         const month = new Date().getMonth() >= 10 ? new Date().getMonth().toString() : `0${new Date().getMonth().toString()}`
         axios.post(`${process.env.REACT_APP_LEADS}/currentMonthLeads`, { 
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             fromDate: `${year}-${month}-01 00:00:00`,
             toDate: `${year}-${month}-30 00:00:00`
         })
         .then(res => setVenues(res.data.count))
-        .catch(err => {
-            toast({
-                description: "Error in fetching monthly leads",
-                duration: 2000,
-                position: "top"
-            })
-        })
-    }, [])
+        .catch(err => {})
+    }, [toast, userData.Email])
 
     useEffect(() => {
         setNames(venues.map( lead => lead.Venue))

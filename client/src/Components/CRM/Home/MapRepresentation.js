@@ -8,6 +8,7 @@ import {
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react';
 import ReactTooltip from "react-tooltip";
+import { decodeSessionStorage } from "../../../helpers/auth.helpers";
 
 //Map Topo
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
@@ -38,14 +39,15 @@ const markers = [
 ];
 
 const MapRepresentation = () => {
-    const toast = useToast()
+    const toast = useToast();
+    const userData = decodeSessionStorage().payload;
 
     const [leads, setLeads] = useState([])
     const [totalLeads, setTotalLeads] = useState()
     const [markersData, setMarkersData] = useState([])
 
     useEffect(() => {
-        axios.post(`${process.env.REACT_APP_LEADS}/getPlaceLeads`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/getPlaceLeads`, { email: userData.Email })
             .then(res => setLeads(res.data.leads))
             .catch(err => {
                 toast({
@@ -54,7 +56,7 @@ const MapRepresentation = () => {
                     position: "top"
                 })
             })
-        axios.post(`${process.env.REACT_APP_LEADS}/getNoOfLeads`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/getNoOfLeads`, { email: userData.Email })
             .then(res => setTotalLeads(res.data.count[0].count))
             .catch(err => {
                 toast({
@@ -63,10 +65,10 @@ const MapRepresentation = () => {
                     position: "top"
                 })
             })
-    }, [])
+    }, [toast, userData.Email])
 
-    const addLeadsToMarkers = () => {
-        const markerData = []
+    useEffect(() => {
+        const markerData = [];
         const cities = []
         for(var i = 0; i<markers.length; i++){
             for(var j = 0; j<leads.length; j++){
@@ -82,10 +84,6 @@ const MapRepresentation = () => {
             }
         }
         setMarkersData(markerData)
-    }
-
-    useEffect(() => {
-        addLeadsToMarkers()
     }, [leads])
 
     return (

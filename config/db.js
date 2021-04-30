@@ -4,7 +4,7 @@ const tableStructures = require('../models/TableStructures');
 const connect = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'qwerty123'
+    password: 'milansql'
 })
 
 function check_table(struct){

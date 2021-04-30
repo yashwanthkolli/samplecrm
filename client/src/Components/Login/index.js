@@ -17,8 +17,8 @@ import {
 import { setSessionStorage, isAuth } from '../../helpers/auth.helpers.js';
 import { Redirect } from 'react-router-dom';
 
-const ice = require('../../logo.svg').default;
-const signIn = require('../../logo.svg').default;
+const ice = require('../../images/001.png').default;
+const signIn = require('../../images/signIn.svg').default;
 
 function Login({history}) {
 
@@ -43,14 +43,6 @@ function Login({history}) {
                 const loginHours = new Date().getHours() >= 10 ? new Date().getHours().toString() : '0'+new Date().getHours().toString()
                 const loginMinutes = new Date().getMinutes() >= 10 ? new Date().getMinutes().toString() : '0'+new Date().getMinutes().toString()
                 setSessionStorage('loginTime', loginHours + ':' + loginMinutes)
-
-                toast({
-                    title: "Login Successful",
-                    description: "Please wait while we redirect you!",
-                    duration: 1500,
-                    position: "top",
-                    status: "success"
-                })
 
                 history.push('/crm/home');
             } else {

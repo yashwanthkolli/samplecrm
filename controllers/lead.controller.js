@@ -11,13 +11,13 @@ exports.latestLeadController = (req, res) => {
         }
 
         if(result[0].count <= 20){
-            leads_query = 'select leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt,'
-            +' courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
+            leads_query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id';
             connect.query(leads_query, function(err, r){
                 if(err){
-                    console.log(err);
+                     ;
                     return res.status(500).json({
                         message: "Error in fetching the data"
                     })
@@ -29,7 +29,7 @@ exports.latestLeadController = (req, res) => {
             })
         } else {
             const countLeads = result[0].count - 5;
-            latestLeads_query = 'select leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, courses.name as course, leads.City, employees.Firstname, e.Firstname, leads.Status from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id where leads.name not in (select name from ice.leads limit'+ countLeads + ')';
+            latestLeads_query = 'select leads.Lead_id, leads.Hot, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost, leads.City, employees.Firstname, e.Firstname, leads.Status from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id where leads.name not in (select name from ice.leads limit'+ countLeads + ')';
             connect.query(latestLeads_query, function(err, re){
                 if(err){
                     return res.status(500).json({
@@ -50,11 +50,24 @@ exports.addNewLeadsController = (req, res) => {
     const {
         name,
         email_lead,
-        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name
+        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name, otherComment, hot
     } = req.body;
-    const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0]
+    const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0];
 
-    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment, UpdationDt) values ('
+    var comment_select = "";
+    var hot_indicator = 0;
+
+    if(otherComment !== ""){
+        comment_select = otherComment
+    } else {
+        comment_select = comment
+    }
+
+    if(hot){
+        hot_indicator = 1
+    }
+
+    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment, UpdationDt, Hot) values ('
         + ' \''+ name +'\' ,'
         + ' \''+ email_lead +'\' ,'
         + ' \''+ mobile +'\' ,'
@@ -64,14 +77,14 @@ exports.addNewLeadsController = (req, res) => {
         + ' \''+ course +'\' ,'
         + ' \''+ city +'\' ,'
         + ' \''+ assignTo +'\' ,'
-        + '\''+ status +'\','
+        + ' \''+ status +'\','
         + ' \''+ email +'\' ,'
         + ' \''+ now +'\' ,'
         + ' \''+ now +'\' ,'
-        + ' \''+ comment + '\','
-        + '\'' + now + '\')';
+        + ' \''+ comment_select + '\','
+        + ' \''+ now + '\','
+        + '\'' + hot_indicator + '\')';
     connect.query(addnewlead_query, function(err){
-        console.log(err);
         if(err){
             return res.status(500).json({
                 err: err 
@@ -121,8 +134,7 @@ exports.fetchLeadToppersController = (req, res) => {
         if(err){
             return res.status(500).json({
                 message: "Error in fetching details"
-            })
-            console.log(err)
+            })    
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -138,7 +150,6 @@ exports.fetchCountWebsiteLeads = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -156,7 +167,6 @@ exports.fetchCurrentMonthLeads = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -182,7 +192,6 @@ exports.fetchLastFifteenDayLeads = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -199,7 +208,6 @@ exports.fetchSourceCount = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -216,7 +224,6 @@ exports.fetchTopCourseCount = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Courses",
@@ -232,11 +239,108 @@ exports.fetchTotalCourseCount = (req, res) => {
             return res.status(500).json({
                 message: "Error in fetching details"
             })
-            console.log(err)
         }
         return res.status(200).json({
             message: "Fetched Total",
             total: result
+        })
+    })
+}
+
+exports.searchLeadsController = (req, res) => {
+    const { category, startDate, endDate, sentValue} = req.body;
+
+    searchCount_Query = 'select count(*) as count from ice.leads where Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\'';
+    
+    if(Number(req.query.page) === 1){
+        if(category === "Date"){
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
+            +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
+            +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
+            +' where leads.Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by leads.Createdt desc limit 40';
+        } else {
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
+            +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
+            +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
+            +' where leads.' + category + ' = \'' + sentValue + '\' order by leads.Createdt desc limit 40';
+        }
+    } else {
+        const sl = Number(req.query.page) * 40;
+        const el = (Number(req.query.page) + 1) * 40;
+
+        if(category === "Date"){
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
+            +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
+            +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
+            +' where leads.Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by leads.Createdt desc limit ' + sl + ',' + el;
+        } else { 
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
+            +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
+            +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
+            +' where leads.' + category + ' = \'' + sentValue + '\' order by leads.Createdt desc limit ' + sl + ',' + el;
+        }
+    }
+
+    connect.query(searchCount_Query, function(err, r){
+        if(err){
+            return res.status(500).json({
+                message: "Error in executing the search"
+            })
+        }
+
+        connect.query(search_Query, function(err, result){
+            if(err){
+                return res.status(500).json({
+                    message: "Error in fetching data"
+                })
+            }
+            return res.status(200).json({
+                message: "Fetched search query result",
+                queryResult: result,
+                queryCount: r[0].count
+            })
+        })
+    })
+}
+
+exports.modifyDetailController = (req, res) => {
+
+    const date  = new Date(new Date(req.body.DOB).getTime() - new Date(req.body.DOB).getTimezoneOffset()*60*1000).toISOString().split("T")[0];
+
+    update_query = 'update ice.leads set Name = \'' + req.body.Name + '\', Email = \'' + req.body.Email + '\','
+        + ' City = \'' + req.body.City + '\', DOB = \'' + date + '\', Mobile = \'' + req.body.Mobile + '\', Qualif = \'' + req.body.Qualif 
+        + '\' where Lead_id = ' + Number(req.body.id);
+
+    connect.query(update_query, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in updating the lead details"
+            })
+        }
+
+        return res.status(200).json({
+            message: "Lead Details Updated Successfully"
+        })
+    })
+}
+
+exports.modifySourceCourseController = (req, res) => {
+
+    update_course_query = 'update ice.leads set Course = \'' + req.body.course + '\', Source = \'' + req.body.source + '\' where Lead_id = ' + req.body.id;
+
+    connect.query(update_course_query, function(err, result){
+        if(err){
+            return res.status(500).json({
+                message: "Error in updating the lead course and source"
+            })
+        }
+
+        return res.status(200).json({
+            message: "Lead course and source updated successfully"
         })
     })
 }

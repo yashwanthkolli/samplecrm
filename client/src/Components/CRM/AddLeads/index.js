@@ -14,14 +14,21 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
+import Pagination from '@material-ui/lab/Pagination';
+import Typography from '@material-ui/core/Typography';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Chip from '@material-ui/core/Chip';
 import {FaWalking, FaMailBulk, FaBookmark} from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
+import Loading from '../../Loading';
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 
 const useStyles = makeStyles((theme) => ({
     containerLead: {
         display: 'flex',
         width: '100%',
-        height: '95%',
+        height: 'max-content',
         alignItems: 'center',
         justifyContent: 'center',
         margin: theme.spacing(1),
@@ -46,7 +53,11 @@ const useStyles = makeStyles((theme) => ({
     },
     noData:{
         fontFamily: 'Nunito',
-        fontSize: '25px'
+        fontSize: '25px',
+        minHeight: '90vh',
+        display: 'grid',
+        placeSelf: 'center',
+        placeItems:'center'
     },
     fieldHolder:{
         display: 'flex',
@@ -58,11 +69,11 @@ const useStyles = makeStyles((theme) => ({
         width: '45%'
     },
     leadDetails:{
-        fontSize: '15px',
+        fontSize: '13px',
         fontFamily: 'Nunito'
     },
     course: {
-        fontSize: '15px',
+        fontSize: '13px',
         fontFamily: 'Nunito'
     },
     btnSection:{
@@ -71,11 +82,11 @@ const useStyles = makeStyles((theme) => ({
     status:{
         display: 'flex',
         flexDirection: 'column',
-        fontSize: '15px',
+        fontSize: '13px',
         fontFamily: 'Nunito'
     },
     assigned:{
-        fontSize: '15px',
+        fontSize: '13px',
         fontFamily: 'Nunito'
     },
     iconHolder: {
@@ -89,6 +100,12 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         width: '100%',
         marginTop: '15px'
+    },
+    TypoCourse: {
+        fontFamily: 'Nunito',
+        fontSize: '15px',
+        marginBottom: '10px',
+        fontWeight: '600'
     }
 }));
 
@@ -97,20 +114,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function AddLeads(){
+    const userData = decodeSessionStorage().payload;
 
     const classes = useStyles();
     const toast = useToast();
     const toast_course = "toast_course"; 
-    const arr_category = ["Date", "", "Status", "Course", "CreatedBy"];
+    const arr_category = ["Date", "", "Status", "Course", "CreatedBy", "AssignedTo"];
 
     const [open, setOpen] = useState(false);
-    const [open2, setOpen2] = useState(false);
-    const [open3, setOpen3] = useState(false);
-    const [open4, setOpen4] = useState(false);
-    const [open5, setOpen5] = useState(false);
-    const [open6, setOpen6] = useState(false);
-    const [open7, setOpen7] = useState(false);
-
+    const [typeOfDialog, setTypeOfDialog] = useState("");
     const [tableData, setTableData] = useState([]);
     const [update, setUpdate] = useState(false);
 
@@ -132,72 +144,59 @@ function AddLeads(){
     const [status, setStatus] = useState("");
     const [comment, setComment] = useState("");
     const [ad_name, setAdName] = useState("");
+    const [otherComment, setOtherComment] = useState("");
+    const [hot, setHot] = useState(false);
 
     const [category, setCategory] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [searchValue, setSearchValue] = useState("");
+    const [searchValueStatus, setSearchStatus] = useState("");
+    const [searchValueCourse, setSearchCourse] = useState("");
+    const [searchValueCreated, setSearchCreated] = useState("");
+    const [searchValueAssigned, setSearchAssigned] = useState("");
+
+    const [openLoading, setOpenLoading] = useState(false);
+    const [typeLoading, setTypeLoading] = useState("");
+    const [dialogData, setDialogData] = useState({});
+
+    const [searchCount, setSearchCount] = useState(0);
 
     const handleChangeCategory = (e) => {
         setCategory(e.target.value);
     }
-    const handleChangeValue = (e) => {
-        setSearchValue(e.target.value);
+    const handleChangeValue = (e, type) => {
+        switch (type) {
+            case 1:
+                setSearchStatus(e.target.value)
+                break;
+            case 2:
+                setSearchCourse(e.target.value)
+                break;
+            case 3:
+                setSearchCreated(e.target.value)
+                break;
+            case 4:
+                setSearchAssigned(e.target.value)
+                break;
+            default:
+                break;
+        }
     }
 
-    const handleOpen = (id) => {
-        switch (id) {
-            case 1:
-                setOpen(true);
-                break;
-            case 2:
-                setOpen2(true);
-                break;
-            case 3:
-                setOpen3(true);
-                break;
-            case 4:
-                setOpen4(true);
-                break;
-            case 5:
-                setOpen5(true);
-                break;
-            case 6:
-                setOpen6(true);
-                break;
-            case 7: 
-                setOpen7(true);
-                break;
-            default:
-                break;
+    const handleOpen = (type, element) => {
+        setOpen(true);
+        setTypeOfDialog(type);
+
+        // setting the data for the opened dialog box that dynamically changes with the row of the table.
+        console.log(element);
+        if(element){
+            setDialogData(element);
         }
     }
-    const handleClose = (id) => {
-        switch (id) {
-            case 1:
-                setOpen(false);
-                break;
-            case 2:
-                setOpen2(false);
-                break;
-            case 3:
-                setOpen3(false);
-                break;
-            case 4:
-                setOpen4(false);
-                break;
-            case 5:
-                setOpen5(false);
-                break;
-            case 6:
-                setOpen6(false);
-                break;
-            case 7:
-                setOpen7(false);
-                break;
-            default:
-                break;
-        }
+    const handleClose = () => {
+        setOpen(false);
+        setTypeOfDialog("");
     }
 
     const handleChange = (e, type) => {
@@ -223,49 +222,34 @@ function AddLeads(){
             case 7:
                 setAdName(e.target.value);
                 break;
+            case 8:
+                setOtherComment(e.target.value);
+                break;
             default:
                 break;
         }
-    }
-
-    const turnToPage = (pageId) => {
-
-        axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email
-        },{
-            params: {
-                page: pageId
-            }
-        })
-        .then((res) => {
-            res.data.content.forEach((element) => {
-            })
-        })
-        .catch(err => {
-            toast({
-                description: "Error In Fetching Leads",
-                duration: 2000,
-                position: "top"
-            })
-        })
     }
 
     const handleNewLead = (e) => {
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
-            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name
+            email: userData.Email,
+            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name, otherComment, hot
         })
         .then((res) => {
             setUpdate(!update);
+            handleClose();
         })
         .catch((err) => {
-            toast({
-                description: "Error in creating new lead",
-                position: "top",
-                duration: 3000
-            })
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Error in creating new lead",
+                    position: "top-right",
+                    duration: 3000
+                })
+            }
         })
     }
 
@@ -283,25 +267,111 @@ function AddLeads(){
         setCourse("");
     }
 
-    useEffect(() => {
-        axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`,{
-            email: JSON.parse(sessionStorage.getItem('user')).Email
-        })
-        .then((res) => {
-            let data_latest = [];
+    const handleSearch = (e, pageId) => {
+        if(e){
+            e.preventDefault();
+        }
+        handleClose();
+        setTypeLoading("search");
+        setOpenLoading(true);
 
-            res.data.latest.forEach((element) => {
-                data_latest.push({
-                    "details": 
-                        <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => handleOpen(3)}>
-                            {element.Name + " | " + element.Email + " | " + element.Mobile}
+        var checksOut = false;
+        var sentValue = "";
+
+        switch (category) {
+            case "Date":
+                if(startDate === "" || endDate === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                }
+                break;
+            case "Name":
+                if(searchValue === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValue;
+                }
+                break;
+            case "Email":
+                if(searchValue === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValue;
+                }
+                break;
+            case "Mobile":
+                if(searchValue === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValue;
+                }
+                break;
+            case "Status":
+                if(searchValueStatus === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValueStatus;
+                }
+                break;
+            case "Course":
+                if(searchValueCourse === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValueCourse;
+                }
+                break;
+            case "CreatedBy":
+                if(searchValueCreated === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValueCreated;
+                }
+                break;
+            case "AssignedTo":
+                if(searchValueAssigned === ""){
+                    checksOut = false;
+                } else {
+                    checksOut = true;
+                    sentValue = searchValueAssigned;
+                }
+                break;
+            default:
+                break;
+        }
+
+        if(checksOut === true){
+            axios.post(`${process.env.REACT_APP_LEADS}/searchLeads`, {
+                category, startDate, endDate, sentValue
+            },{
+                params: {
+                    page: pageId
+                }
+            })
+            .then((res) => {
+                setSearchCount(res.data.queryCount);
+
+                //changing the table data to display the fetched lead details.
+                let data = [];
+                res.data.queryResult.forEach((element) => {
+                    data.push({
+                        "details": 
+                        <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => {handleOpen("leadDetails")}}>
+                            {element.Name + " | " + element.Email + " | " + element.Mobile + " "}
+                            {element.Hot === "1" ? <Chip style={{backgroundColor: '#202950', color: "white", fontFamily: 'Nunito'}} size="small" label="Hot Lead" /> : null }
                         </div>,
                     "course": 
                         <div className={classes.course} >
                             {element.course + " | " + element.courseType + " | Rs." + element.courseCost}
                         </div>,
                     "status": 
-                        <div className={classes.status} style={{cursor: "pointer"}} onClick={() => handleOpen(4)}>
+                        <div className={classes.status} style={{cursor: "pointer"}} onClick={() => handleOpen("leadStatus")}>
                             <div>{element.Status}</div>
                             <div>{new Date(element.UpdationDt).toLocaleString()}</div>
                         </div>,
@@ -311,26 +381,172 @@ function AddLeads(){
                             <div>{new Date(element.AssignDt).toLocaleString()}</div>
                         </div>,
                     "actions": <div className={classes.btnSection}>
-                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen(5)}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("walkIn")}>
                                 <FaWalking style={{margin: '5px'}} />    
                             </Button>
-                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen(6)}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("mailPortal")}>
                                 <FaMailBulk style={{margin:'5px'}} />
                             </Button>
-                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}} onClick={() => handleOpen(7)}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}} onClick={() => handleOpen("bookDetails")}>
+                                <FaBookmark style={{margin: '5px'}} />
+                            </Button>
+                        </div>
+                    })
+                })
+                setTableData(data);
+                setTimeout(() => {
+                    setTypeLoading("");
+                    setOpenLoading(false);
+                }, 1000);
+            })
+            .catch((err) => {
+                if(!toast.isActive(toast_course)){
+                    toast({
+                        id: toast_course,
+                        description: "Error in searching leads",
+                        position: "top",
+                        duration: 3000
+                    })
+                }
+            })
+        } else {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Please provide the relevant information",
+                    duration: 2000,
+                    position: "top-right"
+                })
+            }
+        }
+    }
+
+    const handleChangesDetails = (e) => {
+        e.preventDefault();
+
+        //changing the details of a particular lead.
+        axios.post(`${process.env.REACT_APP_LEADS}/modifyDetails`,{
+            id: dialogData.Lead_id, Name: dialogData.Name, Email: dialogData.Email, Mobile: dialogData.Mobile, DOB: dialogData.DOB, Qualif: dialogData.Qualif, City: dialogData.City
+        })
+        .then((res) => {
+            setUpdate(!update);
+            handleClose();
+        })
+        .catch((err) => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Lead Details Update Failed",
+                    position: "top-right",
+                    duration: 3000
+                })
+            }
+        })
+    }
+
+    const handleCourseSourceChange = (e) => {
+        e.preventDefault();
+
+        //change the course and the source of the lead only available to the national head.
+        axios.post(`${process.env.REACT_APP_LEADS}/modifySourceCourse`, {
+            id: dialogData.Lead_id, source: dialogData.Source, course: dialogData.courseId
+        })
+        .then((res) => {
+            setUpdate(!update);
+            handleClose();
+        })
+        .catch((err) => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Update Execution Failed",
+                    duration: 3000,
+                    position: "top-right"
+                })
+            }
+        })
+    }
+
+    const handleStatusUpdate = (e) => {
+        e.preventDefault();
+
+        axios.post(`${process.env.REACT_APP_LEADS}/statusUpdate`,{
+            id: dialogData.Lead_id, status: dialogData.Status
+        })
+        .then((res) => {
+            setUpdate(!update);
+            handleClose();
+        })
+        .catch((err) => {
+            if(!toast.isActive(toast_course)){
+                toast({
+                    id: toast_course,
+                    description: "Status Update Failed",
+                    duration: 3000,
+                    position: "top-right"
+                })
+            }
+        })
+    }
+
+    useEffect(() => {
+        setTypeLoading("latestLeads");
+        setOpenLoading(true);
+
+        axios.post(`${process.env.REACT_APP_LEADS}/getLatestLeads`,{
+            email: userData.Email
+        })
+        .then((res) => {
+            console.log(res);
+            let data_latest = [];
+
+            res.data.latest.forEach((element) => {
+                data_latest.push({
+                    "details": 
+                        <div className={classes.leadDetails} style={{cursor: "pointer"}} onClick={() => handleOpen("leadDetails", element)}>
+                            {element.Name + " | " + element.Email + " | " + element.Mobile + " "}
+                            {element.Hot === "1" ? <Chip style={{backgroundColor: '#202950', color: "white", fontFamily: 'Nunito'}} size="small" label="Hot Lead" /> : null }
+                        </div>,
+                    "course": 
+                        <div className={classes.course} style={{cursor: 'pointer'}} onClick={() => handleOpen("courseSource", element)}>
+                            {element.course + " | " + element.courseType + " | Rs." + element.courseCost + " | " + element.Source}
+                        </div>,
+                    "status": 
+                        <div className={classes.status} style={{cursor: "pointer"}} onClick={() => handleOpen("leadStatus", element)}>
+                            <div>{element.Status}</div>
+                            <div>{new Date(element.UpdationDt).toLocaleString()}</div>
+                        </div>,
+                    "assignedTo": 
+                        <div className={classes.assigned}>
+                            <div>{element.assignF + " " + element.assignS}</div>
+                            <div>{new Date(element.AssignDt).toLocaleString()}</div>
+                        </div>,
+                    "actions": <div className={classes.btnSection}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("walkIn")}>
+                                <FaWalking style={{margin: '5px'}} />    
+                            </Button>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("mailPortal")}>
+                                <FaMailBulk style={{margin:'5px'}} />
+                            </Button>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white'}} onClick={() => handleOpen("bookDetails")}>
                                 <FaBookmark style={{margin: '5px'}} />
                             </Button>
                         </div>
                 })
             })
             setTableData(data_latest);
+            setTimeout(() => {
+                setOpenLoading(false);
+                setTypeLoading("");    
+            }, 500);
+            
         })
         .catch((err) =>{})
-    }, [update])
+    }, [update, classes.btnSection, classes.assigned, classes.course, classes.leadDetails, classes.status, userData.Email])
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setCoursesFetched(res.data.courses);
@@ -346,7 +562,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getStatus`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setStatusFetched(res.data.status);
@@ -362,7 +578,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getSource`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setSourcesFetched(res.data.sources);
@@ -377,8 +593,8 @@ function AddLeads(){
                 })
             }
         })
-        axios.post(`${process.env.REACT_APP_CONFIG}/getAdName`,{
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+        axios.post(`${process.env.REACT_APP_CONFIG}/getAds`,{
+            email: userData.Email
         })
         .then((res) => {
             setAdNameFetched(res.data.ads);
@@ -394,7 +610,7 @@ function AddLeads(){
             }
         })
         axios.post(`${process.env.REACT_APP_CONFIG}/getComments`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+            email: userData.Email
         })
         .then((res) => {
             setCommentsFetched(res.data.comments);
@@ -409,8 +625,8 @@ function AddLeads(){
                 })
             }
         })
-        axios.post(`${process.env.REACT_APP_USER}/getEmployeeList`,{
-            email: JSON.parse(sessionStorage.getItem('user')).Email
+        axios.post(`${process.env.REACT_APP_USER}/getTeleCallerList`,{
+            email: userData.Email
         })
         .then((res) => {
             setEmployeesFetched(res.data.employees);
@@ -426,16 +642,16 @@ function AddLeads(){
             }
         })
 
-    }, [toast])
+    }, [toast, userData.Email])
 
     return(
         <>
         <Paper elevation={3} className={classes.containerLead}>
             <div className={classes.btnNewLead}>
-                <Button style={{backgroundColor: '#202950', color: 'white', marginRight:'15px'}} variant="contained" onClick={() => handleOpen(2)}>
+                <Button style={{backgroundColor: '#202950', color: 'white', marginRight:'15px'}} variant="contained" onClick={() => handleOpen("searchLeads")}>
                     Search Leads
                 </Button>
-                <Button style={{backgroundColor: '#202950', color: 'white'}} variant="contained" onClick={() => handleOpen(1)}>
+                <Button style={{backgroundColor: '#202950', color: 'white'}} variant="contained" onClick={() => handleOpen("addNewLead")}>
                     Add New Lead
                 </Button>
             </div>
@@ -446,7 +662,7 @@ function AddLeads(){
                     title="Latest Leads Table"
                     columns={[
                         {title: 'Lead Details', field: "details", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
-                        {title: 'Course', field: "course", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Course | Source', field: "course", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Status', field: "status", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Assigned To', field: "assignedTo", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Actions', field: "actions", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}}
@@ -460,9 +676,22 @@ function AddLeads(){
                 </div>
             }
             </div>
+            {
+                searchCount < 40 ? //to be changed to accomdate correct rendering conditions for pagination
+                    <Pagination 
+                        style={{justifyContent: 'center', padding: '10px'}}
+                        count={10} //section to count depending on the searchCount 
+                        shape="rounded" 
+                        size="large"
+                        onChange={(e, page) => handleSearch(false , page)}
+                    />
+                :
+                    null
+            }
         </Paper>
-        <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={() => handleClose(1)} aria-labelledby="add-new-lead">
-            <DialogContent>
+        <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={() => handleClose()} aria-labelledby={typeOfDialog}>
+            {typeOfDialog === "addNewLead" ? 
+                <DialogContent>
                 <form onSubmit={handleNewLead}>
                     <TextField 
                         required
@@ -531,7 +760,6 @@ function AddLeads(){
                         <FormControl className={classes.selectField}>
                             <InputLabel>Qualification</InputLabel>
                             <Select
-                                required
                                 fullWidth
                                 value={qualif}
                                 onChange={(e) => handleChange(e, 1)}
@@ -639,13 +867,21 @@ function AddLeads(){
                     <TextField 
                         fullWidth
                         autoComplete="off"
-                        value={comment}
-                        onChange={(e)=>handleChange(e, 6)}
+                        value={otherComment}
+                        onChange={(e)=>handleChange(e, 8)}
                         style={{marginTop: '7px'}}
                         label="Comment"
                         placeholder="Additional Comment"
                         disabled={comment === "others" ? false : true}
                     />
+                    <FormControl fullWidth>
+                        <FormControlLabel
+                            value="start"
+                            control={<Checkbox checked={hot} onChange={e=>setHot(e.target.checked)} color="primary" />}
+                            label="Checkbox for hot lead"
+                            labelPlacement="end"
+                        />
+                    </FormControl>
                     <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
                         Add New Lead
                     </Button>
@@ -654,172 +890,384 @@ function AddLeads(){
                     </Button>
                 </form>
             </DialogContent>
-        </Dialog>
-        <Dialog open={open2} fullWidth TransitionComponent={Transition} onClose={() => handleClose(2)} aria-labelledby="search-lead">
-            <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads By Category</DialogTitle>
-            <DialogContent>
-                <form>
-                    <FormControl fullWidth>
-                        <InputLabel>Select Search Category</InputLabel>
-                        <Select
-                            required
-                            value={category}
-                            onChange={handleChangeCategory}
-                        >
-                            <MenuItem value="Date">Date</MenuItem>
-                            <MenuItem value="Name">Name</MenuItem>
-                            <MenuItem value="Email">Email</MenuItem>
-                            <MenuItem value="Mobile">Mobile</MenuItem>
-                            <MenuItem value="Status">Status</MenuItem>
-                            <MenuItem value="Course">Course</MenuItem>
-                            <MenuItem value="CreatedBy">Created By</MenuItem>
-                            <MenuItem value="AssignedTo">Assigned To</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <div className={classes.fieldHolder} style={{display: category === "Date" ? 'flex' : 'none'}}>
+            : 
+            typeOfDialog === "searchLeads" ?
+                <>
+                <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Search Leads By Category</DialogTitle>
+                <DialogContent>
+                    <form onSubmit={(e) => handleSearch(e, 1)}>
+                        <FormControl fullWidth name="category">
+                            <InputLabel>Select Search Category</InputLabel>
+                            <Select
+                                required
+                                name="category"
+                                value={category}
+                                onChange={handleChangeCategory}
+                            >
+                                <MenuItem value="Date">Date</MenuItem>
+                                <MenuItem value="Name">Name</MenuItem>
+                                <MenuItem value="Email">Email</MenuItem>
+                                <MenuItem value="Mobile">Mobile</MenuItem>
+                                <MenuItem value="Status">Status</MenuItem>
+                                <MenuItem value="Course">Course</MenuItem>
+                                <MenuItem value="CreatedBy">Created By</MenuItem>
+                                <MenuItem value="AssignedTo">Assigned To</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <div className={classes.fieldHolder} style={{display: category === "Date" ? 'flex' : 'none'}}>
+                            <TextField 
+                                type="date"
+                                name="startDate"
+                                label="Range Start Date"
+                                value={startDate}
+                                onChange={e=>setStartDate(e.target.value)}
+                                style={{width: '45%'}}
+                            />
+                            <TextField 
+                                type="date"
+                                name="endDate"
+                                label="Range End Date"
+                                value={endDate}
+                                onChange={e=>setEndDate(e.target.value)}
+                                style={{width: '45%'}}
+                            />
+                        </div>
+                        <TextField 
+                            fullWidth
+                            style={{display: !(arr_category.includes(category)) 
+                                ? 'flex' : 'none', marginTop: '7px'}}
+                            label={category}
+                            placeholder={`Enter ${category}`}
+                            value={searchValue}
+                            name="searchValue"
+                            onChange={e=>setSearchValue(e.target.value)} 
+                        />
+                        <FormControl name="searchStatus" style={{display: category === "Status" ? 'flex' : 'none', width: '100%'}}> 
+                            <InputLabel>{category}</InputLabel>
+                            <Select
+                                fullWidth
+                                value={searchValueStatus}
+                                onChange={(e) => handleChangeValue(e, 1)}
+                                style={{width: '100%'}}
+                            >
+                            {
+                                statusFetched.map((element, index) => {
+                                    return(
+                                        <MenuItem key={index} value={element.id}>{element.name}</MenuItem>
+                                    )
+                                })
+                            }
+                            </Select>
+                        </FormControl>
+                        <FormControl name="searchCourse" style={{display: category === "Course" ? 'flex' : 'none', width: '100%'}}> 
+                            <InputLabel>{category}</InputLabel>
+                            <Select
+                                fullWidth
+                                value={searchValueCourse}
+                                onChange={(e) => handleChangeValue(e, 2)}
+                                style={{width: '100%'}}
+                            >
+                            {
+                                coursesFetched.map((element, index) => {
+                                    return(
+                                        <MenuItem key={index} value={element.id}>{element.name}</MenuItem>
+                                    )
+                                })
+                            }
+                            </Select>
+                        </FormControl>
+                        <FormControl name="searchCreated" style={{display: category === "CreatedBy" ? 'flex' : 'none', width: '100%'}}> 
+                            <InputLabel>{category}</InputLabel>
+                            <Select
+                                fullWidth
+                                value={searchValueCreated}
+                                onChange={(e) => handleChangeValue(e, 3)}
+                                style={{width: '100%'}}
+                            >
+                            {
+                                employeeFetched.map((element, index) => {
+                                    return(
+                                        <MenuItem key={index} value={element.Employee_ID}>{element.Firstname+ " " +element.Surname}</MenuItem>
+                                    )
+                                })
+                            }
+                            </Select>
+                        </FormControl>
+                        <FormControl name="searchAssigned" style={{display: category === "AssignedTo" ? 'flex' : 'none', width: '100%'}}> 
+                            <InputLabel>{category}</InputLabel>
+                            <Select
+                                fullWidth
+                                value={searchValueAssigned}
+                                onChange={(e) => handleChangeValue(e, 4)}
+                                style={{width: '100%'}}
+                            >
+                            {
+                                employeeFetched.map((element, index) => {
+                                    return(
+                                        <MenuItem key={index} value={element.Employee_ID}>
+                                            {element.Firstname+ " " +element.Surname}
+                                        </MenuItem>
+                                    )
+                                })
+                            }
+                            </Select>
+                        </FormControl>
+                        <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
+                            Search
+                        </Button>
+                    </form>
+                </DialogContent>
+                </>
+            :
+            typeOfDialog === "leadDetails" ?
+            <>
+                <DialogTitle>Lead Details</DialogTitle>
+                <DialogContent>
+                    <Typography className={classes.TypoCourse}>
+                        This dialog box can be used to change the personal and contact details of a lead.
+                    </Typography>
+                    <form onSubmit={handleChangesDetails}>
                         <TextField 
                             required
-                            type="date"
-                            label="Range Start Date"
-                            value={startDate}
-                            onChange={e=>setStartDate(e.target.value)}
-                            style={{width: '45%'}}
+                            fullWidth
+                            name="leadName"
+                            type="text"
+                            label="Lead Name"
+                            placeholder="Change the lead name"
+                            value={dialogData.Name}
+                            onChange={e=>setDialogData({...dialogData, Name: e.target.value})}
+                            style={{marginBottom: '7px'}}
                         />
-                        <TextField 
-                            required
-                            type="date"
-                            label="Range End Date"
-                            value={endDate}
-                            onChange={e=>setEndDate(e.target.value)}
-                            style={{width: '45%'}}
-                        />
-                    </div>
-                    <TextField 
-                        required
-                        fullWidth
-                        style={{display: !(arr_category.includes(category)) 
-                            ? 'flex' : 'none', marginTop: '7px'}}
-                        label={category}
-                        placeholder={`Enter ${category}`}
-                        value={searchValue}
-                        onChange={e=>setSearchValue(e.target.value)} 
-                    />
-                    <FormControl style={{display: category === "Status" ? 'flex' : 'none', width: '100%'}}> 
-                        <InputLabel>{category}</InputLabel>
-                        <Select
-                            required
-                            fullWidth
-                            value={searchValue}
-                            onChange={handleChangeValue}
-                            style={{width: '100%'}}
+                        <div className={classes.fieldHolder}>
+                            <TextField 
+                                required
+                                autoComplete="off"
+                                name="leadEmail"
+                                label="Lead Email"
+                                type="email"
+                                placeholder="Change the lead email"
+                                value={dialogData.Email}
+                                onChange={e=>setDialogData({...dialogData, Email: e.target.value})}
+                                style={{marginBottom: '7px', width: '45%'}}
+                            />
+                            <TextField 
+                                required
+                                autoComplete="off"
+                                name="leadMobile"
+                                label="Lead Mobile"
+                                type="tel"
+                                placeholder="Change the mobile number"
+                                value={dialogData.Mobile}
+                                onChange={e=>setDialogData({...dialogData, Mobile: e.target.value})}
+                                style={{marginBottom: '7px', width: '45%'}}
+                            />
+                        </div>
+                        <div className={classes.fieldHolder}>
+                            <TextField 
+                                required
+                                autoComplete="off"
+                                name="leadDOB"
+                                type="date"
+                                label="Lead DOB"
+                                placeholder="Change the DOB"
+                                value={new Date(new Date(dialogData.DOB).getTime() - (new Date(dialogData.DOB).getTimezoneOffset()*60000)).toISOString().split("T")[0]}
+                                onChange={e=>setDialogData({...dialogData, DOB: e.target.value})}
+                                style={{marginBottom: '7px', width: '45%'}}
+                            />
+                            <TextField 
+                                required
+                                autoComplete="off"
+                                name="leadCity"
+                                label="Lead City"
+                                type="text"
+                                placeholder="Change the city"
+                                value={dialogData.City}
+                                onChange={e=>setDialogData({...dialogData, City: e.target.value})}
+                                style={{marginBottom: '7px', width: '45%'}}
+                            />
+                        </div>
+                        <FormControl style={{marginBottom: '7px'}} fullWidth>
+                            <InputLabel>Lead Qualification</InputLabel>
+                            <Select
+                                required
+                                fullWidth
+                                value={dialogData.Qualif}
+                                onChange={e => setDialogData({...dialogData, Qualif: e.target.value})}
+                            >
+                                <MenuItem value={"not_available"}>Not Available</MenuItem>
+                                <MenuItem value={"10"}>10th</MenuItem>
+                                <MenuItem value={"12"}>12th</MenuItem>
+                                <MenuItem value={"grad"}>Graduation</MenuItem>
+                                <MenuItem value={"postGrad"}>Post-graduation</MenuItem>
+                                <MenuItem value={"MBA"}>MBA</MenuItem>
+                                <MenuItem value={"iti_others"}>ITI/Others</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            style={{backgroundColor: '#202950', color: 'white', marginTop: '3px', width: '100%'}}
                         >
-                        {
-                            statusFetched.map((element, index) => {
-                                return(
-                                    <MenuItem key={index}>{element.name}</MenuItem>
-                                )
-                            })
-                        }
-                        </Select>
-                    </FormControl>
-                    <FormControl style={{display: category === "Course" ? 'flex' : 'none', width: '100%'}}> 
-                        <InputLabel>{category}</InputLabel>
-                        <Select
-                            required
-                            fullWidth
-                            value={searchValue}
-                            onChange={handleChangeValue}
-                            style={{width: '100%'}}
-                        >
-                        {
-                            coursesFetched.map((element, index) => {
-                                return(
-                                    <MenuItem key={index}>{element.name}</MenuItem>
-                                )
-                            })
-                        }
-                        </Select>
-                    </FormControl>
-                    <FormControl style={{display: category === "CreatedBy" ? 'flex' : 'none', width: '100%'}}> 
-                        <InputLabel>{category}</InputLabel>
-                        <Select
-                            required
-                            fullWidth
-                            value={searchValue}
-                            onChange={handleChangeValue}
-                            style={{width: '100%'}}
-                        >
-                        {
-                            employeeFetched.map((element, index) => {
-                                return(
-                                    <MenuItem key={index}>{element.Firstname+ " " +element.Surname}</MenuItem>
-                                )
-                            })
-                        }
-                        </Select>
-                    </FormControl>
-                    <FormControl style={{display: category === "AssignedTo" ? 'flex' : 'none', width: '100%'}}> 
-                        <InputLabel>{category}</InputLabel>
-                        <Select
-                            required
-                            fullWidth
-                            value={searchValue}
-                            onChange={handleChangeValue}
-                            style={{width: '100%'}}
-                        >
-                        {
-                            employeeFetched.map((element, index) => {
-                                return(
-                                    <MenuItem key={index}>{element.Firstname+ " " +element.Surname}</MenuItem>
-                                )
-                            })
-                        }
-                        </Select>
-                    </FormControl>
-                    <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginTop:'10px', marginRight:'5px'}} variant="contained">
-                        Search
-                    </Button>
-                </form>
-            </DialogContent>
-        </Dialog>
-        <Dialog open={open3} fullWidth TransitionComponent={Transition} onClose={() => handleClose(3)} aria-labelledby="Lead Details">
-            <DialogTitle>Lead Details</DialogTitle>
-        </Dialog>
-        <Dialog open={open4} fullWidth TransitionComponent={Transition} onClose={() => handleClose(4)} aria-labelledby="Lead Status Details">
-            <DialogTitle>Lead Status Update</DialogTitle>
-        </Dialog>
-        <Dialog open={open5} fullWidth TransitionComponent={Transition} onClose={() => handleClose(5)} aria-labelledby="Mark Walk-In">
-            <DialogTitle>Lead Mark Walk-in</DialogTitle>
-            <DialogContent>
-                <div className={classes.markWalkIn}>
-                    <div className={classes.iconHolder} >
-                        <AiFillAlert style={{width: '70%', height: '70%'}}/>
-                    </div>
-                    <div className={classes.btnWalkIn}>
-                        <Button variant="contained" 
-                            fullWidth 
-                            style={{backgroundColor: '#202950', color: 'white', marginRight: '25px'}}
-                            onClick={() => handleClose(5)}
-                        >
-                            Cancel
+                            Change Details
                         </Button>
-                        <Button variant="contained" fullWidth style={{backgroundColor: '#202950', color: 'white'}}>
-                            Yeah! It's a walk-in
-                        </Button>
+                    </form>
+                </DialogContent>
+            </>
+            :
+            typeOfDialog === "courseSource" ?
+                <>
+                    <DialogTitle>Change Course Or Status</DialogTitle>
+                    <DialogContent>
+                        <Typography className={classes.TypoCourse}>
+                            The details changed through this form will be mapped to the lead. Please make sure that the changes are valid.
+                        </Typography>
+                        <form onSubmit={handleCourseSourceChange}>
+                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                                <InputLabel>Select New Course</InputLabel>
+                                <Select
+                                    required
+                                    fullWidth
+                                    value={dialogData.courseId}
+                                    onChange={e=>setDialogData({...dialogData, courseId: e.target.value})}
+                                >
+                                {
+                                    coursesFetched.map((element) => {
+                                        return(
+                                            <MenuItem key={element.id} value={element.id}>
+                                                {element.name}{" "}{element.type}{" Rs. "}{element.Cost}  
+                                            </MenuItem>
+                                        )
+                                    })
+                                }
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                                <InputLabel>Select New Source</InputLabel>
+                                <Select
+                                    required
+                                    fullWidth
+                                    value={dialogData.Source}
+                                    onChange={e=>setDialogData({...dialogData, Source: e.target.value})}
+                                >
+                                {
+                                    sourceFetched.map((element, index) => {
+                                        return (
+                                            <MenuItem key={index} value={element.name}>{element.name}</MenuItem>
+                                        )
+                                    })
+                                }
+                                </Select>
+                            </FormControl>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                style={{backgroundColor: '#202950', color: 'white', marginTop: '3px', width: '100%'}}
+                            >
+                                Apply Changes
+                            </Button>
+                        </form>
+                    </DialogContent>
+                </>
+            :
+            typeOfDialog === "leadStatus" ?
+                <>
+                    <DialogTitle>Lead Status Update</DialogTitle>
+                    <DialogContent>
+                        <Typography className={classes.TypoCourse}>Please make sure to fill all the required details to update the status of a lead.</Typography>
+                        <form onSubmit={handleStatusUpdate}>
+                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                                <InputLabel>Lead Status</InputLabel>
+                                <Select
+                                    required
+                                    fullWidth
+                                    value={dialogData.Status}
+                                    onChange={e=>setDialogData({...dialogData, Status: e.target.value})}
+                                >
+                                {
+                                    statusFetched.map((element, index) => {
+                                        return (
+                                            <MenuItem key={index} value={element.name}>{element.name}</MenuItem>
+                                        )
+                                    })
+                                }
+                                </Select>
+                            </FormControl>
+                            <div className={classes.fieldHolder}>
+                                <TextField 
+                                    required
+                                    style={{width: '45%'}}
+                                    type="date"
+                                    label="Follow-up Date"
+                                />
+                                <TextField 
+                                    required
+                                    style={{width: '45%'}}
+                                    type="time"
+                                    label="Follow-up Time"
+                                />
+                            </div>
+                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                                <InputLabel>Assigned To</InputLabel>
+                                <Select
+                                    required
+                                    fullWidth
+                                >
+                                {
+                                    employeeFetched.map((element, index) => {
+                                        return (
+                                        <MenuItem key={index} value={element.Employee_ID}>{element.Firstname}{" "}{element.Surname}</MenuItem>
+                                        )
+                                    })
+                                }
+                                </Select>
+                            </FormControl>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                style={{backgroundColor: '#202950', color: 'white', marginTop: '3px', width: '100%'}}
+                            >
+                                Update Lead Status
+                            </Button>
+                        </form>
+                    </DialogContent>
+                </>
+            :
+            typeOfDialog === "walkIn" ?
+                <>
+                <DialogTitle>Lead Mark Walk-in</DialogTitle>
+                <DialogContent>
+                    <div className={classes.markWalkIn}>
+                        <div className={classes.iconHolder} >
+                            <AiFillAlert style={{width: '70%', height: '70%'}}/>
+                        </div>
+                        <div className={classes.btnWalkIn}>
+                            <Button variant="contained" 
+                                fullWidth 
+                                style={{backgroundColor: '#202950', color: 'white', marginRight: '25px'}}
+                                onClick={() => handleClose(5)}
+                            >
+                                Cancel
+                            </Button>
+                            <Button variant="contained" fullWidth style={{backgroundColor: '#202950', color: 'white'}}>
+                                Yeah! It's a walk-in
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            </DialogContent>
+                </DialogContent>
+            </>
+            :
+            typeOfDialog === "mailPortal" ?
+                <DialogTitle>Lead Message Portal</DialogTitle>
+            :
+            typeOfDialog === "bookDetails" ?
+                <DialogTitle>Book now with details</DialogTitle>
+            :    
+            null
+            }
         </Dialog>
-        <Dialog open={open6} fullWidth TransitionComponent={Transition} onClose={() => handleClose(6)} aria-labelledby="Lead Message Portal">
-            <DialogTitle>Lead Message Portal</DialogTitle>
-        </Dialog>
-        <Dialog open={open7} fullWidth TransitionComponent={Transition} onClose={() => handleClose(7)} aria-labelledby="Lead Statu Details">
-            <DialogTitle>Book now with details</DialogTitle>
-        </Dialog>
+        <Loading open={openLoading} setOpenLoading={setOpenLoading} type={typeLoading} />
         </>
     )
 }
 
 export default AddLeads;
-
-//pagination to handle the data into different pages so that load balancing can be done.

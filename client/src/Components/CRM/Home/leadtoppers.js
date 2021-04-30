@@ -1,37 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import axios from 'axios'
-import { useToast } from '@chakra-ui/react';
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 const Plotly = window.Plotly;
 const Plot = createPlotlyComponent(Plotly);
 
 function LeadToppersGraph() {
-    const toast = useToast()
+    const userData = decodeSessionStorage().payload;
+
     const [leadToppers, setLeadToppers] = useState([])
     const [names, setNames] = useState([])
     const [values, setValues] = useState([])
     const [websiteLeads, setWebsiteLeads] = useState('')
 
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_LEADS}/getLeadToppers`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_LEADS}/getLeadToppers`, { email: userData.Email })
             .then(res => setLeadToppers(res.data.count))
-            .catch(err => {
-                toast({
-                    description: "Error in fetching lead toppers",
-                    duration: 2000,
-                    position: "top"
-                })
-            })
-        axios.post(`${process.env.REACT_APP_LEADS}/getWebsiteLeadsCount`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+            .catch(err => {})
+        axios.post(`${process.env.REACT_APP_LEADS}/getWebsiteLeadsCount`, { email: userData.Email })
             .then(res => setWebsiteLeads(res.data.count[0].count))
-            .catch(err => {
-                toast({
-                    description: "Error in fetching wesite leads",
-                    duration: 2000,
-                    position: "top"
-                })
-            })
-    }, [])
+            .catch(err => {})
+    }, [userData.Email])
 
     useEffect(() => {
         setNames(leadToppers.map( lead => lead.AssignedTo.substring(4)))

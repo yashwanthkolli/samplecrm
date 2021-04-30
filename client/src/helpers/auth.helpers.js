@@ -14,24 +14,21 @@ export const removeSessionStoragee = key => {
 }
 
 export const isAuth = () => {
-    if(sessionStorage.getItem("token")){
-        const token = sessionStorage.getItem("token");
-        let state = false;
+    const token = sessionStorage.getItem("token");
+    let state = false;
 
-        //modify the backend to reverse this process.
+    //modify the backend to reverse this process.
 
-        jwt.verify(token, process.env.REACT_APP_JWT, (err, decoded) => {
-            if(err){
-                removeSessionStoragee("token");
-                state = false;
-            } else {
-                state = true;
-            }
-        })
-        return state;
-    } else {
-        return false;
-    }
+    jwt.verify(token, process.env.REACT_APP_JWT, (err, decoded) => {
+
+        if(err){
+            removeSessionStoragee("token");
+            state = false;
+        } else {
+            state = true;
+        }
+    })
+    return state;
 }
 
 export const signout = () => {
@@ -54,23 +51,23 @@ export const updateLoggedInTimings = async () => {
 
     await axios.post(`${process.env.REACT_APP_USER}/getEmployeeTimings`, { email: userData.Email })
     .then(res => {
-        const timings = JSON.parse(res.data.timings[0].Timings)
+        const timings = JSON.parse(res.data.timings[0].Timings);
         
         if(timings){
             var dateExists = false
             timings.forEach(day => {
                 if(day.date === fullDate){
                     dateExists = true
-                    day.sessions.push([JSON.parse(sessionStorage.getItem('loginTime')), logoutTime])
+                    day.sessions.push([sessionStorage.getItem('loginTime'), logoutTime])
                 }
             })
             data = timings
             if(!dateExists){
-                timings.push({ date: fullDate, sessions: [[JSON.parse(sessionStorage.getItem('loginTime')), logoutTime]]})
+                timings.push({ date: fullDate, sessions: [[sessionStorage.getItem('loginTime'), logoutTime]]})
                 data = timings
             }
         } else {
-            data = [{ date: fullDate, sessions: [[JSON.parse(sessionStorage.getItem('loginTime')), logoutTime]]}]
+            data = [{ date: fullDate, sessions: [[sessionStorage.getItem('loginTime'), logoutTime]]}]
         }
     })
     .catch(err => console.log(err))

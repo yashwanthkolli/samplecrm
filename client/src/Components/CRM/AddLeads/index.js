@@ -1221,6 +1221,24 @@ function AddLeads(){
                                 }
                                 </Select>
                             </FormControl>
+                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                                <InputLabel>Comments (Select other to enter manually)</InputLabel>
+                                <Select
+                                    required
+                                    fullWidth
+                                    value={dialogData.Comments}
+                                    onChange={e=>setDialogData({...dialogData, newcomment: e.target.value})}
+                                >
+                                {
+                                    commentsFetched.map((element, index) => {
+                                        return (
+                                        <MenuItem key={index} value={element.comment}>{element.comment}</MenuItem>
+                                        )
+                                    })
+                                }
+                                    <MenuItem value="others" > Others </MenuItem>
+                                </Select>
+                            </FormControl>
                             <Button
                                 type="submit"
                                 variant="contained"

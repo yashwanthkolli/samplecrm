@@ -18,10 +18,12 @@ import {
     AlertDialogHeader,
     AlertDialogContent,
     AlertDialogOverlay
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 
 function Users() {
     const toast = useToast();
+    const userData = decodeSessionStorage().payload;
     
     const [users, setUsers] = useState([])
     const [deleteWarning, setDeleteWarning] = useState(false)
@@ -39,7 +41,7 @@ function Users() {
 
     // Get Users on page load
     useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getUsers`, { email: JSON.parse(sessionStorage.getItem('user')).Email })
+        axios.post(`${process.env.REACT_APP_CONFIG}/getUsers`, { email: userData.Email })
         .then(res => setUsers(res.data.users))
         .catch(err => {
             toast({
@@ -48,7 +50,7 @@ function Users() {
                 position: "top"
             })
         })
-    }, [update])
+    }, [update, userData.Email, toast])
 
     //Funtion to find time difference between 2 times
     const findDuration = (start, end) => {
@@ -67,7 +69,7 @@ function Users() {
         // Check if user is selected then load resourses
         if(seletedUser){
             //Get reporting workers
-            axios.post(`${process.env.REACT_APP_CONFIG}/getReportingEmployees`, { email: JSON.parse(sessionStorage.getItem('user')).Email, id: seletedUser.Employee_ID })
+            axios.post(`${process.env.REACT_APP_CONFIG}/getReportingEmployees`, { email: userData.Email, id: seletedUser.Employee_ID })
             .then(res => setAssignedEmployees(res.data.employees))
             .catch(err => {
                 toast({
@@ -95,12 +97,12 @@ function Users() {
             })
 
         }
-    }, [seletedUser, selectedDate])
+    }, [seletedUser, selectedDate, userData.Email, toast])
 
     // Delete User Action
     const onDeleteUser = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteUser`, {
-            email: JSON.parse(sessionStorage.getItem('user')).Email,
+            email: userData.Email,
             id: id
         })
         .then(res => {
@@ -278,4 +280,4 @@ function Users() {
     )
 }
 
-export default Users
+export default Users;

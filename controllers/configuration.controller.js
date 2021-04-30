@@ -272,7 +272,7 @@ exports.sourceAddController = (req, res) => {
 exports.fetchUsersController = (req, res) => {
 
     users_fetch = 'SELECT CONCAT(Firstname, \' \', Surname) as Name, Employee_ID, Email, Mobile, Type, Reporting, City, Timings FROM ice.employees';
-    // WHERE Type NOT IN (\'admin\', \'nationalhead\')
+    
     connect.query(users_fetch, function(err, result) {
         if(err){
             return res.status(500).json({

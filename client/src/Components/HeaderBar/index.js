@@ -22,7 +22,7 @@ import {MdEventNote, MdFeedback, MdUpdate} from 'react-icons/md';
 import { SiGoogleanalytics } from 'react-icons/si';
 import {Link} from 'react-router-dom';
 import { signout } from '../../helpers/auth.helpers';
-import { FaUserEdit, FaUserFriends } from 'react-icons/fa';
+import { FaUserEdit, FaUserFriends, FaUsers } from 'react-icons/fa';
 import {TiTick} from 'react-icons/ti';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
@@ -134,10 +134,11 @@ function HeaderBar({match}){
         {id: 2 ,path: `${match.path}/home`, text: 'Home',  icon: AiFillHome },
         {id: 3 ,path: `${match.path}/courses`, text: 'Courses',  icon: BiChalkboard },
         {id: 4 ,path: `${match.path}/ads`, text: 'Ads',  icon: BiCarousel },
-        {id: 5 ,path: `${match.path}/comments`, text: 'Comments', icon: BiCommentDetail },
-        {id: 6 ,path: `${match.path}/status`, text: 'Status', icon: TiTick },
-        {id: 7 ,path: `${match.path}/sources`, text: 'Sources', icon: GrResources },
-        {id: 8 ,path: `${match.path}/updateAdmin`, text: 'Edit Profile', icon: FaUserEdit }
+        {id: 5 ,path: `${match.path}/users`, text: 'Users',  icon: FaUsers },
+        {id: 6 ,path: `${match.path}/comments`, text: 'Comments', icon: BiCommentDetail },
+        {id: 7 ,path: `${match.path}/status`, text: 'Status', icon: TiTick },
+        {id: 8 ,path: `${match.path}/sources`, text: 'Sources', icon: GrResources },
+        {id: 9 ,path: `${match.path}/updateAdmin`, text: 'Edit Profile', icon: FaUserEdit }
     ]
 
     const teamNav = [

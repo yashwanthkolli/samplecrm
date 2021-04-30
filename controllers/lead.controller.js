@@ -221,6 +221,7 @@ exports.fetchTopCourseCount = (req, res) => {
 
     course_count = 'SELECT Type, COUNT(Type) AS \'count\' FROM ice.leads GROUP BY Type HAVING COUNT(Type)>0 ORDER BY count DESC LIMIT 6';
     connect.query(course_count, function(err, result){
+        console.log("err", err);
         if(err){
             return res.status(500).json({
                 message: "Error in fetching details"

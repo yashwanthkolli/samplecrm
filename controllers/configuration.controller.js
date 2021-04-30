@@ -268,3 +268,52 @@ exports.sourceAddController = (req, res) => {
 
     })
 }
+
+exports.fetchUsersController = (req, res) => {
+
+    users_fetch = 'SELECT CONCAT(Firstname, \' \', Surname) as Name, Employee_ID, Email, Mobile, Type, Reporting, City, Timings FROM ice.employees';
+    // WHERE Type NOT IN (\'admin\', \'nationalhead\')
+    connect.query(users_fetch, function(err, result) {
+        if(err){
+            return res.status(500).json({
+                message: "Error in adding source"
+            })
+        }
+        return res.status(200).json({
+            message: "Users Fetched",
+            users: result
+        })
+    })
+}
+
+exports.userDeleteController = (req, res) => {
+
+    const { id } = req.body;
+    user_delete = 'delete from ice.employees where Employee_ID=\'' + id + '\'';
+    connect.query(user_delete, function(err, result) {
+        if (err) {
+            return res.status(500).json({
+                message: "Error in Deleting employee"
+            })
+        }
+        return res.status(200).json({
+            message: "Employee Deleted!"
+        })
+    })
+}
+
+exports.fetchReportingEmployees = (req, res) => {
+    const { id } = req.body;
+    fetch_employees = 'SELECT CONCAT(Firstname, \' \', Surname) as Name, Employee_ID, Email, Mobile, Type, City  FROM ice.employees WHERE Reporting =\'' + id + '\'';
+    connect.query(fetch_employees, function(err, result) {
+        if (err) {
+            return res.status(500).json({
+                message: "Error in Fetching employee"
+            })
+        }
+        return res.status(200).json({
+            message: "Fetched Employees!", 
+            employees: result
+        })
+    })
+}

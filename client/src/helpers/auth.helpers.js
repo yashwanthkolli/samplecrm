@@ -49,13 +49,13 @@ export const updateLoggedInTimings = async () => {
     const fullDate = year + '-' + month + '-' + date
     const logoutHours = new Date().getHours() >= 10 ? new Date().getHours().toString() : '0'+new Date().getHours().toString()
     const logoutMinutes = new Date().getMinutes() >= 10 ? new Date().getMinutes().toString() : '0'+new Date().getMinutes().toString()
-    const logoutTime = logoutHours + ':' + logoutMinutes;
-
-    var data = [];
+    const logoutTime = logoutHours + ':' + logoutMinutes
+    let data = [];
 
     await axios.post(`${process.env.REACT_APP_USER}/getEmployeeTimings`, { email: userData.Email })
     .then(res => {
         const timings = JSON.parse(res.data.timings[0].Timings)
+        
         if(timings){
             var dateExists = false
             timings.forEach(day => {
@@ -66,7 +66,8 @@ export const updateLoggedInTimings = async () => {
             })
             data = timings
             if(!dateExists){
-                data = timings.push({ date: fullDate, sessions: [[JSON.parse(sessionStorage.getItem('loginTime')), logoutTime]]})
+                timings.push({ date: fullDate, sessions: [[JSON.parse(sessionStorage.getItem('loginTime')), logoutTime]]})
+                data = timings
             }
         } else {
             data = [{ date: fullDate, sessions: [[JSON.parse(sessionStorage.getItem('loginTime')), logoutTime]]}]

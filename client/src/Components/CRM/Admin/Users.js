@@ -75,7 +75,7 @@ function Users() {
                 toast({
                     description: "Error In Fetching Employees",
                     duration: 2000,
-                    position: "top"
+                    position: "top-right"
                 })
             })
 

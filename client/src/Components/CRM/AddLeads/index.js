@@ -476,11 +476,14 @@ function AddLeads(){
             status: dialogData.Status,
             followUpDate: dialogData.followUpDate,
             followUpTime: dialogData.followUpTime,
-            assignChange: dialogData.AssignedTo,
+            assignedTo: dialogData.AssignedTo,
+            assignChange: dialogData.assignedChange,
+            oldComment: dialogData.Comment,
             newcomment: dialogData.newcomment,
             newotherComment: dialogData.newotherComment,
             interviewDate: dialogData.interviewDate,
             interviewTime: dialogData.interviewTime,
+            updatorId: userData.Employee_ID,
             venue: dialogData.Venue
         })
         .then((res) => {
@@ -1267,8 +1270,8 @@ function AddLeads(){
                                 <Select
                                     required
                                     fullWidth
-                                    value={dialogData.AssignedTo}
-                                    onChange={e=>setDialogData({...dialogData, AssignedTo: e.target.value})}
+                                    value={dialogData.assignedChange ? dialogData.assignedChange : dialogData.AssignedTo}
+                                    onChange={e=>setDialogData({...dialogData, assignedChange: e.target.value})}
                                 >
                                 {
                                     employeeFetched.map((element, index) => {

@@ -145,6 +145,7 @@ function AddLeads(){
     const [comment, setComment] = useState("");
     const [ad_name, setAdName] = useState("");
     const [otherComment, setOtherComment] = useState("");
+    const [dob, setDob] = useState("");
     const [hot, setHot] = useState(false);
 
     const [category, setCategory] = useState("");
@@ -235,7 +236,7 @@ function AddLeads(){
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
             email: userData.Email,
-            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name, otherComment, hot
+            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name, otherComment, hot, dob
         })
         .then((res) => {
             setUpdate(!update);
@@ -477,7 +478,10 @@ function AddLeads(){
             followUpTime: dialogData.followUpTime,
             assignChange: dialogData.AssignedTo,
             newcomment: dialogData.newcomment,
-            newotherComment: dialogData.newotherComment
+            newotherComment: dialogData.newotherComment,
+            interviewDate: dialogData.interviewDate,
+            interviewTime: dialogData.interviewTime,
+            venue: dialogData.Venue
         })
         .then((res) => {
             setUpdate(!update);
@@ -711,18 +715,31 @@ function AddLeads(){
                         placeholder="Enter Lead's Name"
                         style={{marginBottom: '7px'}}
                     />
-                    <TextField 
-                        required
-                        fullWidth
-                        autoComplete="off"
-                        name="email"
-                        type="email"
-                        label="Email"
-                        placeholder="Enter Lead's Email"
-                        value={email_lead}
-                        onChange={e=>setEmailLead(e.target.value)}
-                        style={{marginBottom: '7px'}}
-                    />
+                    <div className={classes.fieldHolder}>
+                        <TextField 
+                            required
+                            fullWidth
+                            autoComplete="off"
+                            name="email"
+                            type="email"
+                            label="Email"
+                            placeholder="Enter Lead's Email"
+                            value={email_lead}
+                            onChange={e=>setEmailLead(e.target.value)}
+                            style={{width: '45%'}}
+                        />
+                        <TextField 
+                            fullWidth
+                            autoComplete="off"
+                            name="dob"
+                            type="date"
+                            label="DOB"
+                            placeholder="Enter Lead's DOB"
+                            value={dob}
+                            onChange={e=>setDob(e.target.value)}
+                            style={{width: '45%'}}
+                        />
+                    </div>
                     <div className={classes.fieldHolder}>
                         <TextField 
                             required
@@ -1076,7 +1093,7 @@ function AddLeads(){
                                 type="date"
                                 label="Lead DOB"
                                 placeholder="Change the DOB"
-                                value={new Date(new Date(dialogData.DOB).getTime() - (new Date(dialogData.DOB).getTimezoneOffset()*60000)).toISOString().split("T")[0]}
+                                value={dialogData.DOB ? new Date(new Date(dialogData.DOB).getTime() - (new Date(dialogData.DOB).getTimezoneOffset()*60000)).toISOString().split("T")[0] : null}
                                 onChange={e=>setDialogData({...dialogData, DOB: e.target.value})}
                                 style={{marginBottom: '7px', width: '45%'}}
                             />

@@ -50,7 +50,7 @@ exports.addNewLeadsController = (req, res) => {
     const {
         name,
         email_lead,
-        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name, otherComment, hot
+        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name, otherComment, hot, dob
     } = req.body;
     const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0];
 
@@ -67,7 +67,7 @@ exports.addNewLeadsController = (req, res) => {
         hot_indicator = 1
     }
 
-    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment, UpdationDt, Hot) values ('
+    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment, UpdationDt, DOB, Hot) values ('
         + ' \''+ name +'\' ,'
         + ' \''+ email_lead +'\' ,'
         + ' \''+ mobile +'\' ,'
@@ -83,6 +83,7 @@ exports.addNewLeadsController = (req, res) => {
         + ' \''+ now +'\' ,'
         + ' JSON_INSERT(\'[]\', \'$[0]\', cast(\'["'+ comment_select + '",' + new Date().getTime() + ']\' as JSON)),'
         + ' \''+ now + '\','
+        + ' \''+ dob + '\','
         + '\'' + hot_indicator + '\')';
 
     connect.query(addnewlead_query, function(err){
@@ -350,9 +351,13 @@ exports.modifySourceCourseController = (req, res) => {
 
 exports.statusUpdateController = (req, res) => {
     
-    const { Lead_id, status, followUpDate, followUpTime, assignChange, newcomment, newotherComment} = req.body;
+    const { Lead_id, status, followUpDate, followUpTime, assignChange, newcomment, newotherComment, interviewDate, interviewTime, venue} = req.body;
     
     var comment = newcomment === "others" ? newotherComment : newcomment;
 
-    // update_status_query = 'update ice.leads set Status = \''+ status + '\',  where Lead_id = '+ Number(Lead_id)
+    if(status === "Confirmed"){
+
+    } else {
+
+    }
 }

@@ -471,7 +471,13 @@ function AddLeads(){
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_LEADS}/statusUpdate`,{
-            id: dialogData.Lead_id, status: dialogData.Status
+            id: dialogData.Lead_id,
+            status: dialogData.Status,
+            followUpDate: dialogData.followUpDate,
+            followUpTime: dialogData.followUpTime,
+            assignChange: dialogData.AssignedTo,
+            newcomment: dialogData.newcomment,
+            newotherComment: dialogData.newotherComment
         })
         .then((res) => {
             setUpdate(!update);
@@ -1198,12 +1204,16 @@ function AddLeads(){
                                     style={{width: '45%'}}
                                     type="date"
                                     label="Follow-up Date"
+                                    value={dialogData.followUpDate}
+                                    onChange={e=>setDialogData({...dialogData, followUpDate: e.target.value})}
                                 />
                                 <TextField 
                                     required
                                     style={{width: '45%'}}
                                     type="time"
                                     label="Follow-up Time"
+                                    value={dialogData.followUpTime}
+                                    onChange={e=>setDialogData({...dialogData, followUpTime: e.target.value})}
                                 />
                             </div>
                             <FormControl fullWidth style={{marginBottom: '7px'}}>
@@ -1212,6 +1222,7 @@ function AddLeads(){
                                     required
                                     fullWidth
                                     value={dialogData.AssignedTo}
+                                    onChange={e=>setDialogData({...dialogData, AssignedTo: e.target.value})}
                                 >
                                 {
                                     employeeFetched.map((element, index) => {

@@ -347,3 +347,7 @@ exports.modifySourceCourseController = (req, res) => {
         })
     })
 }
+
+exports.statusUpdateController = (req, res) => {
+    console.log(req.body);
+}

@@ -352,7 +352,7 @@ exports.statusUpdateController = (req, res) => {
     
     const { Lead_id, status, followUpDate, followUpTime, assignChange, newcomment, newotherComment} = req.body;
     
-    var comment = newcomment === "others" ? newotherComment ? newcomment;
+    var comment = newcomment === "others" ? newotherComment : newcomment;
 
-    update_status_query = 'update ice.leads set Status = \''+ status + '\',  where Lead_id = '+ Number(Lead_id);
+    // update_status_query = 'update ice.leads set Status = \''+ status + '\',  where Lead_id = '+ Number(Lead_id)
 }

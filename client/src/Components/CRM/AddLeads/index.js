@@ -1198,9 +1198,9 @@ function AddLeads(){
                                 }
                                 </Select>
                             </FormControl>
-                            <div className={classes.fieldHolder}>
+                            <div className={classes.fieldHolder} style={{display: dialogData.Status !== "Confirmed"? 'flex' : 'none'}}>
                                 <TextField 
-                                    required
+                                    required={dialogData.Status !== "Confirmed" ? true : false}
                                     style={{width: '45%'}}
                                     type="date"
                                     label="Follow-up Date"
@@ -1208,12 +1208,41 @@ function AddLeads(){
                                     onChange={e=>setDialogData({...dialogData, followUpDate: e.target.value})}
                                 />
                                 <TextField 
-                                    required
+                                    required={dialogData.Status !== "Confirmed" ? true : false}
                                     style={{width: '45%'}}
                                     type="time"
                                     label="Follow-up Time"
                                     value={dialogData.followUpTime}
                                     onChange={e=>setDialogData({...dialogData, followUpTime: e.target.value})}
+                                />
+                            </div>
+                            <div fullWidth style={{display: dialogData.Status === "Confirmed" ? 'flex' : 'none', flexDirection: 'column', marginBottom: '7px'}}>
+                                <div className={classes.fieldHolder} >
+                                    <TextField 
+                                        required={dialogData.Status === "Confirmed" ? true : false}
+                                        style={{width: '45%'}}
+                                        type="date"
+                                        label="Interview Date"
+                                        value={dialogData.interviewDate}
+                                        onChange={e=>setDialogData({...dialogData, interviewDate: e.target.value})}
+                                    />
+                                    <TextField 
+                                        required={dialogData.Status === "Confirmed" ? true : false}
+                                        style={{width: '45%'}}
+                                        type="time"
+                                        label="Interview Time"
+                                        value={dialogData.interviewTime}
+                                        onChange={e=>setDialogData({...dialogData, interviewTime: e.target.value})}
+                                    />
+                                </div>
+                                <TextField 
+                                    required={dialogData.Status === "Confirmed" ? true : false}
+                                    fullWidth
+                                    type="text"
+                                    label="Venue"
+                                    placeholder="Enter the Venue"
+                                    value={dialogData.Venue}
+                                    onChange={e=>setDialogData({...dialogData, Venue: e.target.value})}
                                 />
                             </div>
                             <FormControl fullWidth style={{marginBottom: '7px'}}>

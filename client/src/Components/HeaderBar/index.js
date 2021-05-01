@@ -161,7 +161,7 @@ function HeaderBar({match}){
 
     const telecallerNav = [
       {id: 1, path: `${match.path}/telecaller/home`, text: 'Dashboard', icon: MdWork },
-      {id: 2, path: `${match.path}/telecaller/profile`, text: 'Your Profile', icon: FaAddressCard },
+      {id: 2, path: `${match.path}/profile`, text: 'Your Profile', icon: FaAddressCard },
       {id: 3, path: `${match.path}/telecaller/leads`, text: 'Leads View', icon: GiProgression}
     ]
 

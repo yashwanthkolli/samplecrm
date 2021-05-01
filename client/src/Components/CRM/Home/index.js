@@ -7,9 +7,13 @@ import LastFifteenDaysGraph from './LastFifteenDays';
 import Sources from './Sources';
 import CoursesGraph from './Course';
 import './styles.css'
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
 
 function Home(){
+    const userData = decodeSessionStorage().payload;
+
     return(
+        userData.Type === "National Head" || userData.Type === "Admin" ?
         <div style={{background: '#E0E0F8', display: 'flex', justifyContent: 'center', padding: '50px 0'}}>
             <div className='home-page'>
                 <div className='monthly-booking'>
@@ -39,6 +43,8 @@ function Home(){
                 </div>
             </div>
         </div>
+        :
+        <></>
     )
 }
 

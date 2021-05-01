@@ -81,7 +81,7 @@ exports.addNewLeadsController = (req, res) => {
         + ' \''+ email +'\' ,'
         + ' \''+ now +'\' ,'
         + ' \''+ now +'\' ,'
-        + ' JSON_INSERT(\'[]\', \'$[0]\', \'['+ comment_select + ',' + new Date().getTime() + ']\'),'
+        + ' JSON_INSERT(\'[]\', \'$[0]\', cast(\'["'+ comment_select + '",' + new Date().getTime() + ']\' as JSON)),'
         + ' \''+ now + '\','
         + '\'' + hot_indicator + '\')';
 

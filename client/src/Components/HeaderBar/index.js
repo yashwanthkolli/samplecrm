@@ -18,11 +18,12 @@ import { FiLogOut } from 'react-icons/fi';
 import { GrResources } from 'react-icons/gr';
 import {BiCarousel, BiChalkboard, BiCommentDetail} from 'react-icons/bi';
 import { AiFillHome } from 'react-icons/ai';
-import {MdEventNote, MdFeedback, MdUpdate} from 'react-icons/md';
+import {MdEventNote, MdFeedback, MdUpdate, MdWork} from 'react-icons/md';
+import { GiProgression } from 'react-icons/gi';
 import { SiGoogleanalytics } from 'react-icons/si';
 import {Link} from 'react-router-dom';
 import { signout } from '../../helpers/auth.helpers';
-import { FaUserEdit, FaUserFriends, FaUsers } from 'react-icons/fa';
+import { FaUserEdit, FaUserFriends, FaUsers, FaAddressCard } from 'react-icons/fa';
 import {TiTick} from 'react-icons/ti';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
@@ -156,11 +157,9 @@ function HeaderBar({match}){
     const convertorNav = []
 
     const telecallerNav = [
-      {id: 1, path: `${match.path}/profile`,  icon: ImProfile },
-      {id: 2, path: `${match.path}/userTeam`,  icon: FaUserFriends },
-      {id: 3, path: `${match.path}/eventTeam`,  icon: MdEventNote },
-      {id: 4, path: `${match.path}/updateTeam`,  icon: MdUpdate },
-      {id: 5, path: `${match.path}/permission`, icon: TiTick }
+      {id: 1, path: `${match.path}/telecaller/home`, text: 'Dashboard', icon: MdWork },
+      {id: 2, path: `${match.path}/telecaller/profile`, text: 'Your Profile', icon: FaAddressCard },
+      {id: 3, path: `${match.path}/telecaller/leads`, text: 'Leads View', icon: GiProgression}
     ]
 
     let navbarElements;

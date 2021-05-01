@@ -352,7 +352,7 @@ exports.modifySourceCourseController = (req, res) => {
 exports.statusUpdateController = (req, res) => {
     
     console.log(req.body);
-    const { Lead_id, status, followUpDate, followUpTime, assignedTo, newcomment, newotherComment, interviewDate, interviewTime, venue, assignChange, updatorId} = req.body;
+    const { Lead_id, status, followUpDate, followUpTime, assignedTo, oldComment, newcomment, newotherComment, interviewDate, interviewTime, venue, assignChange, updatorId} = req.body;
     
     const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0];
     var comment = newcomment === "others" ? newotherComment : newcomment;
@@ -361,21 +361,21 @@ exports.statusUpdateController = (req, res) => {
     var final_query = 'update ice.leads set Comment = JSON_ARRAY_APPEND(\''+ oldComment +'\', \'$\', cast(\'["'+ comment +','+ new Date().getTime() +'"]\' as JSON))';
 
     if(status === "Confirmed"){
-        updateDateTime = interviewDate + interviewTime;
+        updateDateTime = interviewDate + " " +interviewTime;
         statusQuery = ', set Status = \'Confirmed\', set Lstfudt = \'' + updateDateTime + '\', set Venue = \'' + venue + '\'' ;
     } else {
-        updateDateTime = followUpDate + followUpTime;
+        updateDateTime = followUpDate + " " + followUpTime;
         statusQuery = ', set Status = \''+ status + '\', set Lstfudt = \'' + updateDateTime + '\'';
     }
 
     final_query = final_query + statusQuery;
 
-    if(assignedTo === assignChange){
+    if(assignedTo === assignChange || typeof assignChange === "undefined"){
     } else {
         final_query = final_query + ', set AssignedTo = \'' + assignedTo + ', set AssignDt = \'' + now
     }
 
-    finalsubset_query = ', set UpdationDt = \'' + now + '\', CallingDt = \'' + now + '\', Updateuserid = ' + updatorId + 'where Lead_id = '+ Lead_id ;
+    finalsubset_query = ', set UpdationDt = \'' + now + '\', CallingDt = \'' + now + '\', Updateuserid = ' + updatorId + ' where Lead_id = '+ Lead_id ;
     
     final_query = final_query + finalsubset_query;
     console.log(final_query);

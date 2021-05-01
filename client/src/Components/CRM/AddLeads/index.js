@@ -510,7 +510,6 @@ function AddLeads(){
             email: userData.Email
         })
         .then((res) => {
-            console.log(res);
             let data_latest = [];
 
             res.data.latest.forEach((element) => {
@@ -535,7 +534,7 @@ function AddLeads(){
                             <div>{new Date(element.AssignDt).toLocaleString()}</div>
                         </div>,
                     "actions": <div className={classes.btnSection}>
-                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("walkIn")}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("walkIn")} disabled={element.Status !== "Confirmed"}>
                                 <FaWalking style={{margin: '5px'}} />    
                             </Button>
                             <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("mailPortal")}>
@@ -1236,7 +1235,7 @@ function AddLeads(){
                                     onChange={e=>setDialogData({...dialogData, followUpTime: e.target.value})}
                                 />
                             </div>
-                            <div fullWidth style={{display: dialogData.Status === "Confirmed" ? 'flex' : 'none', flexDirection: 'column', marginBottom: '7px'}}>
+                            <div style={{display: dialogData.Status === "Confirmed" ? 'flex' : 'none', flexDirection: 'column', marginBottom: '7px'}}>
                                 <div className={classes.fieldHolder} >
                                     <TextField 
                                         required={dialogData.Status === "Confirmed" ? true : false}
@@ -1265,10 +1264,10 @@ function AddLeads(){
                                     onChange={e=>setDialogData({...dialogData, Venue: e.target.value})}
                                 />
                             </div>
-                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                            <FormControl fullWidth style={{marginBottom: '7px', display: userData.Type === "National Head" ? 'flex' : 'none' }} >
                                 <InputLabel>Assigned To</InputLabel>
                                 <Select
-                                    required
+                                    required={userData.Type === "National Head" ? 'flex' : 'none'}
                                     fullWidth
                                     value={dialogData.assignedChange ? dialogData.assignedChange : dialogData.AssignedTo}
                                     onChange={e=>setDialogData({...dialogData, assignedChange: e.target.value})}

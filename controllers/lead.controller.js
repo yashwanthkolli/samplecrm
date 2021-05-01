@@ -379,7 +379,6 @@ exports.statusUpdateController = (req, res) => {
     final_query = final_query + finalsubset_query;
 
     connect.query(final_query, function(err, result){
-        console.log(err);
         if(err){
             return res.status(400).json({
                 message: "Error in updating resources"

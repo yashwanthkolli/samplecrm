@@ -1254,7 +1254,9 @@ function AddLeads(){
                                 {
                                     JSON.parse(dialogData.Comment).map((element) => {
                                         return (
-                                            <Typography className={classes.TypoCourse}>{element}</Typography> 
+                                            <Typography style={{width: '100%'}} className={classes.TypoCourse}>
+                                                <span style={{float: 'left'}}>{element[0]}</span><span style={{float: 'right'}}>{element[1]}</span>
+                                            </Typography> 
                                         )
                                     })
                                 }

@@ -81,12 +81,12 @@ exports.addNewLeadsController = (req, res) => {
         + ' \''+ email +'\' ,'
         + ' \''+ now +'\' ,'
         + ' \''+ now +'\' ,'
-        + ' JSON_Array('+ comment_select + ',' + new Date().getTime() + '),'
+        + ' JSON_INSERT(\'[]\', \'$[0]\', \'['+ comment_select + ',' + new Date().getTime() + ']\'),'
         + ' \''+ now + '\','
         + '\'' + hot_indicator + '\')';
 
     connect.query(addnewlead_query, function(err){
-
+        console.log(err);
         if(err){
             return res.status(500).json({
                 err: err 

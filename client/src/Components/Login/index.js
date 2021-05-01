@@ -65,7 +65,8 @@ function Login({history}) {
 
     return (
         <Section>
-            { isAuth() ? <Redirect to="/crm/home" /> : null}
+            { isAuth() ?
+            <Redirect to="/crm/home" /> : null}
             <Holder>
                 <Paper elevation={5} variant="elevation" style={{width: "100%", height: "100%"}}>
                     <Container>

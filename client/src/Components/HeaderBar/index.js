@@ -153,7 +153,10 @@ function HeaderBar({match}){
       {id: 5, path: `${match.path}/feedback`,  icon: MdFeedback, text: 'Profile' }
     ]
 
-    const managerNav = []
+    const managerNav = [
+      {id:1, path: `${match.path}/manager/home`, text: 'Dashboard', icon: AiFillHome},
+      {id: 2, path: `${match.path}/manager/profile`, text: 'Your Profile', icon: FaAddressCard }
+    ]
     const convertorNav = []
 
     const telecallerNav = [

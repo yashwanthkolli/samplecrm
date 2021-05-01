@@ -21,6 +21,7 @@ import Ads from './CRM/Admin/Ads';
 import Status from './CRM/Admin/Status';
 import Sources from './CRM/Admin/Sources';
 import Users from './CRM/Admin/Users';
+import TeleCallerRoute from './ProtectedRoute/TeleCallerRoute';
 
 function Holder({match}){
 
@@ -40,6 +41,7 @@ function Holder({match}){
                     <PrivateRoute path="/crm/status" exact component={() => <Status />} />
                     <PrivateRoute path="/crm/sources" exact component={() => <Sources />} />
                     <PrivateRoute path="/crm/users" exact component={() => <Users /> } />
+                    <PrivateRoute path="/crm/home" exact component={(props) => <Home {...props} />} />
                     <Redirect to = '/crm/home' />
                 </Switch>
             </Section>

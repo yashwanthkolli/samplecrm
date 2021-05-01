@@ -12,19 +12,19 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
-import {ImProfile} from 'react-icons/im';
-import {BsFillChatSquareDotsFill} from 'react-icons/bs';
+import { ImProfile } from 'react-icons/im';
+import { BsFillChatSquareDotsFill } from 'react-icons/bs';
 import { FiLogOut } from 'react-icons/fi';
 import { GrResources } from 'react-icons/gr';
-import {BiCarousel, BiChalkboard, BiCommentDetail} from 'react-icons/bi';
-import { AiFillHome } from 'react-icons/ai';
-import {MdEventNote, MdFeedback, MdUpdate, MdWork} from 'react-icons/md';
+import { BiCarousel, BiChalkboard, BiCommentDetail } from 'react-icons/bi';
+import { AiFillHome, AiOutlineFundProjectionScreen } from 'react-icons/ai';
+import { MdFeedback, MdUpdate } from 'react-icons/md';
 import { GiProgression } from 'react-icons/gi';
 import { SiGoogleanalytics } from 'react-icons/si';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { signout } from '../../helpers/auth.helpers';
-import { FaUserEdit, FaUserFriends, FaUsers, FaAddressCard } from 'react-icons/fa';
-import {TiTick} from 'react-icons/ti';
+import { FaUserEdit, FaUsers, FaAddressCard } from 'react-icons/fa';
+import { TiTick } from 'react-icons/ti';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -160,9 +160,9 @@ function HeaderBar({match}){
     const convertorNav = []
 
     const telecallerNav = [
-      {id: 1, path: `${match.path}/telecaller/home`, text: 'Dashboard', icon: MdWork },
+      {id: 1, path: `${match.path}/home`, text: 'Dashboard', icon: AiOutlineFundProjectionScreen },
       {id: 2, path: `${match.path}/profile`, text: 'Your Profile', icon: FaAddressCard },
-      {id: 3, path: `${match.path}/telecaller/leads`, text: 'Leads View', icon: GiProgression}
+      {id: 3, path: `${match.path}/addleads`, text: 'Leads View', icon: GiProgression}
     ]
 
     let navbarElements;

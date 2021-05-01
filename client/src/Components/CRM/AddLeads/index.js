@@ -368,7 +368,7 @@ function AddLeads(){
                             {element.Hot === "1" ? <Chip style={{backgroundColor: '#202950', color: "white", fontFamily: 'Nunito'}} size="small" label="Hot Lead" /> : null }
                         </div>,
                     "course": 
-                        <div className={classes.course} >
+                        <div className={classes.course}>
                             {element.course + " | " + element.courseType + " | Rs." + element.courseCost}
                         </div>,
                     "status": 
@@ -521,7 +521,7 @@ function AddLeads(){
                             {element.Hot === "1" ? <Chip style={{backgroundColor: '#202950', color: "white", fontFamily: 'Nunito'}} size="small" label="Hot Lead" /> : null }
                         </div>,
                     "course": 
-                        <div className={classes.course} style={{cursor: 'pointer'}} onClick={() => handleOpen("courseSource", element)}>
+                        <div className={classes.course} style={{cursor: 'pointer'}} onClick={userData.Type === "National Head" ? () => handleOpen("courseSource", element) : null}>
                             {element.course + " | " + element.courseType + " | Rs." + element.courseCost + " | " + element.Source}
                         </div>,
                     "status": 
@@ -555,7 +555,7 @@ function AddLeads(){
             
         })
         .catch((err) =>{})
-    }, [update, classes.btnSection, classes.assigned, classes.course, classes.leadDetails, classes.status, userData.Email])
+    }, [update, userData.Type, classes.btnSection, classes.assigned, classes.course, classes.leadDetails, classes.status, userData.Email])
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, {

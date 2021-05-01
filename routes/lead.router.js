@@ -20,7 +20,7 @@ const {
 } = require('../controllers/lead.controller');
 const { verifyHigherLevel } = require('../validations/higherlevel');
 
-router.post('/getLatestLeads', verifyHigherLevel, latestLeadController);
+router.post('/getLatestLeads', latestLeadController);
 router.post('/addNewLeads', verifyHigherLevel, addNewLeadsController);
 router.post('/getPlaceLeads', verifyHigherLevel, fetchTopPlaceLeadsController);
 router.post('/getNoOfLeads', verifyHigherLevel, fetchNumberOfLeadsController);

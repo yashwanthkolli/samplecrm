@@ -471,7 +471,7 @@ function AddLeads(){
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_LEADS}/statusUpdate`,{
-            id: dialogData.Lead_id,
+            Lead_id: dialogData.Lead_id,
             status: dialogData.Status,
             followUpDate: dialogData.followUpDate,
             followUpTime: dialogData.followUpTime,

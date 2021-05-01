@@ -11,7 +11,7 @@ exports.latestLeadController = (req, res) => {
         }
 
         if(result[0].count <= 20){
-            leads_query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.Comment,'
+            leads_query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.Comment, leads.AssignedTo,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id';
@@ -257,13 +257,13 @@ exports.searchLeadsController = (req, res) => {
     
     if(Number(req.query.page) === 1){
         if(category === "Date"){
-            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.AssignedTo,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
             +' where leads.Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by leads.Createdt desc limit 40';
         } else {
-            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.AssignedTo,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
@@ -274,13 +274,13 @@ exports.searchLeadsController = (req, res) => {
         const el = (Number(req.query.page) + 1) * 40;
 
         if(category === "Date"){
-            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.AssignedTo,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
             +' where leads.Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by leads.Createdt desc limit ' + sl + ',' + el;
         } else { 
-            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.AssignedTo,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'

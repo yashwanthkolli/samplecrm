@@ -1211,6 +1211,7 @@ function AddLeads(){
                                 <Select
                                     required
                                     fullWidth
+                                    value={dialogData.AssignedTo}
                                 >
                                 {
                                     employeeFetched.map((element, index) => {
@@ -1226,7 +1227,7 @@ function AddLeads(){
                                 <Select
                                     required
                                     fullWidth
-                                    value={dialogData.newcomment}
+                                    value={dialogData.newcomment ? dialogData.newcomment : ''}
                                     onChange={e=>setDialogData({...dialogData, newcomment: e.target.value})}
                                 >
                                 {
@@ -1243,7 +1244,7 @@ function AddLeads(){
                                 required
                                 fullWidth
                                 disabled={dialogData.newcomment === "others" ? false : true}
-                                value={dialogData.newotherComment}
+                                value={dialogData.newotherComment ? dialogData.newotherComment : ''}
                                 onChange={e=>setDialogData({...dialogData, newotherComment: e.target.value})}
                                 label="Other Comment"
                                 placeholder="Type comments here..."
@@ -1254,8 +1255,8 @@ function AddLeads(){
                                 {
                                     JSON.parse(dialogData.Comment).map((element) => {
                                         return (
-                                            <Typography style={{width: '100%'}} className={classes.TypoCourse}>
-                                                <span style={{float: 'left'}}>{element[0]}</span><span style={{float: 'right'}}>{element[1]}</span>
+                                            <Typography style={{width: '100%', height: '25px', verticalAlign: 'center'}} className={classes.TypoCourse}>
+                                                <span style={{float: 'left'}}>{element[0]}</span><span style={{float: 'right'}}>{new Date(element[1]).toGMTString()}</span>
                                             </Typography> 
                                         )
                                     })

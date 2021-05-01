@@ -189,8 +189,6 @@ function AddLeads(){
         setOpen(true);
         setTypeOfDialog(type);
 
-        // setting the data for the opened dialog box that dynamically changes with the row of the table.
-        console.log(element);
         if(element){
             setDialogData(element);
         }

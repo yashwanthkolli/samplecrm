@@ -233,16 +233,18 @@ function HeaderBar({match}){
                 <Typography variant="h6" noWrap style={{fontFamily: 'Nunito'}}>
                 ICE CRM
                 </Typography>
+                <Link to="/">
                 <IconButton
                 color="inherit"
                 aria-label="Logout"
                 onClick={signout}
                 edge="end"
                 >
-                <Link to="/">
+
                     <FiLogOut />
-                </Link>
+                
                 </IconButton>
+                </Link>
             </div>
             </Toolbar>
         </AppBar>

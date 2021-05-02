@@ -357,7 +357,7 @@ exports.statusUpdateController = (req, res) => {
     var comment = newcomment === "others" ? newotherComment : newcomment;
     var updateDateTime, statusQuery;
 
-    var final_query = 'update ice.leads set Comment = JSON_ARRAY_APPEND(\''+ oldComment +'\', \'$\', cast(\'["'+ comment +','+ new Date().getTime() +'"]\' as JSON))';
+    var final_query = 'update ice.leads set Comment = JSON_ARRAY_APPEND(\''+ oldComment +'\', \'$\', cast(\'["'+ comment +'",'+ new Date().getTime() +']\' as JSON))';
 
     if(status === "Confirmed"){
         updateDateTime = interviewDate + " " +interviewTime + ":00";

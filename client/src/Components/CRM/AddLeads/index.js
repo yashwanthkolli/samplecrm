@@ -120,6 +120,7 @@ function AddLeads(){
     const toast = useToast();
     const toast_course = "toast_course"; 
     const arr_category = ["Date", "", "Status", "Course", "CreatedBy", "AssignedTo"];
+    const hot_array = ["RAW", "RAW(Re-applied)", "NI/Dead", "Decline", "PRSONA"];
 
     const [open, setOpen] = useState(false);
     const [typeOfDialog, setTypeOfDialog] = useState("");
@@ -1313,7 +1314,7 @@ function AddLeads(){
                                     JSON.parse(dialogData.Comment).map((element) => {
                                         return (
                                             <Typography style={{width: '100%', height: '25px', verticalAlign: 'center'}} className={classes.TypoCourse}>
-                                                <span style={{float: 'left'}}>{element[0]}</span><span style={{float: 'right'}}>{new Date(element[1]).toGMTString()}</span>
+                                                <span style={{float: 'left'}}>{element[0]}</span><span style={{float: 'right'}}>{new Date(new Date(element[1]).getTime() - new Date().getTimezoneOffset()*60*1000).toGMTString()}</span>
                                             </Typography> 
                                         )
                                     })

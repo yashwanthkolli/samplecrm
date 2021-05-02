@@ -37,8 +37,10 @@ function CoursesGraph() {
                         hoverinfo: 'label+percent+value',
                         type: 'pie',
                         marker: {colors: ['#384b7e', '#122425', '#223565', '#243739', '#060404', '#202950', '#065499']},
+                        text: names.concat(['Others']).map(name => name.substring(0, 6)+'...'),
                         name: 'Courses',
-                        textinfo: 'label',
+                        textinfo: 'text',
+                        textposition: 'inside',
                         insidetextorientation: 'radial'
                     }
                 ]}

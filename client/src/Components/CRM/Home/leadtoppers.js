@@ -23,7 +23,7 @@ function LeadToppersGraph() {
     }, [userData.Email])
 
     useEffect(() => {
-        setNames(leadToppers.map( lead => lead.AssignedTo.substring(4)))
+        setNames(leadToppers.map( lead => lead.AssignedTo))
         setValues(leadToppers.map( lead => lead.count))
     }, [leadToppers])
 

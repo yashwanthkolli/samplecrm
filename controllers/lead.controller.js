@@ -99,7 +99,7 @@ exports.addNewLeadsController = (req, res) => {
 
 exports.fetchTopPlaceLeadsController = (req, res) => {
 
-    leads_fetch = 'select City, count(City) as \'count\' from node_js.tab group by City having count(City) > 0 order by count desc limit 35';
+    leads_fetch = 'select City, count(City) as \'count\' from ice.leads group by City having count(City) > 0 order by count desc limit 35';
     connect.query(leads_fetch, function(err, result){
         if(err){
             return res.status(500).json({
@@ -114,7 +114,7 @@ exports.fetchTopPlaceLeadsController = (req, res) => {
 }
 
 exports.fetchNumberOfLeadsController = (req, res) => {
-    leads_count = 'select count(*) as count from node_js.tab';
+    leads_count = 'select count(*) as count from ice.leads';
     connect.query(leads_count, function(err, result){
         if(err){
             return res.status(500).json({
@@ -129,7 +129,7 @@ exports.fetchNumberOfLeadsController = (req, res) => {
 }
 
 exports.fetchLeadToppersController = (req, res) => {
-    leads_toppers = 'select AssignedTo, count(AssignedTo) as \'count\' from node_js.tab where AssignedTo not in (select AssignedTo from node_js.tab where AssignedTo = \'636-Website Lead Pool\') group by AssignedTo having count(AssignedTo) > 0 order by count desc limit 10';
+    leads_toppers = 'SELECT CONCAT(Firstname, \' \', Surname) AS AssignedTo, sum(CASE WHEN e.Employee_ID = t.AssignedTo IS NULL THEN 0 ELSE 1 END) count FROM ice.employees e LEFT JOIN ice.leads t ON t.AssignedTo = e.Employee_ID GROUP BY Employee_ID ORDER BY count desc limit 10';
     connect.query(leads_toppers, function(err, result){
         if(err){
             return res.status(500).json({
@@ -144,7 +144,7 @@ exports.fetchLeadToppersController = (req, res) => {
 }
 
 exports.fetchCountWebsiteLeads = (req, res) => {
-    website_leads = 'select AssignedTo, count(AssignedTo) as \'count\' from node_js.tab where AssignedTo in (select AssignedTo from node_js.tab where AssignedTo = \'636-Website Lead Pool\') group by AssignedTo having count(AssignedTo) > 0 order by count desc limit 10';
+    website_leads = 'select AssignedTo, count(AssignedTo) as \'count\' from ice.leads where AssignedTo in (select AssignedTo from ice.leads where AssignedTo = \'636-Website Lead Pool\') group by AssignedTo having count(AssignedTo) > 0 order by count desc limit 10';
     connect.query(website_leads, function(err, result){
         if(err){
             return res.status(500).json({
@@ -161,7 +161,7 @@ exports.fetchCountWebsiteLeads = (req, res) => {
 exports.fetchCurrentMonthLeads = (req, res) => {
     
     const {fromDate, toDate} = req.body
-    count_fetch = 'SELECT Venue, COUNT(Venue) AS \'count\' FROM node_js.tab WHERE Createdt BETWEEN \''+ fromDate +'\' AND \''+ toDate +'\' AND STATUS = \'5-Confirmed\' GROUP BY Venue HAVING COUNT(Venue)>0 ORDER BY COUNT DESC LIMIT 5';
+    count_fetch = 'SELECT Venue, COUNT(Venue) AS \'count\' FROM ice.leads WHERE Createdt BETWEEN \''+ fromDate +'\' AND \''+ toDate +'\' AND STATUS = \'5-Confirmed\' GROUP BY Venue HAVING COUNT(Venue)>0 ORDER BY COUNT DESC LIMIT 5';
     connect.query(count_fetch, function(err, result){
         if(err){
             return res.status(500).json({
@@ -186,7 +186,7 @@ exports.fetchLastFifteenDayLeads = (req, res) => {
     const pastMonth = fifteen.getMonth() + 1 < 10 ? `0${(fifteen.getMonth()+1).toString()}` : (fifteen.getMonth()+1).toString()
     const fifteenDate = `${fifteen.getFullYear()}-${pastMonth}-${pastDate} 00:00:00`
 
-    fetch_fifteen = 'SELECT CAST(Createdt AS DATE) AS Createdt, COUNT(CAST(Createdt AS DATE)) AS \'count\' FROM node_js.tab WHERE Createdt BETWEEN \''+ fifteenDate + '\' AND \''+ date + '\' AND STATUS = \'5-Confirmed\' GROUP BY CAST(Createdt AS DATE) HAVING COUNT(CAST(Createdt AS DATE))>0 LIMIT 15';
+    fetch_fifteen = 'SELECT CAST(Createdt AS DATE) AS Createdt, COUNT(CAST(Createdt AS DATE)) AS \'count\' FROM ice.leads WHERE Createdt BETWEEN \''+ fifteenDate + '\' AND \''+ date + '\' AND STATUS = \'5-Confirmed\' GROUP BY CAST(Createdt AS DATE) HAVING COUNT(CAST(Createdt AS DATE))>0 LIMIT 15';
     connect.query(fetch_fifteen, function(err, result){
         if(err){
             return res.status(500).json({
@@ -202,7 +202,7 @@ exports.fetchLastFifteenDayLeads = (req, res) => {
 
 exports.fetchSourceCount = (req, res) => {
 
-    source_count = 'SELECT Source, COUNT(Source) AS \'count\' FROM node_js.tab GROUP BY Source HAVING COUNT(Source)>0 limit 7';
+    source_count = 'SELECT Source, COUNT(Source) AS \'count\' FROM ice.leads GROUP BY Source HAVING COUNT(Source)>0 limit 7';
     connect.query(source_count, function(err, result){
         if(err){
             return res.status(500).json({
@@ -218,7 +218,7 @@ exports.fetchSourceCount = (req, res) => {
 
 exports.fetchTopCourseCount = (req, res) => {
 
-    course_count = 'SELECT Type, COUNT(Type) AS \'count\' FROM node_js.tab GROUP BY Type HAVING COUNT(Type)>0 ORDER BY count DESC LIMIT 6';
+    course_count = 'SELECT Type, COUNT(Type) AS \'count\' FROM ice.leads GROUP BY Type HAVING COUNT(Type)>0 ORDER BY count DESC LIMIT 6';
     connect.query(course_count, function(err, result){
         if(err){
             return res.status(500).json({
@@ -233,7 +233,7 @@ exports.fetchTopCourseCount = (req, res) => {
 }
 
 exports.fetchTotalCourseCount = (req, res) => {
-    total_course_count = 'SELECT COUNT(Type) AS \'count\' FROM node_js.tab HAVING COUNT(Type)>0';
+    total_course_count = 'SELECT COUNT(Type) AS \'count\' FROM ice.leads HAVING COUNT(Type)>0';
     connect.query(total_course_count, function(err, result){
         if(err){
             return res.status(500).json({

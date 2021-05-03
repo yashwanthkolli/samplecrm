@@ -1311,11 +1311,16 @@ function AddLeads(){
                             {dialogData.Comment ?
                                 <div className={classes.commentHolder}>
                                 {
-                                    JSON.parse(dialogData.Comment).map((element) => {
+                                    JSON.parse(dialogData.Comment).map((element, index) => {
                                         return (
-                                            <Typography style={{width: '100%', height: '25px', verticalAlign: 'center'}} className={classes.TypoCourse}>
-                                                <span style={{float: 'left'}}>{element[0]}</span><span style={{float: 'right'}}>{new Date(new Date(element[1]).getTime() - new Date().getTimezoneOffset()*60*1000).toGMTString()}</span>
-                                            </Typography> 
+                                            <div className={classes.TypoCourse} key={index}>
+                                                <Typography style={{verticalAlign: 'center', fontWeight: '600'}}>
+                                                    {element[0]}
+                                                </Typography> 
+                                                <Typography style={{verticalAlign: 'center', fontWeight: '500', fontSize: '13px'}}>
+                                                    {new Date(new Date(element[1]).getTime() - new Date().getTimezoneOffset()*60*1000).toGMTString()}
+                                                </Typography>
+                                            </div>
                                         )
                                     })
                                 }
@@ -1323,6 +1328,14 @@ function AddLeads(){
                                 :
                                 null
                             }
+                            <FormControl fullWidth style={{display: hot_array.includes(dialogData.Status) ? 'none' : 'flex', marginBottom: '7px'}}>
+                                <FormControlLabel
+                                    value="start"
+                                    control={<Checkbox checked={dialogData.Hot} onChange={e=>setDialogData({...dialogData, Hot: e.target.checked})} color="primary" />}
+                                    label="Checkbox for hot lead"
+                                    labelPlacement="end"
+                                />
+                            </FormControl>
                             <Button
                                 type="submit"
                                 variant="contained"

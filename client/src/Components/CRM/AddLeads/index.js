@@ -235,7 +235,7 @@ function AddLeads(){
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
             email: userData.Email,
-            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name, otherComment, hot, dob
+            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, commentName: userData.Firstname + " " + userData.Surname,  ad_name, otherComment, hot, dob
         })
         .then((res) => {
             setUpdate(!update);
@@ -483,7 +483,9 @@ function AddLeads(){
             interviewDate: dialogData.interviewDate,
             interviewTime: dialogData.interviewTime,
             updatorId: userData.Employee_ID,
-            venue: dialogData.Venue
+            venue: dialogData.Venue,
+            commentName: userData.Firstname + " " + userData.Surname,
+            hot: dialogData.Hot
         })
         .then((res) => {
             setUpdate(!update);
@@ -672,7 +674,7 @@ function AddLeads(){
                 <MaterialTable
                     title="Latest Leads Table"
                     columns={[
-                        {title: 'Lead Details', field: "details", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Lead Details', field: "details", cellStyle: {textAlign: 'center', width: '25%'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Course | Source', field: "course", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Status', field: "status", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
                         {title: 'Assigned To', field: "assignedTo", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
@@ -872,7 +874,6 @@ function AddLeads(){
                         <FormControl className={classes.selectField}>
                             <InputLabel style={{marginTop: '3px'}}>Comments</InputLabel>
                             <Select
-                                required
                                 fullWidth
                                 value={comment}
                                 onChange={(e)=>handleChange(e, 6)}
@@ -889,6 +890,7 @@ function AddLeads(){
                         </FormControl>
                     </div>
                     <TextField 
+                        required={comment === "others" ? true : false}
                         fullWidth
                         autoComplete="off"
                         value={otherComment}
@@ -1266,7 +1268,7 @@ function AddLeads(){
                             <FormControl fullWidth style={{marginBottom: '7px', display: userData.Type === "National Head" ? 'flex' : 'none' }} >
                                 <InputLabel>Assigned To</InputLabel>
                                 <Select
-                                    required={userData.Type === "National Head" ? 'flex' : 'none'}
+                                    required={userData.Type === "National Head" ? true : false}
                                     fullWidth
                                     value={dialogData.assignedChange ? dialogData.assignedChange : dialogData.AssignedTo}
                                     onChange={e=>setDialogData({...dialogData, assignedChange: e.target.value})}
@@ -1312,16 +1314,18 @@ function AddLeads(){
                                 <div className={classes.commentHolder}>
                                 {
                                     JSON.parse(dialogData.Comment).map((element, index) => {
+                                        if(element[0] !== ""){
                                         return (
                                             <div className={classes.TypoCourse} key={index}>
-                                                <Typography style={{verticalAlign: 'center', fontWeight: '600'}}>
+                                                <Typography style={{verticalAlign: 'center', fontWeight: '600', fontSize: '15px', fontFamily: 'Nunito'}}>
                                                     {element[0]}
-                                                </Typography> 
+                                                </Typography>
                                                 <Typography style={{verticalAlign: 'center', fontWeight: '500', fontSize: '13px'}}>
-                                                    {new Date(new Date(element[1]).getTime() - new Date().getTimezoneOffset()*60*1000).toGMTString()}
+                                                    {element[1] + " | "}{new Date(new Date(element[2]).getTime() - new Date().getTimezoneOffset()*60*1000).toGMTString()}
                                                 </Typography>
                                             </div>
                                         )
+                                        }
                                     })
                                 }
                                 </div>
@@ -1331,7 +1335,7 @@ function AddLeads(){
                             <FormControl fullWidth style={{display: hot_array.includes(dialogData.Status) ? 'none' : 'flex', marginBottom: '7px'}}>
                                 <FormControlLabel
                                     value="start"
-                                    control={<Checkbox checked={dialogData.Hot} onChange={e=>setDialogData({...dialogData, Hot: e.target.checked})} color="primary" />}
+                                    control={<Checkbox checked={Number(dialogData.Hot) ? true : false} onChange={e=>setDialogData({...dialogData, Hot: e.target.checked})} color="primary" />}
                                     label="Checkbox for hot lead"
                                     labelPlacement="end"
                                 />

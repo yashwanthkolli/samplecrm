@@ -675,10 +675,10 @@ function AddLeads(){
                     title="Latest Leads Table"
                     columns={[
                         {title: 'Lead Details', field: "details", cellStyle: {textAlign: 'center', width: '25%'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
-                        {title: 'Course | Source', field: "course", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
-                        {title: 'Status', field: "status", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
-                        {title: 'Assigned To', field: "assignedTo", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
-                        {title: 'Actions', field: "actions", cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}}
+                        {title: 'Course | Source', field: "course", cellStyle: {textAlign: 'center', width: '25%'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Status', field: "status", cellStyle: {textAlign: 'center', width: '25%'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Assigned To', field: "assignedTo", cellStyle: {textAlign: 'center', width: '25%'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}},
+                        {title: 'Actions', field: "actions", cellStyle: {textAlign: 'center', width: '25%'}, headerStyle: {textAlign: 'center', fontSize: '16px', fontFamily: 'Nunito', fontWeight:'700'}}
                     ]}
                     data={tableData}
                     style={{width: '98%', textAlign:'center'}}
@@ -936,8 +936,14 @@ function AddLeads(){
                                 <MenuItem value="Mobile">Mobile</MenuItem>
                                 <MenuItem value="Status">Status</MenuItem>
                                 <MenuItem value="Course">Course</MenuItem>
-                                <MenuItem value="CreatedBy">Created By</MenuItem>
-                                <MenuItem value="AssignedTo">Assigned To</MenuItem>
+                                { userData.Type === "National Head" ? 
+                                <>
+                                    <MenuItem value="CreatedBy">Created By</MenuItem>
+                                    <MenuItem value="AssignedTo">Assigned To</MenuItem>
+                                </>
+                                :
+                                null
+                                }
                             </Select>
                         </FormControl>
                         <div className={classes.fieldHolder} style={{display: category === "Date" ? 'flex' : 'none'}}>

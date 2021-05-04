@@ -50,7 +50,7 @@ exports.addNewLeadsController = (req, res) => {
     const {
         name,
         email_lead,
-        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name, otherComment, hot, dob
+        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name, otherComment, commentName, hot, dob
     } = req.body;
     const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0];
 
@@ -81,7 +81,7 @@ exports.addNewLeadsController = (req, res) => {
         + ' \''+ email +'\' ,'
         + ' \''+ now +'\' ,'
         + ' \''+ now +'\' ,'
-        + ' JSON_INSERT(\'[]\', \'$[0]\', cast(\'["'+ comment_select + '",' + new Date().getTime() + ']\' as JSON)),'
+        + ' JSON_INSERT(\'[]\', \'$[0]\', cast(\'["'+ comment_select + '", "' + commentName  + '", ' + new Date().getTime() + ']\' as JSON)),'
         + ' \''+ now + '\','
         + ' \''+ dob + '\','
         + '\'' + hot_indicator + '\')';
@@ -351,13 +351,13 @@ exports.modifySourceCourseController = (req, res) => {
 
 exports.statusUpdateController = (req, res) => {
     
-    const { Lead_id, status, followUpDate, followUpTime, assignedTo, oldComment, newcomment, newotherComment, interviewDate, interviewTime, venue, assignChange, updatorId} = req.body;
+    const { Lead_id, status, followUpDate, followUpTime, assignedTo, oldComment, newcomment, newotherComment, interviewDate, interviewTime, venue, assignChange, commentName, updatorId, hot} = req.body;
     
     const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0];
     var comment = newcomment === "others" ? newotherComment : newcomment;
     var updateDateTime, statusQuery;
 
-    var final_query = 'update ice.leads set Comment = JSON_ARRAY_APPEND(\''+ oldComment +'\', \'$\', cast(\'["'+ comment +'",'+ new Date().getTime() +']\' as JSON))';
+    var final_query = 'update ice.leads set Comment = JSON_ARRAY_APPEND(\''+ oldComment +'\', \'$\', cast(\'["'+ comment +'", "' + commentName + '", ' + new Date().getTime() +']\' as JSON))';
 
     if(status === "Confirmed"){
         updateDateTime = interviewDate + " " +interviewTime + ":00";
@@ -374,12 +374,13 @@ exports.statusUpdateController = (req, res) => {
         final_query = final_query + ',  AssignedTo = \'' + assignedTo + ',  AssignDt = \'' + now
     }
 
-    finalsubset_query = ',  UpdationDt = \'' + now + '\', CallingDt = \'' + now + '\', Updateuserid = ' + updatorId + ' where Lead_id = '+ Lead_id ;
+    finalsubset_query = ',  UpdationDt = \'' + now + '\', CallingDt = \'' + now + '\', Updateuserid = ' + updatorId + ', Hot = '+ hot + ' where Lead_id = '+ Lead_id ;
     
     final_query = final_query + finalsubset_query;
 
     connect.query(final_query, function(err, result){
         if(err){
+            console.log(err);
             return res.status(400).json({
                 message: "Error in updating resources"
             })

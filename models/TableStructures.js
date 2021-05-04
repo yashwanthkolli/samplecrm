@@ -12,7 +12,7 @@ module.exports = [
         +' Type CHAR(30) NOT NULL,'
         +' Reporting CHAR(40) NOT NULL,'
         +' Picture VARCHAR(255),'
-        +' Timings JSON DEFAULT NULL,'
+        +' Timings JSON DEFAULT (\'[]\'),'
         +' Primary Key(Employee_ID)'
     ],
     [
@@ -38,7 +38,7 @@ module.exports = [
         +' CallingDt Datetime,'
         +' UpdationDt Datetime,'
         +' Updateuserid varchar(10),'
-        +' Comment Varchar(255)'
+        +' Comment JSON '
     ],
     [
         'courses',

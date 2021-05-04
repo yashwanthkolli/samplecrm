@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react'
 import MaterialTable from 'material-table'
 import axios from 'axios'
 import Icon from '@material-ui/core/Icon';
-import { useToast } from '@chakra-ui/react'; 
+import { useToast } from '@chakra-ui/react';
+import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import * as moment from 'moment';
 import { AiFillDelete } from 'react-icons/ai';
-import { GrFormView } from 'react-icons/gr'
 import {
     AlertDialog,
     AlertDialogBody,
@@ -19,13 +17,15 @@ import {
     AlertDialogContent,
     AlertDialogOverlay
 } from "@chakra-ui/react";
+import { GrFormView } from 'react-icons/gr'
 import { decodeSessionStorage } from '../../../helpers/auth.helpers';
+import moment from 'moment'
 
 function Users() {
-    const toast = useToast();
+    const toast = useToast()
     const userData = decodeSessionStorage().payload;
-    
-    const [users, setUsers] = useState([])
+
+    const [employees, setEmployees] = useState([])
     const [deleteWarning, setDeleteWarning] = useState(false)
     const [deleteUserId, setDeleteUserId] = useState()
     const [openView, setOpenView] = useState(false)
@@ -39,36 +39,20 @@ function Users() {
 
     const [update, setUpdate] = useState(false);
 
-    // Get Users on page load
-    useEffect( () => {
-        axios.post(`${process.env.REACT_APP_CONFIG}/getUsers`, { email: userData.Email })
-        .then(res => setUsers(res.data.users))
-        .catch(err => {
-            toast({
-                description: "Error In Fetching Users",
-                duration: 2000,
-                position: "top"
+    useEffect(() => {
+        axios.post(`${process.env.REACT_APP_CONFIG}/getReportingEmployees`, { id: userData.Employee_ID })
+            .then(res => setEmployees(res.data.employees))
+            .catch(err => {
+                toast({
+                    description: "Error In Fetching Employees",
+                    duration: 2000,
+                    position: "top-right"
+                })
             })
-        })
-    }, [update, userData.Email, toast])
+    }, [update, userData.Employee_ID, toast])
 
-    //Funtion to find time difference between 2 times
-    const findDuration = (start, end) => {
-        var startTime = moment(start, 'HH:mm')
-        var endTime = moment(end, 'HH:mm')
-        if(startTime > endTime){
-            endTime = endTime.add(24, 'hours')
-        }
-        var duration = moment.duration(endTime.diff(startTime))
-        var timeDiff = duration.hours().toString() + ':' + duration.minutes().toString()
-        return timeDiff
-    }
-
-    // get resourses when user is selected
     useEffect( () => {
-        // Check if user is selected then load resourses
         if(seletedUser){
-            //Get reporting workers
             axios.post(`${process.env.REACT_APP_CONFIG}/getReportingEmployees`, { email: userData.Email, id: seletedUser.Employee_ID })
             .then(res => setAssignedEmployees(res.data.employees))
             .catch(err => {
@@ -79,7 +63,6 @@ function Users() {
                 })
             })
 
-            // Get Login logout JSON object, covert to normal array, covert array to table usable form
             const selectedUserTimings = seletedUser.Timings ? JSON.parse(seletedUser.Timings) : []
             var dateExists = false
             selectedUserTimings.forEach(day => {
@@ -99,7 +82,7 @@ function Users() {
         }
     }, [seletedUser, selectedDate, userData.Email, toast])
 
-    // Delete User Action
+
     const onDeleteUser = (id) => {
         axios.post(`${process.env.REACT_APP_CONFIG}/deleteUser`, {
             email: userData.Email,
@@ -122,7 +105,17 @@ function Users() {
         })
     }
 
-    // Close dialog when use4r is selected
+    const findDuration = (start, end) => {
+        var startTime = moment(start, 'HH:mm')
+        var endTime = moment(end, 'HH:mm')
+        if(startTime > endTime){
+            endTime = endTime.add(24, 'hours')
+        }
+        var duration = moment.duration(endTime.diff(startTime))
+        var timeDiff = duration.hours().toString() + ':' + duration.minutes().toString()
+        return timeDiff
+    }
+    
     const onViewClose = () => {
         setOpenView(false)
         setAssignedEmployees([])
@@ -131,64 +124,64 @@ function Users() {
 
     return (
         <div style={{width: '90%'}}>
-            {/* Table showing all employees */}
             <MaterialTable
-                title="Users"
-                columns={[
-                    { title: 'Name', field: 'Name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
-                    { title: 'Email', field: 'Email', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
-                    { title: 'Phone No', field: 'Mobile', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
-                    { title: 'City', field: 'City', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
-                    { title: 'Role', field: 'Type', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
-                    {
-                        title: 'View',
-                        field: 'internal_action',
-                        cellStyle: {textAlign: 'center'},
-                        sorting: false,
-                        headerStyle: {textAlign: 'center'},
-                        render: (rowData) =>
-                            rowData && (
-                            <button
-                                color="secondary"
-                                onClick={() => {
-                                    setOpenView(true)
-                                    setSeletedUser(rowData)
-                                }}
-                            >
-                                <Icon component={GrFormView} />
-                            </button>
-                        )
-                    },
-                    {
-                        title: 'Delete',
-                        field: 'internal_action',
-                        cellStyle: {textAlign: 'center'},
-                        sorting: false,
-                        headerStyle: {textAlign: 'center'},
-                        render: (rowData) =>
-                            rowData && (
-                            <button
-                                color="secondary"
-                                onClick={() => {
-                                    setDeleteWarning(true)
-                                    setDeleteUserId(rowData.Employee_ID)
-                                }}
-                            >
-                                <Icon component={AiFillDelete} />
-                            </button>
-                        )
-                    }
-                ]}
-                data={ users }
-                options={{
-                    headerStyle: {
-                        backgroundColor: '#EEE',
-                    }
-                }}
-                style={{padding: '15px 30px', margin: '30px 0'}}
+                    title="Users"
+                    columns={[
+                        { title: 'Name', field: 'Name', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                        { title: 'Email', field: 'Email', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                        { title: 'Phone No', field: 'Mobile', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                        { title: 'City', field: 'City', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                        { title: 'Role', field: 'Type', cellStyle: {textAlign: 'center'}, headerStyle: {textAlign: 'center'} },
+                        {
+                            title: 'View',
+                            field: 'internal_action',
+                            cellStyle: {textAlign: 'center'},
+                            sorting: false,
+                            headerStyle: {textAlign: 'center'},
+                            render: (rowData) =>
+                                rowData && (
+                                <button
+                                    color="secondary"
+                                    onClick={() => {
+                                        setOpenView(true)
+                                        setSeletedUser(rowData)
+                                    }}
+                                >
+                                    <Icon component={GrFormView} />
+                                </button>
+                            )
+                        },
+                        {
+                            title: 'Delete',
+                            field: 'internal_action',
+                            cellStyle: {textAlign: 'center'},
+                            sorting: false,
+                            headerStyle: {textAlign: 'center'},
+                            render: (rowData) =>
+                                rowData && (
+                                <button
+                                    color="secondary"
+                                    onClick={() => {
+                                        setDeleteWarning(true)
+                                        setDeleteUserId(rowData.Employee_ID)
+                                    }}
+                                >
+                                    <Icon component={AiFillDelete} />
+                                </button>
+                            )
+                        }
+                        
+                    ]}
+                    data={ employees }
+                    parentChildData = {(row, rows) => rows.find(a => a.Employee_ID === row.Reporting)}
+                    options={{
+                        headerStyle: {
+                            backgroundColor: '#EEE',
+                        }
+                    }}
+                    style={{padding: '15px 30px', margin: '30px 0'}}
             />
 
-            {/* Alert box when delete is clicked */}
             <AlertDialog
                 motionPreset="slideInTop"
                 onClose={ () => setDeleteWarning(false) }
@@ -198,26 +191,25 @@ function Users() {
                 <AlertDialogOverlay />
 
                 <AlertDialogContent>
-                <AlertDialogHeader>Delete User?</AlertDialogHeader>
-                <AlertDialogBody>
-                    Are you sure you want to delete the user?
-                </AlertDialogBody>
-                <AlertDialogFooter>
-                    <Button onClick={() => setDeleteWarning(false)}>
-                    No
-                    </Button>
-                    <Button colorScheme="red" ml={3} onClick={() => {
-                        onDeleteUser(deleteUserId)
-                        setDeleteWarning(false)
-                    }}
-                    >
-                    Yes
-                    </Button>
-                </AlertDialogFooter>
+                    <AlertDialogHeader>Delete User?</AlertDialogHeader>
+                    <AlertDialogBody>
+                        Are you sure you want to delete the user?
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                        <Button onClick={() => setDeleteWarning(false)}>
+                        No
+                        </Button>
+                        <Button colorScheme="red" ml={3} onClick={() => {
+                            onDeleteUser(deleteUserId)
+                            setDeleteWarning(false)
+                        }}
+                        >
+                        Yes
+                        </Button>
+                    </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
 
-            {/* Dialog box when user view is clicked */}
             <Dialog open={openView} fullWidth maxWidth='xl' onClose={() => onViewClose()}>
                 <DialogTitle style={{marginTop: '20px'}}>{seletedUser ? seletedUser.Name : null}</DialogTitle>
                 <DialogContent>
@@ -280,4 +272,4 @@ function Users() {
     )
 }
 
-export default Users;
+export default Users

@@ -18,6 +18,7 @@ import {
     Section
 } from './addUserComponents';
 import { decodeSessionStorage } from '../../../helpers/auth.helpers';
+import Loading from '../../Loading';
 
 const useStyles = makeStyles((theme) => ({
     useTable: {
@@ -70,6 +71,9 @@ function AddUsers(){
     const [role, setRole] = useState("");
     const [reporting, setReporting] = useState("");
 
+    const [openLoading, setOpenLoading] = useState(false);
+    const [typeLoading, setTypeLoading] = useState("");
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -101,6 +105,9 @@ function AddUsers(){
     const adduser = (e) => {
         e.preventDefault();
 
+        setOpenLoading(true);
+        setTypeLoading("userAdding");
+
         axios.post(`${process.env.REACT_APP_USER}/addUser`,{
             email: userData.Email,
             first: firstname,
@@ -115,6 +122,9 @@ function AddUsers(){
             reporting: reporting
         })
         .then((res) => {
+            setOpenLoading(false);
+            setTypeLoading("");
+
             setUpdate(!update);
             handleClose();
             if(!toast.isActive(uid)){
@@ -158,6 +168,9 @@ function AddUsers(){
     }, [toast, userData.Email])
 
     useEffect(() => {
+        setOpenLoading(true);
+        setTypeLoading("userLoading");
+
         axios.post(`${process.env.REACT_APP_USER}/usersList`,{
             email: userData.Email
         })
@@ -176,6 +189,10 @@ function AddUsers(){
                 })
             })
             setTableData(data);
+            setTimeout(() => {
+                setOpenLoading(false);
+                setTypeLoading("");
+            }, 400);
         })
         .catch((err) => {
             if(!toast.isActive(lid)){
@@ -216,7 +233,7 @@ function AddUsers(){
              </div>
             </Paper>
 
-         <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <Dialog open={open} fullWidth TransitionComponent={Transition} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Add New CRM User</DialogTitle>
              <DialogContent>
                  <form onSubmit={adduser}>
@@ -289,7 +306,6 @@ function AddUsers(){
                     </div>
                     <div className={classes.name}>
                         <TextField 
-                            required
                             autoComplete="off"
                             type="text"
                             name="address"
@@ -396,6 +412,7 @@ function AddUsers(){
                 </form>
             </DialogContent>
         </Dialog>
+        <Loading open={openLoading} type={typeLoading} />
         </>
     )
 }

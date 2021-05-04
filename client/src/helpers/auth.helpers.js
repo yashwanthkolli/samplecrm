@@ -27,24 +27,21 @@ export const removeLocalStorage = (key) => {
 }
 
 export const isAuth = () => {
-    if(sessionStorage.getItem("token")){
-        const token = sessionStorage.getItem("token");
-        let state = false;
+    const token = sessionStorage.getItem("token");
+    let state = false;
 
-        //modify the backend to reverse this process.
+    //modify the backend to reverse this process.
 
-        jwt.verify(token, process.env.REACT_APP_JWT, (err, decoded) => {
-            if(err){
-                removeSessionStoragee("token");
-                state = false;
-            } else {
-                state = true;
-            }
-        })
-        return state;
-    } else {
-        return false;
-    }
+    jwt.verify(token, process.env.REACT_APP_JWT_PAYLOAD, (err, decoded) => {
+
+        if(err){
+            removeSessionStoragee("token");
+            state = false;
+        } else {
+            state = true;
+        }
+    })
+    return state;
 }
 
 export const signout = () => {
@@ -61,7 +58,7 @@ export const updateUserTimingsOnLogin = async (loginTime, loggedInDuration) => {
         
         let data = []
 
-        await axios.post(`${process.env.REACT_APP_USER}/getEmployeeTimings`, { email: JSON.parse(sessionStorage.getItem('user')).Email, prevEmail: JSON.parse(localStorage.getItem('previousLogin')) })
+        await axios.post(`${process.env.REACT_APP_USER}/getEmployeeTimings`, { email: decodeSessionStorage().payload.Email, prevEmail: JSON.parse(localStorage.getItem('previousLogin')) })
         .then(res => {
             const timings = JSON.parse(res.data.timings[0].Timings)
             
@@ -84,8 +81,23 @@ export const updateUserTimingsOnLogin = async (loginTime, loggedInDuration) => {
         })
         .catch(err => console.log(err))
         
-        await axios.post(`${process.env.REACT_APP_USER}/setEmployeeTimings`, { email: JSON.parse(sessionStorage.getItem('user')).Email, jsonData: data, prevEmail: JSON.parse(localStorage.getItem('previousLogin')) })
+        await axios.post(`${process.env.REACT_APP_USER}/setEmployeeTimings`, { email: decodeSessionStorage().payload.Email, jsonData: data, prevEmail: JSON.parse(localStorage.getItem('previousLogin')) })
         .then(res => null)
         .catch(err => console.log(err))
     }
 } 
+
+export const decodeSessionStorage = () => {
+
+    const payload_token = sessionStorage.getItem("user");
+    var userData = {};
+
+    jwt.verify(payload_token, process.env.REACT_APP_JWT_PAYLOAD, (err, decoded) => {
+        if(err){
+            userData = {};
+        }
+        userData = decoded
+    })
+
+    return userData
+}

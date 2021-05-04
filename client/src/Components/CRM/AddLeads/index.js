@@ -120,6 +120,7 @@ function AddLeads(){
     const toast = useToast();
     const toast_course = "toast_course"; 
     const arr_category = ["Date", "", "Status", "Course", "CreatedBy", "AssignedTo"];
+    const hot_array = ["RAW", "RAW(Re-applied)", "NI/Dead", "Decline", "PRSONA"];
 
     const [open, setOpen] = useState(false);
     const [typeOfDialog, setTypeOfDialog] = useState("");
@@ -145,6 +146,7 @@ function AddLeads(){
     const [comment, setComment] = useState("");
     const [ad_name, setAdName] = useState("");
     const [otherComment, setOtherComment] = useState("");
+    const [dob, setDob] = useState("");
     const [hot, setHot] = useState(false);
 
     const [category, setCategory] = useState("");
@@ -188,8 +190,6 @@ function AddLeads(){
         setOpen(true);
         setTypeOfDialog(type);
 
-        // setting the data for the opened dialog box that dynamically changes with the row of the table.
-        console.log(element);
         if(element){
             setDialogData(element);
         }
@@ -235,7 +235,7 @@ function AddLeads(){
 
         axios.post(`${process.env.REACT_APP_LEADS}/addNewLeads`, {
             email: userData.Email,
-            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name, otherComment, hot
+            name, email_lead, mobile, qualif, city, source, course, assignTo, status, comment, ad_name, otherComment, hot, dob
         })
         .then((res) => {
             setUpdate(!update);
@@ -367,7 +367,7 @@ function AddLeads(){
                             {element.Hot === "1" ? <Chip style={{backgroundColor: '#202950', color: "white", fontFamily: 'Nunito'}} size="small" label="Hot Lead" /> : null }
                         </div>,
                     "course": 
-                        <div className={classes.course} >
+                        <div className={classes.course}>
                             {element.course + " | " + element.courseType + " | Rs." + element.courseCost}
                         </div>,
                     "status": 
@@ -471,7 +471,19 @@ function AddLeads(){
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_LEADS}/statusUpdate`,{
-            id: dialogData.Lead_id, status: dialogData.Status
+            Lead_id: dialogData.Lead_id,
+            status: dialogData.Status,
+            followUpDate: dialogData.followUpDate,
+            followUpTime: dialogData.followUpTime,
+            assignedTo: dialogData.AssignedTo,
+            assignChange: dialogData.assignedChange,
+            oldComment: dialogData.Comment,
+            newcomment: dialogData.newcomment,
+            newotherComment: dialogData.newotherComment,
+            interviewDate: dialogData.interviewDate,
+            interviewTime: dialogData.interviewTime,
+            updatorId: userData.Employee_ID,
+            venue: dialogData.Venue
         })
         .then((res) => {
             setUpdate(!update);
@@ -497,7 +509,6 @@ function AddLeads(){
             email: userData.Email
         })
         .then((res) => {
-            console.log(res);
             let data_latest = [];
 
             res.data.latest.forEach((element) => {
@@ -508,7 +519,7 @@ function AddLeads(){
                             {element.Hot === "1" ? <Chip style={{backgroundColor: '#202950', color: "white", fontFamily: 'Nunito'}} size="small" label="Hot Lead" /> : null }
                         </div>,
                     "course": 
-                        <div className={classes.course} style={{cursor: 'pointer'}} onClick={() => handleOpen("courseSource", element)}>
+                        <div className={classes.course} style={{cursor: 'pointer'}} onClick={userData.Type === "National Head" ? () => handleOpen("courseSource", element) : null}>
                             {element.course + " | " + element.courseType + " | Rs." + element.courseCost + " | " + element.Source}
                         </div>,
                     "status": 
@@ -522,7 +533,7 @@ function AddLeads(){
                             <div>{new Date(element.AssignDt).toLocaleString()}</div>
                         </div>,
                     "actions": <div className={classes.btnSection}>
-                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("walkIn")}>
+                            <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("walkIn")} disabled={element.Status !== "Confirmed"}>
                                 <FaWalking style={{margin: '5px'}} />    
                             </Button>
                             <Button variant="contained" style={{backgroundColor: '#202950', color: 'white', marginRight: '5px'}} onClick={() => handleOpen("mailPortal")}>
@@ -542,7 +553,7 @@ function AddLeads(){
             
         })
         .catch((err) =>{})
-    }, [update, classes.btnSection, classes.assigned, classes.course, classes.leadDetails, classes.status, userData.Email])
+    }, [update, userData.Type, classes.btnSection, classes.assigned, classes.course, classes.leadDetails, classes.status, userData.Email])
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getCourses`, {
@@ -705,18 +716,31 @@ function AddLeads(){
                         placeholder="Enter Lead's Name"
                         style={{marginBottom: '7px'}}
                     />
-                    <TextField 
-                        required
-                        fullWidth
-                        autoComplete="off"
-                        name="email"
-                        type="email"
-                        label="Email"
-                        placeholder="Enter Lead's Email"
-                        value={email_lead}
-                        onChange={e=>setEmailLead(e.target.value)}
-                        style={{marginBottom: '7px'}}
-                    />
+                    <div className={classes.fieldHolder}>
+                        <TextField 
+                            required
+                            fullWidth
+                            autoComplete="off"
+                            name="email"
+                            type="email"
+                            label="Email"
+                            placeholder="Enter Lead's Email"
+                            value={email_lead}
+                            onChange={e=>setEmailLead(e.target.value)}
+                            style={{width: '45%'}}
+                        />
+                        <TextField 
+                            fullWidth
+                            autoComplete="off"
+                            name="dob"
+                            type="date"
+                            label="DOB"
+                            placeholder="Enter Lead's DOB"
+                            value={dob}
+                            onChange={e=>setDob(e.target.value)}
+                            style={{width: '45%'}}
+                        />
+                    </div>
                     <div className={classes.fieldHolder}>
                         <TextField 
                             required
@@ -1070,7 +1094,7 @@ function AddLeads(){
                                 type="date"
                                 label="Lead DOB"
                                 placeholder="Change the DOB"
-                                value={new Date(new Date(dialogData.DOB).getTime() - (new Date(dialogData.DOB).getTimezoneOffset()*60000)).toISOString().split("T")[0]}
+                                value={dialogData.DOB ? new Date(new Date(dialogData.DOB).getTime() - (new Date(dialogData.DOB).getTimezoneOffset()*60000)).toISOString().split("T")[0] : null}
                                 onChange={e=>setDialogData({...dialogData, DOB: e.target.value})}
                                 style={{marginBottom: '7px', width: '45%'}}
                             />
@@ -1175,7 +1199,7 @@ function AddLeads(){
                     <DialogContent>
                         <Typography className={classes.TypoCourse}>Please make sure to fill all the required details to update the status of a lead.</Typography>
                         <form onSubmit={handleStatusUpdate}>
-                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                            <FormControl fullWidth style={{marginBottom: '4px'}}>
                                 <InputLabel>Lead Status</InputLabel>
                                 <Select
                                     required
@@ -1192,25 +1216,60 @@ function AddLeads(){
                                 }
                                 </Select>
                             </FormControl>
-                            <div className={classes.fieldHolder}>
+                            <div className={classes.fieldHolder} style={{display: dialogData.Status !== "Confirmed"? 'flex' : 'none'}}>
                                 <TextField 
-                                    required
+                                    required={dialogData.Status !== "Confirmed" ? true : false}
                                     style={{width: '45%'}}
                                     type="date"
                                     label="Follow-up Date"
+                                    value={dialogData.followUpDate}
+                                    onChange={e=>setDialogData({...dialogData, followUpDate: e.target.value})}
                                 />
                                 <TextField 
-                                    required
+                                    required={dialogData.Status !== "Confirmed" ? true : false}
                                     style={{width: '45%'}}
                                     type="time"
                                     label="Follow-up Time"
+                                    value={dialogData.followUpTime}
+                                    onChange={e=>setDialogData({...dialogData, followUpTime: e.target.value})}
                                 />
                             </div>
-                            <FormControl fullWidth style={{marginBottom: '7px'}}>
+                            <div style={{display: dialogData.Status === "Confirmed" ? 'flex' : 'none', flexDirection: 'column', marginBottom: '7px'}}>
+                                <div className={classes.fieldHolder} >
+                                    <TextField 
+                                        required={dialogData.Status === "Confirmed" ? true : false}
+                                        style={{width: '45%'}}
+                                        type="date"
+                                        label="Interview Date"
+                                        value={dialogData.interviewDate}
+                                        onChange={e=>setDialogData({...dialogData, interviewDate: e.target.value})}
+                                    />
+                                    <TextField 
+                                        required={dialogData.Status === "Confirmed" ? true : false}
+                                        style={{width: '45%'}}
+                                        type="time"
+                                        label="Interview Time"
+                                        value={dialogData.interviewTime}
+                                        onChange={e=>setDialogData({...dialogData, interviewTime: e.target.value})}
+                                    />
+                                </div>
+                                <TextField 
+                                    required={dialogData.Status === "Confirmed" ? true : false}
+                                    fullWidth
+                                    type="text"
+                                    label="Venue"
+                                    placeholder="Enter the Venue"
+                                    value={dialogData.Venue}
+                                    onChange={e=>setDialogData({...dialogData, Venue: e.target.value})}
+                                />
+                            </div>
+                            <FormControl fullWidth style={{marginBottom: '7px', display: userData.Type === "National Head" ? 'flex' : 'none' }} >
                                 <InputLabel>Assigned To</InputLabel>
                                 <Select
-                                    required
+                                    required={userData.Type === "National Head" ? 'flex' : 'none'}
                                     fullWidth
+                                    value={dialogData.assignedChange ? dialogData.assignedChange : dialogData.AssignedTo}
+                                    onChange={e=>setDialogData({...dialogData, assignedChange: e.target.value})}
                                 >
                                 {
                                     employeeFetched.map((element, index) => {
@@ -1221,6 +1280,49 @@ function AddLeads(){
                                 }
                                 </Select>
                             </FormControl>
+                            <FormControl fullWidth style={{marginBottom: '4px'}}>
+                                <InputLabel>Comments (Select other to enter manually)</InputLabel>
+                                <Select
+                                    required
+                                    fullWidth
+                                    value={dialogData.newcomment ? dialogData.newcomment : ''}
+                                    onChange={e=>setDialogData({...dialogData, newcomment: e.target.value})}
+                                >
+                                {
+                                    commentsFetched.map((element, index) => {
+                                        return (
+                                        <MenuItem key={index} value={element.comment}>{element.comment}</MenuItem>
+                                        )
+                                    })
+                                }
+                                    <MenuItem value="others" > Others </MenuItem>
+                                </Select>
+                            </FormControl>
+                            <TextField 
+                                required
+                                fullWidth
+                                disabled={dialogData.newcomment === "others" ? false : true}
+                                value={dialogData.newotherComment ? dialogData.newotherComment : ''}
+                                onChange={e=>setDialogData({...dialogData, newotherComment: e.target.value})}
+                                label="Other Comment"
+                                placeholder="Type comments here..."
+                                style={{marginBottom: '4px'}}
+                            />
+                            {dialogData.Comment ?
+                                <div className={classes.commentHolder}>
+                                {
+                                    JSON.parse(dialogData.Comment).map((element) => {
+                                        return (
+                                            <Typography style={{width: '100%', height: '25px', verticalAlign: 'center'}} className={classes.TypoCourse}>
+                                                <span style={{float: 'left'}}>{element[0]}</span><span style={{float: 'right'}}>{new Date(new Date(element[1]).getTime() - new Date().getTimezoneOffset()*60*1000).toGMTString()}</span>
+                                            </Typography> 
+                                        )
+                                    })
+                                }
+                                </div>
+                                :
+                                null
+                            }
                             <Button
                                 type="submit"
                                 variant="contained"

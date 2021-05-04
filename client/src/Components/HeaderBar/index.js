@@ -12,18 +12,19 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
-import {ImProfile} from 'react-icons/im';
-import {BsFillChatSquareDotsFill} from 'react-icons/bs';
+import { ImProfile } from 'react-icons/im';
+import { BsFillChatSquareDotsFill } from 'react-icons/bs';
 import { FiLogOut } from 'react-icons/fi';
 import { GrResources } from 'react-icons/gr';
-import {BiCarousel, BiChalkboard, BiCommentDetail} from 'react-icons/bi';
-import { AiFillHome } from 'react-icons/ai';
-import {MdEventNote, MdFeedback, MdUpdate} from 'react-icons/md';
+import { BiCarousel, BiChalkboard, BiCommentDetail } from 'react-icons/bi';
+import { AiFillHome, AiOutlineFundProjectionScreen } from 'react-icons/ai';
+import { MdFeedback, MdUpdate } from 'react-icons/md';
+import { GiProgression } from 'react-icons/gi';
 import { SiGoogleanalytics } from 'react-icons/si';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { signout } from '../../helpers/auth.helpers';
-import { FaUserEdit, FaUserFriends, FaUsers } from 'react-icons/fa';
-import {TiTick} from 'react-icons/ti';
+import { FaUserEdit, FaUsers, FaAddressCard } from 'react-icons/fa';
+import { TiTick } from 'react-icons/ti';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -143,21 +144,32 @@ function HeaderBar({match}){
         {id: 9 ,path: `${match.path}/updateAdmin`, text: 'Edit Profile', icon: FaUserEdit }
     ]
 
-    const teamNav = [
-        {id: 1, path: `${match.path}/profile`,  icon: ImProfile },
-        {id: 2, path: `${match.path}/userTeam`,  icon: FaUserFriends },
-        {id: 3, path: `${match.path}/eventTeam`,  icon: MdEventNote },
-        {id: 4, path: `${match.path}/updateTeam`,  icon: MdUpdate },
-        {id: 5, path: `${match.path}/permission`, icon: TiTick }
+    const nationalHeadNav = [
+      {id: 6, path: `${match.path}/nationalHead/home`, icon: AiFillHome, text: 'Home'},
+      {id: 1, path: `${match.path}/nationalHead/profile`,  icon: ImProfile, text: 'Your Profile' },
+      {id: 2, path: `${match.path}/nationalHead/addLeads`,  icon: BiCarousel, text: 'Leads View' },
+      {id: 3, path: `${match.path}/nationalHead/addUsers`,  icon: MdUpdate, text: 'Users Panel' },
+      {id: 4, path: `${match.path}/nationalHead/contact`,  icon: BsFillChatSquareDotsFill, text: 'Profile' },
+      {id: 5, path: `${match.path}/nationalHead/feedback`,  icon: MdFeedback, text: 'Profile' },
+      {id: 7, path: `${match.path}/nationalHead/users`,  icon: FaUsers, text: 'Profile' }
     ]
 
-    const userNav = [
-        {id: 6, path: `${match.path}/home`, icon: AiFillHome, text: 'Home'},
-        {id: 1, path: `${match.path}/profile`,  icon: ImProfile, text: 'Your Profile' },
-        {id: 2, path: `${match.path}/addLeads`,  icon: BiCarousel, text: 'Leads View' },
-        {id: 3, path: `${match.path}/addUsers`,  icon: MdUpdate, text: 'Users Panel' },
-        {id: 4, path: `${match.path}/contact`,  icon: BsFillChatSquareDotsFill, text: 'Profile' },
-        {id: 5, path: `${match.path}/feedback`,  icon: MdFeedback, text: 'Profile' }
+    const managerNav = [
+      {id: 1, path: `${match.path}/manager/home`, text: 'Dashboard', icon: AiFillHome},
+      {id: 2, path: `${match.path}/manager/profile`, text: 'Your Profile', icon: FaAddressCard },
+      {id: 3, path: `${match.path}/manager/users`, text: 'Users', icon: FaUsers }
+    ]
+    
+    const convertorNav = [
+      {id: 1, path: `${match.path}/convertor/home`, text: 'Dashboard', icon: AiFillHome},
+      {id: 2, path: `${match.path}/convertor/profile`, text: 'Your Profile', icon: FaAddressCard },
+      {id: 3, path: `${match.path}/convertor/users`, text: 'Users', icon: FaUsers }
+    ]
+
+    const telecallerNav = [
+      {id: 1, path: `${match.path}/telecaller/home`, text: 'Dashboard', icon: AiOutlineFundProjectionScreen },
+      {id: 2, path: `${match.path}/telecaller/profile`, text: 'Your Profile', icon: FaAddressCard },
+      {id: 3, path: `${match.path}/telecaller/addleads`, text: 'Leads View', icon: GiProgression}
     ]
 
     let navbarElements;
@@ -166,11 +178,17 @@ function HeaderBar({match}){
       case 'Admin':
         navbarElements = adminNav
         break;
-      case 'nationalHead':
-        navbarElements = teamNav
-        break;
       case 'National Head':
-        navbarElements = userNav
+        navbarElements = nationalHeadNav
+        break;
+      case 'Manager':
+        navbarElements = managerNav
+        break;
+      case 'Convertor':
+        navbarElements = convertorNav
+        break;
+      case 'TeleCaller':
+        navbarElements = telecallerNav
         break;
       default:
         break;
@@ -222,16 +240,18 @@ function HeaderBar({match}){
                 <Typography variant="h6" noWrap style={{fontFamily: 'Nunito'}}>
                 ICE CRM
                 </Typography>
+                <Link to="/">
                 <IconButton
                 color="inherit"
                 aria-label="Logout"
                 onClick={signout}
                 edge="end"
                 >
-                <Link to="/">
+
                     <FiLogOut />
-                </Link>
+                
                 </IconButton>
+                </Link>
             </div>
             </Toolbar>
         </AppBar>

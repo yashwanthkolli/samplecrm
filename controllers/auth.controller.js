@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 exports.loginController = (req, res) => {
     const { email, password } = req.body;
 
-    login_query = 'Select Email, Firstname, Surname, Mobile, Status, Type, Picture from ice.Employees WHERE Email = \'' + email + '\' and Password = \'' + password + '\' ';
+    login_query = 'Select Employee_ID, Email, Firstname, Surname, Mobile, Status, Type, Picture from ice.Employees WHERE Email = \'' + email + '\' and Password = \'' + password + '\' ';
     connect.query(login_query, function(err, result){
         if(err){
             return res.status(500).json({

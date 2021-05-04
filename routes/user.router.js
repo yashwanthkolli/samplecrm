@@ -23,6 +23,6 @@ router.post('/getEmployeeList', verifyHigherLevel, employeeAssignedController);
 router.post('/getEmployeeTimings', getLoginTimeController);
 router.post('/setEmployeeTimings', setLoginTimeController);
 router.post('/getCityNames', getCityNamesController);
-router.post('/getTelecallerList', verifyHigherLevel, telecallerListController);
+router.post('/getTelecallerList', telecallerListController);
 
 module.exports = router;

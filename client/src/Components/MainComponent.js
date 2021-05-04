@@ -20,7 +20,9 @@ import Comments from './CRM/Admin/Comments';
 import Ads from './CRM/Admin/Ads';
 import Status from './CRM/Admin/Status';
 import Sources from './CRM/Admin/Sources';
-import Users from './CRM/Admin/Users';
+import AdminUsers from './CRM/Admin/Users';
+import TeleCallerRoute from './ProtectedRoute/TeleCallerRoute';
+import Users from './CRM/Employees/Users';
 
 function Holder({match}){
 
@@ -39,7 +41,9 @@ function Holder({match}){
                     <PrivateRoute path="/crm/ads" exact component={() => <Ads />} />
                     <PrivateRoute path="/crm/status" exact component={() => <Status />} />
                     <PrivateRoute path="/crm/sources" exact component={() => <Sources />} />
-                    <PrivateRoute path="/crm/users" exact component={() => <Users /> } />
+                    <PrivateRoute path="/crm/users" exact component={() => <AdminUsers /> } />
+
+                    <PrivateRoute path="/crm/manager/users" exact component={() => <Users />} />
                     <Redirect to = '/crm/home' />
                 </Switch>
             </Section>

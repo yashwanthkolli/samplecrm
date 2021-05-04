@@ -15,11 +15,12 @@ const {
     fetchTotalCourseCount,
     searchLeadsController,
     modifyDetailController,
-    modifySourceCourseController
+    modifySourceCourseController,
+    statusUpdateController
 } = require('../controllers/lead.controller');
 const { verifyHigherLevel } = require('../validations/higherlevel');
 
-router.post('/getLatestLeads', verifyHigherLevel, latestLeadController);
+router.post('/getLatestLeads', latestLeadController);
 router.post('/addNewLeads', verifyHigherLevel, addNewLeadsController);
 router.post('/getPlaceLeads', verifyHigherLevel, fetchTopPlaceLeadsController);
 router.post('/getNoOfLeads', verifyHigherLevel, fetchNumberOfLeadsController);
@@ -33,5 +34,6 @@ router.post('/totalCourseCount', verifyHigherLevel, fetchTotalCourseCount);
 router.post('/searchLeads', searchLeadsController);
 router.post('/modifyDetails', modifyDetailController);
 router.post('/modifySourceCourse', modifySourceCourseController);
+router.post('/statusUpdate', statusUpdateController);
 
 module.exports = router;

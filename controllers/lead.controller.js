@@ -11,7 +11,7 @@ exports.latestLeadController = (req, res) => {
         }
 
         if(result[0].count <= 20){
-            leads_query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            leads_query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.Comment, leads.AssignedTo,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id';
@@ -50,7 +50,7 @@ exports.addNewLeadsController = (req, res) => {
     const {
         name,
         email_lead,
-        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name, otherComment, hot
+        mobile, city, source, status, qualif, course, comment, assignTo, email, ad_name, otherComment, hot, dob
     } = req.body;
     const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0];
 
@@ -67,7 +67,7 @@ exports.addNewLeadsController = (req, res) => {
         hot_indicator = 1
     }
 
-    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment, UpdationDt, Hot) values ('
+    addnewlead_query = 'insert into ice.leads (Name, Email, Mobile, Qualif, Source, Ad_Name, Course, City, AssignedTo, Status, CreatedBy, Createdt, AssignDt, Comment, UpdationDt, DOB, Hot) values ('
         + ' \''+ name +'\' ,'
         + ' \''+ email_lead +'\' ,'
         + ' \''+ mobile +'\' ,'
@@ -81,10 +81,13 @@ exports.addNewLeadsController = (req, res) => {
         + ' \''+ email +'\' ,'
         + ' \''+ now +'\' ,'
         + ' \''+ now +'\' ,'
-        + ' \''+ comment_select + '\','
+        + ' JSON_INSERT(\'[]\', \'$[0]\', cast(\'["'+ comment_select + '",' + new Date().getTime() + ']\' as JSON)),'
         + ' \''+ now + '\','
+        + ' \''+ dob + '\','
         + '\'' + hot_indicator + '\')';
+
     connect.query(addnewlead_query, function(err){
+        console.log(err);
         if(err){
             return res.status(500).json({
                 err: err 
@@ -129,7 +132,7 @@ exports.fetchNumberOfLeadsController = (req, res) => {
 }
 
 exports.fetchLeadToppersController = (req, res) => {
-    leads_toppers = 'SELECT CONCAT(Firstname, \' \', Surname) AS AssignedTo, sum(CASE WHEN e.Employee_ID = t.AssignedTo IS NULL THEN 0 ELSE 1 END) count FROM ice.employees e LEFT JOIN ice.leads t ON t.AssignedTo = e.Employee_ID GROUP BY Employee_ID ORDER BY count desc limit 10';
+    leads_toppers = 'select AssignedTo, count(AssignedTo) as \'count\' from ice.leads where AssignedTo not in (select AssignedTo from ice.leads where AssignedTo = \'636-Website Lead Pool\') group by AssignedTo having count(AssignedTo) > 0 order by count desc limit 10';
     connect.query(leads_toppers, function(err, result){
         if(err){
             return res.status(500).json({
@@ -163,6 +166,7 @@ exports.fetchCurrentMonthLeads = (req, res) => {
     const {fromDate, toDate} = req.body
     count_fetch = 'SELECT Venue, COUNT(Venue) AS \'count\' FROM ice.leads WHERE Createdt BETWEEN \''+ fromDate +'\' AND \''+ toDate +'\' AND STATUS = \'5-Confirmed\' GROUP BY Venue HAVING COUNT(Venue)>0 ORDER BY COUNT DESC LIMIT 5';
     connect.query(count_fetch, function(err, result){
+        
         if(err){
             return res.status(500).json({
                 message: "Error in fetching details"
@@ -218,7 +222,7 @@ exports.fetchSourceCount = (req, res) => {
 
 exports.fetchTopCourseCount = (req, res) => {
 
-    course_count = 'SELECT Type, COUNT(Type) AS \'count\' FROM ice.leads GROUP BY Type HAVING COUNT(Type)>0 ORDER BY count DESC LIMIT 6';
+    course_count = 'SELECT courses.Name, COUNT(courses.Name) AS \'count\' FROM ice.leads inner join ice.courses on leads.Course = courses.id GROUP BY courses.Name HAVING COUNT(courses.Name)>0 ORDER BY count DESC LIMIT 6';
     connect.query(course_count, function(err, result){
         if(err){
             return res.status(500).json({
@@ -233,7 +237,7 @@ exports.fetchTopCourseCount = (req, res) => {
 }
 
 exports.fetchTotalCourseCount = (req, res) => {
-    total_course_count = 'SELECT COUNT(Type) AS \'count\' FROM ice.leads HAVING COUNT(Type)>0';
+    total_course_count = 'SELECT COUNT(courses.Name) AS \'count\' FROM ice.leads inner join ice.courses on leads.Course = courses.id HAVING COUNT(courses.Name)>0';
     connect.query(total_course_count, function(err, result){
         if(err){
             return res.status(500).json({
@@ -254,13 +258,13 @@ exports.searchLeadsController = (req, res) => {
     
     if(Number(req.query.page) === 1){
         if(category === "Date"){
-            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.AssignedTo,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
             +' where leads.Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by leads.Createdt desc limit 40';
         } else {
-            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.AssignedTo,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
@@ -271,13 +275,13 @@ exports.searchLeadsController = (req, res) => {
         const el = (Number(req.query.page) + 1) * 40;
 
         if(category === "Date"){
-            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.AssignedTo,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
             +' where leads.Createdt between \'' + startDate + '\' and \'' + endDate + ' 23:59:59\' order by leads.Createdt desc limit ' + sl + ',' + el;
         } else { 
-            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot,'
+            search_Query = 'select leads.Lead_id, leads.Name, leads.Email, leads.Mobile, leads.Qualif, leads.Source, leads.Ad_Name, leads.City, leads.Status, leads.UpdationDt, leads.AssignDt, leads.DOB, leads.Hot, leads.AssignedTo,'
             +' courses.id as courseId, courses.name as course, courses.type as courseType, courses.Cost as courseCost,'
             +' employees.Firstname as creatorF, employees.Surname as creatorS, e.Firstname as assignF, e.Surname as assignS from ice.leads inner join ice.employees on leads.CreatedBy = employees.Email'
             +' inner join ice.employees as e on leads.AssignedTo = e.Employee_ID inner join ice.courses on leads.Course = courses.id'
@@ -341,6 +345,48 @@ exports.modifySourceCourseController = (req, res) => {
 
         return res.status(200).json({
             message: "Lead course and source updated successfully"
+        })
+    })
+}
+
+exports.statusUpdateController = (req, res) => {
+    
+    const { Lead_id, status, followUpDate, followUpTime, assignedTo, oldComment, newcomment, newotherComment, interviewDate, interviewTime, venue, assignChange, updatorId} = req.body;
+    
+    const now = new Date().toISOString().split('T')[0] + ' ' + new Date().toTimeString().split(' ')[0];
+    var comment = newcomment === "others" ? newotherComment : newcomment;
+    var updateDateTime, statusQuery;
+
+    var final_query = 'update ice.leads set Comment = JSON_ARRAY_APPEND(\''+ oldComment +'\', \'$\', cast(\'["'+ comment +'",'+ new Date().getTime() +']\' as JSON))';
+
+    if(status === "Confirmed"){
+        updateDateTime = interviewDate + " " +interviewTime + ":00";
+        statusQuery = ',  Status = \'Confirmed\', Lstfudt = \'' + updateDateTime + '\', Venue = \'' + venue + '\'' ;
+    } else {
+        updateDateTime = followUpDate + " " + followUpTime + ":00";
+        statusQuery = ', Status = \''+ status + '\', Lstfudt = \'' + updateDateTime + '\'';
+    }
+
+    final_query = final_query + statusQuery;
+
+    if(assignedTo === assignChange || typeof assignChange === "undefined"){
+    } else {
+        final_query = final_query + ',  AssignedTo = \'' + assignedTo + ',  AssignDt = \'' + now
+    }
+
+    finalsubset_query = ',  UpdationDt = \'' + now + '\', CallingDt = \'' + now + '\', Updateuserid = ' + updatorId + ' where Lead_id = '+ Lead_id ;
+    
+    final_query = final_query + finalsubset_query;
+
+    connect.query(final_query, function(err, result){
+        if(err){
+            return res.status(400).json({
+                message: "Error in updating resources"
+            })
+        }
+
+        return res.status(200).json({
+            message: "Update Successfull"
         })
     })
 }

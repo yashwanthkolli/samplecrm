@@ -44,6 +44,8 @@ function Holder({match}){
                     <PrivateRoute path="/crm/users" exact component={() => <AdminUsers /> } />
 
                     <PrivateRoute path="/crm/manager/users" exact component={() => <Users />} />
+                    <PrivateRoute path="/crm/convertor/users" exact component={() => <Users />} />
+                    <PrivateRoute path="/crm/nationalHead/users" exact component={() => <Users />} />
                     <Redirect to = '/crm/home' />
                 </Switch>
             </Section>

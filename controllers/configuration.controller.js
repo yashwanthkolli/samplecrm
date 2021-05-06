@@ -304,8 +304,8 @@ exports.userDeleteController = (req, res) => {
 
 exports.fetchReportingEmployees = (req, res) => {
     const { id } = req.body;
-    // fetch_employees = 'WITH RECURSIVE EMP_CTE (Employee_ID, Name, Email, Mobile, City, Type, Reporting) AS (SELECT Employee_ID, CONCAT(Firstname, \' \', Surname) AS Name, Email, Mobile, City, Type, Reporting FROM ice.employees WHERE Employee_ID = \'' + id + '\'UNION ALL SELECT T.Employee_ID, CONCAT(T.Firstname, \' \', T.Surname) AS Name, T.Email, T.Mobile, T.City, T.Type, T.Reporting FROM ice.employees T INNER JOIN EMP_CTE ON T.Reporting = EMP_CTE.Employee_ID ) SELECT * FROM EMP_CTE ORDER BY Employee_ID'    
-    fetch_employees = 'SELECT CONCAT(Firstname, \' \', Surname) as Name, Employee_ID, Email, Mobile, Type, City FROM ice.employees WHERE Reporting =\'' + id + '\'';
+    fetch_employees = 'WITH RECURSIVE EMP_CTE (Employee_ID, Name, Email, Mobile, City, Type, Reporting) AS (SELECT Employee_ID, CONCAT(Firstname, \' \', Surname) AS Name, Email, Mobile, City, Type, Reporting FROM ice.employees WHERE Employee_ID = \'' + id + '\'UNION ALL SELECT T.Employee_ID, CONCAT(T.Firstname, \' \', T.Surname) AS Name, T.Email, T.Mobile, T.City, T.Type, T.Reporting FROM ice.employees T INNER JOIN EMP_CTE ON T.Reporting = EMP_CTE.Employee_ID ) SELECT * FROM EMP_CTE ORDER BY Employee_ID'    
+    // fetch_employees = 'SELECT CONCAT(Firstname, \' \', Surname) as Name, Employee_ID, Email, Mobile, Type, City FROM ice.employees WHERE Reporting =\'' + id + '\'';
     connect.query(fetch_employees, function(err, result) {
         if (err) {
             return res.status(500).json({

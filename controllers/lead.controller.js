@@ -132,7 +132,7 @@ exports.fetchNumberOfLeadsController = (req, res) => {
 }
 
 exports.fetchLeadToppersController = (req, res) => {
-    leads_toppers = 'select AssignedTo, count(AssignedTo) as \'count\' from ice.leads where AssignedTo not in (select AssignedTo from ice.leads where AssignedTo = \'636-Website Lead Pool\') group by AssignedTo having count(AssignedTo) > 0 order by count desc limit 10';
+    leads_toppers = 'SELECT CONCAT(Firstname, \' \', Surname) AS AssignedTo, sum(CASE WHEN e.Employee_ID = t.AssignedTo IS NULL THEN 0 ELSE 1 END) count FROM ice.employees e LEFT JOIN ice.leads t ON t.AssignedTo = e.Employee_ID GROUP BY Employee_ID ORDER BY count desc limit 10'
     connect.query(leads_toppers, function(err, result){
         if(err){
             return res.status(500).json({

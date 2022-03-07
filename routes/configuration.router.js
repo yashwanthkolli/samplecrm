@@ -7,7 +7,8 @@ const {
     fetchSupervisorEmployees,
     fetchRegistersList,
     fetchRegistersLogs,
-    fetchStaffLogs
+    fetchStaffLogs,
+    addRegisters
 } = require('../controllers/configuration.controller');
 const {
     verifyHigherLevel
@@ -19,5 +20,6 @@ router.post('/getSupervisorEmployees',fetchSupervisorEmployees);
 router.post('/getRegisters', fetchRegistersList);
 router.post('/getRegistersData', fetchRegistersLogs);
 router.post('/getStaffLogs', fetchStaffLogs);
+router.post('/addRegisters', addRegisters);
 
 module.exports = router;

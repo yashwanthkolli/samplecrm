@@ -56,8 +56,6 @@ function UTS({oname}){
         setSelectedRegister()
     }
 
-    console.log(selectedRegister)
-
     return(
         <div  style={{width: '90%'}}>
         <MaterialTable

@@ -55,7 +55,7 @@ module.exports = [
          +'Gtotal INT,'
          +'Partroll_ending_number INT,'
          +'HOC VARCHAR(255) NOT NULL,'
-         +'TOC VARCHAR(255) NOT NULL,'
+         +'TOC VARCHAR(255),'
          +'FOREIGN KEY (Userid) REFERENCES users(sid),'
          +'FOREIGN KEY (HOC) REFERENCES users(sid),'
          +'FOREIGN KEY (TOC) REFERENCES users(sid),'

@@ -117,3 +117,47 @@ exports.fetchStaffLogs=(req,res)=>{
     })
 
 }
+
+exports.addRegisters=(req,res)=>{
+    const { 
+        tableName, 
+        date, 
+        shift, 
+        userid, 
+        loginTime, 
+        commencingNo, 
+        closingNo, 
+        logoutTime, 
+        itc, 
+        ni, 
+        can, 
+        sp, 
+        noofpass, 
+        cash, 
+        vouncher, 
+        pos, 
+        ecash, 
+        ubi,  
+        partroll, 
+        scode,
+        registerid,
+        oname
+    } = req.body;
+    const gtotal = cash + vouncher + ecash + ubi
+    const totalTickets = closingNo - commencingNo
+    add_registers = `insert into railways.${tableName} (Date, shift, userid,login_time, commencing_number, closing_number, logout_time, ITC, NI, CAN, SPCAN, total_ticket, Number_of_pass, CASH, Vouncher, POS, Ecash, UPI_PAYMENT, Gtotal, Partroll_ending_number, HOC, oname, registerid, scode) values ('${date}', '${shift}', '${userid}', '${loginTime}', '${commencingNo}', '${closingNo}', '${logoutTime}', '${itc}', '${ni}', '${can}', '${sp}', '${totalTickets}', '${noofpass}', '${cash}', '${vouncher}', '${pos}', '${ecash}', '${ubi}', '${gtotal}', '${partroll}', '${userid}', '${oname}', '${registerid}', '${scode}')`   
+
+    connect.query(add_registers, function(err, result) {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({
+                message: "Error in Adding registers"
+
+            })
+        }
+        return res.status(200).json({
+            message: "Added registers!", 
+            logs: result
+        })
+    })
+}

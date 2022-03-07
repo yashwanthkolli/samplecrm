@@ -96,7 +96,7 @@ function PRS({oname}){
             <Dialog open={openView} fullWidth maxWidth='xl' onClose={() => onViewClose()}>
                 <DialogTitle style={{marginTop: '20px'}}>{selectedRegister ? selectedRegister.regname : null}</DialogTitle>
                 <DialogContent>
-                    { selectedRegister && selectedRegister.regid === '2' ? <LogForm /> : null}
+                    { selectedRegister && selectedRegister.regid === '2' ? <LogForm oname={oname} /> : null}
                     { selectedRegister && selectedRegister.regid === '3' ? <PcdTable data={registerLogs} /> : null}
                     { selectedRegister && selectedRegister.regid === '6' ? <NitTable data={registerLogs} /> : null}
                     { selectedRegister && selectedRegister.regid === '8' ? <SctTable data={registerLogs} /> : null}

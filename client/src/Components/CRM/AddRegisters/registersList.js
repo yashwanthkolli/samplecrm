@@ -1,15 +1,64 @@
 import MaterialTable from 'material-table'
 import TextField from '@material-ui/core/TextField';
 import { useState } from 'react';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import { useToast } from '@chakra-ui/react';
+import axios from 'axios'
+import { decodeSessionStorage } from '../../../helpers/auth.helpers';
+import moment from 'moment';
 
-export const LogForm = () => {
+export const LogForm = ({oname}) => {
+    const toast = useToast()
+    const userData = decodeSessionStorage().payload;
+    const tableName = 'log'
     const [shift, setShift] = useState()
     const [commencingNo, setCommencingNo] = useState()
     const [closingNo, setClosingNo] = useState()
     const [itc, setItc] = useState()
+    const [ni, setNi]=useState()
+    const [can,setCan]=useState()
+    const [sp,setSp]=useState()
+    const [noofpass,setNoofpass]=useState()
+    const [cash,setCash]=useState()
+    const [vouncher,setVouncher]=useState()
+    const [pos,setPos]=useState()
+    const [ecash,setEcash]=useState()
+    const [ubi,setUbi]=useState()
+    const [gtotal,setGtotal]=useState()
+    const [partroll,setPartroll]=useState()
+    const loginTime = JSON.parse(localStorage.getItem('loginTime'))
+    const userid = userData.sid
+    const date = moment().format('YYYY-MM-DD')
+    const scode = userData.scd
+    const logoutTime = moment().format('YYYY-MM-DD hh:mm:ss')
+    const registerid = 2
+    console.log(oname) 
+    console.log(userData)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        axios.post(`${process.env.REACT_APP_CONFIG}/addRegisters`, {
+            tableName, date, shift, userid, loginTime, commencingNo, closingNo, logoutTime, itc, ni, can, sp, noofpass, cash, vouncher, pos, ecash, ubi, partroll, scode, registerid
+        })
+            .then(res => {
+                toast({
+                    description: "Successfully Added",
+                    duration: 2000,
+                    position: "top-right"
+                })
+            })
+            .catch(err => {
+                toast({
+                    description: "Error In Fetching Registers",
+                    duration: 2000,
+                    position: "top-right"
+                })
+            })
+    }
 
     return(
-        <form>
+        <form onSubmit={handleSubmit}>
             <TextField 
                 required
                 autoComplete="off"
@@ -50,6 +99,124 @@ export const LogForm = () => {
                 style={{marginRight: '40px',marginBottom: '20px'}}
                 onChange={e => setItc(e.target.value)}
             />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="NI"
+                name="NI"
+                value={ni}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setNi(e.target.value)}
+            />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="CAN"
+                name="CAN"
+                value={can}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setCan(e.target.value)}
+            />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="SpCan"
+                name="SpCan"
+                value={sp}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setSp(e.target.value)}
+            />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="number of pass"
+                name="Number of pass"
+                value={noofpass}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setNoofpass(e.target.value)}
+            />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="CASH"
+                name="CASH"
+                value={cash}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setCash(e.target.value)}
+            />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="VOUCHER"
+                name="VOUCHER"
+                value={vouncher}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setVouncher(e.target.value)}
+            />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="POS"
+                name="POS"
+                value={pos}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setPos(e.target.value)}
+            />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="ECash"
+                name="Ecash"
+                value={ecash}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setEcash(e.target.value)}
+            />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="UPI PAYMENT"
+                name="UPI PAYMENT"
+                value={ubi}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setUbi(e.target.value)}
+            />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="Gtotal"
+                name="Grand Total"
+                value={gtotal}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setGtotal(e.target.value)}
+            />
+            <TextField
+                required
+                autoComplete="off"
+                type="text"
+                label="partroll ending number"
+                name="Partroll ending number"
+                value={partroll}
+                style={{marginRight: '40px',marginBottom: '20px'}}
+                onChange={e => setPartroll(e.target.value)}
+            />
+            <DialogActions>
+                <Button style={{backgroundColor: '#202950', color: 'white'}} variant="contained">
+                    Cancel
+                </Button>
+                <Button type="submit" style={{backgroundColor: '#202950', color: 'white', marginRight:'20.5px'}} variant="contained">
+                    Add Log
+                </Button>
+            </DialogActions>
         </form>
     )
 } 

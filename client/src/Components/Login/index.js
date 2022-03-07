@@ -15,7 +15,7 @@ import {
     Ice,
     Form
 } from './LoginComponents.js';
-import { setSessionStorage, isAuth, setLocalStorage, updateUserTimingsOnLogin, decodeSessionStorage } from '../../helpers/auth.helpers.js';
+import { setSessionStorage, isAuth, setLocalStorage, decodeSessionStorage } from '../../helpers/auth.helpers.js';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 
@@ -58,12 +58,7 @@ function Login({history}) {
             if(res.data.response === 1){
                 await setSessionStorage('token', res.data.token);
                 await setSessionStorage('user', res.data.payload);
-                const userData = decodeSessionStorage().payload
-                await updateUserTimingsOnLogin(localStorage.getItem('loginTime'), localStorage.getItem('loggedInDuration'))
-                const loginHours = new Date().getHours() >= 10 ? new Date().getHours().toString() : '0'+new Date().getHours().toString()
-                const loginMinutes = new Date().getMinutes() >= 10 ? new Date().getMinutes().toString() : '0'+new Date().getMinutes().toString()
-                setLocalStorage('loginTime', loginHours + ':' + loginMinutes)
-                setLocalStorage('previousLogin', userData.sid)
+                setLocalStorage('loginTime', moment().format('YYYY-MM-DD hh:mm:ss'))
 
                 history.push('/crm/home');
             } else {

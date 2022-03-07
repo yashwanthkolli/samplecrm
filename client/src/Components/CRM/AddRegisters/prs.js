@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import { GrFormView, GrAdd } from 'react-icons/gr'
 import { decodeSessionStorage } from '../../../helpers/auth.helpers';
-import { BbrTable, FrTable, LogForm, MmrTable, NcrTable, NitTable, PcdTable, SctTable, TsiTable, WleTable } from './registersList'
+import { BbrForm, BbrTable, FrForm, FrTable, LogForm, MmrForm, MmrTable, NcrForm, NcrTable, NitForm, NitTable, PcdForm, PcdTable, SctForm, SctTable, TsiForm, TsiTable, WleForm, WleTable } from './registersList'
 
 function PRS({oname}){
     const userData = decodeSessionStorage().payload;
@@ -97,15 +97,15 @@ function PRS({oname}){
                 <DialogTitle style={{marginTop: '20px'}}>{selectedRegister ? selectedRegister.regname : null}</DialogTitle>
                 <DialogContent>
                     { selectedRegister && selectedRegister.regid === '2' ? <LogForm oname={oname} /> : null}
-                    { selectedRegister && selectedRegister.regid === '3' ? <PcdTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '6' ? <NitTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '8' ? <SctTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '10' ? <MmrTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '12' ? <FrTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '14' ? <TsiTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '15' ? <BbrTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '16' ? <NcrTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '17' ? <WleTable data={registerLogs} /> : null}
+                    { selectedRegister && selectedRegister.regid === '3' ? <PcdForm oname={oname} /> : null}
+                    { selectedRegister && selectedRegister.regid === '6' ? <NitForm oname={oname} /> : null}
+                    { selectedRegister && selectedRegister.regid === '8' ? <SctForm oname={oname} /> : null}
+                    { selectedRegister && selectedRegister.regid === '10' ? <MmrForm oname={oname} /> : null}
+                    { selectedRegister && selectedRegister.regid === '12' ? <FrForm oname={oname} /> : null}
+                    { selectedRegister && selectedRegister.regid === '14' ? <TsiForm oname={oname} /> : null}
+                    { selectedRegister && selectedRegister.regid === '15' ? <BbrForm oname={oname} /> : null}
+                    { selectedRegister && selectedRegister.regid === '16' ? <NcrForm oname={oname}/> : null}
+                    { selectedRegister && selectedRegister.regid === '17' ? <WleForm oname={oname} /> : null}
 
                 </DialogContent>
             </Dialog>

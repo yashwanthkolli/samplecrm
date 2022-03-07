@@ -34,7 +34,9 @@ module.exports = [
     ],
     [
         'Log',
-        'Date date,'
+        'id int NOT NULL AUTO_INCREMENT,'
+        +'PRIMARY KEY (id),'
+         +'Date date,'
          +'shift INT,'
          +'userid VARCHAR(255) NOT NULL,'
          +'login_time timestamp,'
@@ -179,7 +181,6 @@ module.exports = [
         +'registerid VARCHAR(255) NOT NULL,'
         +'scode VARCHAR(255) NOT NULL,'
         +'FOREIGN KEY (scode) REFERENCES station(scode)'
-        
     ],
     [
         'bbr',

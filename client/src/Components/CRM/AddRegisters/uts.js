@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import { GrAdd } from 'react-icons/gr'
 import { decodeSessionStorage } from '../../../helpers/auth.helpers';
-import { FrTable, LogForm, MmrTable, NitTable, PcdTable, SctTable, TsiTable } from './registersList'
+import { FrForm, FrTable, LogForm, MmrForm, MmrTable, NitForm, NitTable, PcdForm, PcdTable, SctForm, SctTable, TsiForm, TsiTable, TsiUTSForm } from './registersList'
 
 function UTS({oname}){
     const userData = decodeSessionStorage().payload;
@@ -95,12 +95,12 @@ function UTS({oname}){
                 <DialogTitle style={{marginTop: '20px'}}>{selectedRegister ? selectedRegister.regname : null}</DialogTitle>
                 <DialogContent>
                     { selectedRegister && selectedRegister.regid === '1' ? <LogForm data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '4' ? <PcdTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '5' ? <NitTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '7' ? <SctTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '9' ? <MmrTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '11' ? <FrTable data={registerLogs} /> : null}
-                    { selectedRegister && selectedRegister.regid === '13' ? <TsiTable data={registerLogs} /> : null}
+                    { selectedRegister && selectedRegister.regid === '4' ? <PcdForm data={registerLogs} /> : null}
+                    { selectedRegister && selectedRegister.regid === '5' ? <NitForm data={registerLogs} /> : null}
+                    { selectedRegister && selectedRegister.regid === '7' ? <SctForm data={registerLogs} /> : null}
+                    { selectedRegister && selectedRegister.regid === '9' ? <MmrForm data={registerLogs} /> : null}
+                    { selectedRegister && selectedRegister.regid === '11' ? <FrForm data={registerLogs} /> : null}
+                    { selectedRegister && selectedRegister.regid === '13' ? <TsiUTSForm oname={oname} /> : null}
                 </DialogContent>
             </Dialog>
         </div>

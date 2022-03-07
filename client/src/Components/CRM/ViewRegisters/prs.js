@@ -18,6 +18,7 @@ function PRS({oname}){
     const [openView, setOpenView] = useState(false)
     const [selectedRegister, setSelectedRegister] = useState()
     const [registerLogs, setRegisterLogs] = useState()
+    const [update, setUpdate] = useState(false);
     
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONFIG}/getRegisters`, {
@@ -48,7 +49,7 @@ function PRS({oname}){
                 position: "top-right"
             })
         })
-    }, [toast, selectedRegister, userData.scd])
+    }, [toast, selectedRegister, userData.scd, update])
 
     const onViewClose = () => {
         setOpenView(false)
@@ -96,7 +97,7 @@ function PRS({oname}){
             <Dialog open={openView} fullWidth maxWidth='xl' onClose={() => onViewClose()}>
                 <DialogTitle style={{marginTop: '20px'}}>{selectedRegister ? selectedRegister.regname : null}</DialogTitle>
                 <DialogContent>
-                    { selectedRegister && selectedRegister.regid === '2' ? <LogTable data={registerLogs} /> : null}
+                    { selectedRegister && selectedRegister.regid === '2' ? <LogTable update={update} setUpdate={setUpdate} data={registerLogs} /> : null}
                     { selectedRegister && selectedRegister.regid === '3' ? <PcdTable data={registerLogs} /> : null}
                     { selectedRegister && selectedRegister.regid === '6' ? <NitTable data={registerLogs} /> : null}
                     { selectedRegister && selectedRegister.regid === '8' ? <SctTable data={registerLogs} /> : null}

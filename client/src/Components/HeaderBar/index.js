@@ -25,7 +25,7 @@ import { GiProgression } from 'react-icons/gi';
 import { Link } from 'react-router-dom';
 import { signout } from '../../helpers/auth.helpers';
 import { FaUserEdit, FaUsers, FaAddressCard ,FaCashRegister } from 'react-icons/fa';
-import { TiTick } from 'react-icons/ti';
+import { HiUserAdd } from 'react-icons/hi';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -137,6 +137,7 @@ function HeaderBar({match}){
         {id: 1 ,path: `${match.path}/profile`, text: 'Profile',  icon: ImProfile },
         {id: 2 ,path: `${match.path}/home`, text: 'Home',  icon: AiFillHome },
         {id: 4 ,path: `${match.path}/offices`, text: 'Offices',  icon: HiOutlineOfficeBuilding },
+        {id: 5 ,path: `${match.path}/addAdmin`, text: 'Add Admin',  icon: HiUserAdd },
         {id: 5 ,path: `${match.path}/addSupervisor`, text: 'Add Supervisor',  icon: FaUsers },
         {id: 6 ,path: `${match.path}/viewRegisters`, text: 'Registers', icon:FaCashRegister },
         {id: 7 ,path: `${match.path}/addRegisters`, text: 'Add Registers', icon:AiOutlineFileAdd },

@@ -19,6 +19,7 @@ import StaffUsers from './CRM/StaffUsers';
 import AddStaff from './CRM/AddStaff';
 import StaffRegisters from './CRM/StaffRegisters';
 import AddRegisters from './CRM/AddRegisters';
+import AddAdmin from './CRM/AddAdmin';
 
 
 
@@ -35,6 +36,7 @@ function Holder({match}){
                     <PrivateRoute path="/crm/profile" exact component={(props) => <Profile {...props} />} />
                     <PrivateRoute path="/crm/offices" exact component={(props) => <Offices {...props} />} />
                     <PrivateRoute path="/crm/addSupervisor" exact component={(props) => <AddSupervisor {...props} />} /> 
+                    <PrivateRoute path="/crm/addAdmin" exact component={(props) => <AddAdmin {...props} />} /> 
                     <PrivateRoute path="/crm/viewRegisters" exact component={() => <ViewRegisters />} />
                     <PrivateRoute path="/crm/addRegisters" exact component={() => <AddRegisters />} />
 

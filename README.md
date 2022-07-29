@@ -1,3 +1,3 @@
-# ICE_CRM
+# CRM Application
 
-An advanced CRM built on top of MERN stack, involving analytics and graphical representation of data.
+An advanced CRM built on top of SERN stack, involving analytics and graphical representation of data.
